@@ -2,13 +2,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prithvi/config/di/di.dart';
+
 import 'package:prithvi/config/utils/assets.dart';
 import 'package:prithvi/config/utils/custom_button.dart';
 import 'package:prithvi/config/utils/validator.dart';
 import 'package:prithvi/core/colors/colors.dart';
 import 'package:prithvi/features/auth/widgets/textformfield.dart';
 import 'package:prithvi/features/dashboard/widgets/bottombar.dart';
+
 import 'package:sizer/sizer.dart';
 
 class Login extends ConsumerWidget {
@@ -22,11 +23,6 @@ class Login extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
     final media = MediaQuery.of(context);
-    
-    final authService = ref.read(authServiceProvider); // Get the AuthService
-final signUp = ref.read(signUpProvider(authService));
-
-
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -117,7 +113,8 @@ final signUp = ref.read(signUpProvider(authService));
                                     ),
 
                                     AppFormField(
-                                        validator:(value) =>  Validator.requiredValidator(value),
+                                        validator: (value) =>
+                                            Validator.requiredValidator(value),
                                         inputType: TextInputType.emailAddress,
                                         height: size.height * 0.065,
                                         width: size.width,

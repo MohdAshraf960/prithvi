@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDWSvN7eba620EZ4Vln73aNCBOpAJYtKtE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>797878551578</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.carbonfootprint.tracker.prithvi</string>
+	<key>PROJECT_ID</key>
+	<string>prithvi-70646</string>
+	<key>STORAGE_BUCKET</key>
+	<string>prithvi-70646.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:797878551578:ios:cd8c8dbc681c9bb3623da3</string>
+</dict>
+</plist>

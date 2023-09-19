@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "797878551578",
+    "project_id": "prithvi-70646",
+    "storage_bucket": "prithvi-70646.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797878551578:android:97ddb8cddc2b3308623da3",
+        "android_client_info": {
+          "package_name": "com.carbonfootprint.tracker.prithvi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7VzDXt-ieY1CAYCjkrq_RkdEoZTqLHSs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

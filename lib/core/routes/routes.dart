@@ -1,4 +1,4 @@
-
+// ignore_for_file: unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,25 +10,26 @@ class RoutePage {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   static Route<dynamic> getPage(RouteSettings routePage) {
+    final args = routePage.arguments;
+
     return MaterialPageRoute(
       builder: (context) {
         switch (routePage.name) {
           case Login.id:
             return Login();
 
-              case SignUp.id:
+          case SignUp.id:
             return SignUp();
 
-            case Home.id:
+          case Home.id:
             return Home();
-         
+
           default:
             return Login();
         }
       },
     );
   }
-  
 
   static GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
@@ -39,7 +40,8 @@ class RoutePage {
   }
 
   static void showErrorSnackbars(String message) {
-    showSnackbar(SnackBar(
+    showSnackbar(
+      SnackBar(
         backgroundColor: Colors.red,
         content: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,8 +56,8 @@ class RoutePage {
             ),
           ],
         ),
-        ),
-        );
+      ),
+    );
   }
 
   static void showSucessSnackbar(String message) {
@@ -75,6 +77,4 @@ class RoutePage {
           ],
         )));
   }
-
-
 }
