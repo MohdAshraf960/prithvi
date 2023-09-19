@@ -1,18 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prithvi/features/features.dart';
-import 'package:prithvi/services/services.dart';
+import 'package:prithvi/services/auth_service.dart';
 
+final Provider<FirebaseFirestore> fireStoreProvider =
+    Provider<FirebaseFirestore>(
+  (ref) {
+    return FirebaseFirestore.instance;
+  },
+);
 
-// NOTIFIERS
-final signUpProvider = ChangeNotifierProvider.autoDispose.family<SignUpNotifier, AuthService>((ref, authService) {
-  return SignUpNotifier(authService: authService);
-});
+final Provider<AuthService> authServiceProvider = Provider<AuthService>(
+  (ref) {
+    final firestore = ref.read(fireStoreProvider);
+    return AuthService(firestore: firestore);
+  },
+);
 
-// SERVICES
-final authServiceProvider = Provider<AuthService>((ref) {
-  return AuthService();
-});
+final authStateNotifierProvider = ChangeNotifierProvider<SignUpNotifier>(
+  (ref) {
+    final AuthService authService = ref.read(authServiceProvider);
 
-
-// why we use autodispose ==> becouse change value sometimes autodispose for example dynamic
-// provider ==> does not change value for example static 
+    return SignUpNotifier(authService: authService);
+  },
+);
