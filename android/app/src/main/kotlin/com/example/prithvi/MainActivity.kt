@@ -1,4 +1,4 @@
-package com.example.prithvi
+package com.carbonfootprint.tracker.prithvi
 
 import io.flutter.embedding.android.FlutterActivity
 
