@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,8 +8,8 @@ import 'package:prithvi/config/utils/assets.dart';
 import 'package:prithvi/config/utils/custom_button.dart';
 import 'package:prithvi/config/utils/validator.dart';
 import 'package:prithvi/core/colors/colors.dart';
+
 import 'package:prithvi/features/auth/widgets/textformfield.dart';
-import 'package:prithvi/features/dashboard/widgets/bottombar.dart';
 
 import 'package:sizer/sizer.dart';
 
@@ -156,20 +157,11 @@ class Login extends ConsumerWidget {
                                       textColor: whiteColor,
                                       color: backgroundColor,
                                       text: "LOGIN",
-                                      onTap: () {
-                                        Navigator.pushAndRemoveUntil<void>(
-                                          context,
-                                          MaterialPageRoute<void>(
-                                            builder: (BuildContext context) =>
-                                                const BottomBar(),
-                                          ),
-                                          ModalRoute.withName('/bottombar'),
-                                        );
-                                        // Navigator.pushNamed(context,"/signup");
+                                      onTap: () async {
                                         debugPrint("login button");
                                         formKey.currentState!.save();
                                         if (formKey.currentState!.validate()) {
-                                          // viewModel.loginController(context);
+                                          //  _userSignUp(authProvider);
                                         }
                                       },
                                       width: double.infinity,

@@ -2,14 +2,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prithvi/core/routes/routes.dart';
-import 'package:prithvi/features/auth/pages/login_view.dart';
+
+import 'package:prithvi/features/auth/pages/signup_view.dart';
 import 'package:prithvi/firebase_options.dart';
 import 'package:sizer/sizer.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(
     ProviderScope(
       child: const MyApp(),
@@ -31,7 +34,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.orange,
         ),
         debugShowCheckedModeBanner: false,
-        home: Login(),
+        home: SignUp(),
         onGenerateRoute: (settings) => RoutePage.getPage(settings),
       ),
     );

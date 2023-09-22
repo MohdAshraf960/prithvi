@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:prithvi/core/routes/routes.dart';
 
@@ -18,9 +19,12 @@ class AppException implements Exception {
   }
 
   static void onError(Object e) {
+    if (e is FirebaseAuthException) {
+      RoutePage.showErrorSnackbars(e.message!);
+    }
     if (e is AppException) {
       debugPrint("AppException ==> ${e.code} ${e.message}");
-      RoutePage.showErrorSnackbars("Invalid Credential");
+      RoutePage.showErrorSnackbars("${e.message}");
       return;
     }
     if (e is SocketException) {

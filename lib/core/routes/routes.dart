@@ -46,9 +46,11 @@ class RoutePage {
         content: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              message,
-              style: GoogleFonts.roboto(color: Colors.white),
+            Expanded(
+              child: Text(
+                message,
+                style: GoogleFonts.roboto(color: Colors.white),
+              ),
             ),
             const Icon(
               Icons.error,
