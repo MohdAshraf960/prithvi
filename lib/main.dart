@@ -7,9 +7,11 @@ import 'package:prithvi/firebase_options.dart';
 import 'package:sizer/sizer.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(
     ProviderScope(
       child: const MyApp(),

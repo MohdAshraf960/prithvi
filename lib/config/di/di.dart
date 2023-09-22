@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prithvi/features/features.dart';
 import 'package:prithvi/services/auth_service.dart';
@@ -10,10 +11,14 @@ final Provider<FirebaseFirestore> fireStoreProvider =
   },
 );
 
+final firebaseAuthProvider =
+    Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
+
 final Provider<AuthService> authServiceProvider = Provider<AuthService>(
   (ref) {
     final firestore = ref.read(fireStoreProvider);
-    return AuthService(firestore: firestore);
+    final firebaseAuth = ref.watch(firebaseAuthProvider);
+    return AuthService(firestore: firestore, firebaseAuth: firebaseAuth);
   },
 );
 
