@@ -1,25 +1,43 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prithvi/features/auth/notifiers/sign_up_notfiier.dart';
+import 'package:prithvi/features/auth/pages/verification_view.dart';
 import 'package:prithvi/features/auth/widgets/textformfield.dart';
+import 'package:prithvi/models/sign_up_model.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../config/di/di.dart';
+import '../../../config/exception/exception.dart';
 import '../../../config/utils/assets.dart';
 import '../../../config/utils/custom_button.dart';
 import '../../../core/colors/colors.dart';
 
-class SignUp extends StatelessWidget {
-  
-  static const id="/signup";
-   SignUp({super.key});
+class SignUp extends ConsumerWidget {
+  static const id = "/signup";
+  SignUp({super.key});
 
-    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+
+  TextEditingController passwordController = TextEditingController();
+
+  TextEditingController confirmPasswordController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Size size = MediaQuery.of(context).size;
+    // var media = MediaQuery.of(context);
+
     Size size = MediaQuery.of(context).size;
-    var media = MediaQuery.of(context);
+    final media = MediaQuery.of(context);
+
+    final authProvider = ref.read(authStateNotifierProvider);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -38,8 +56,6 @@ class SignUp extends StatelessWidget {
             key: formKey,
             child: Column(
               children: [
-                
-
                 Spacer(
                   flex: media.viewInsets.bottom == 0
                       ? size.height > 800
@@ -47,10 +63,8 @@ class SignUp extends StatelessWidget {
                           : 3
                       : 1,
                 ),
-                Container( 
-                 
+                Container(
                   height: size.height * 0.7,
-                  
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
                     child: AnimatedContainer(
@@ -67,12 +81,12 @@ class SignUp extends StatelessWidget {
                           children: [
                             Container(
                               decoration: BoxDecoration(
-                                   borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(30.0),
-                                      topRight: Radius.circular(30.0),
-                                    ),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30.0),
+                                  topRight: Radius.circular(30.0),
+                                ),
                                 color: Colors.white,
-                               // borderRadius: BorderRadius.circular(8),
+                                // borderRadius: BorderRadius.circular(8),
                               ),
                               width: size.width,
                               padding: EdgeInsets.only(
@@ -108,94 +122,88 @@ class SignUp extends StatelessWidget {
                                     const SizedBox(
                                       height: kToolbarHeight * 0.5,
                                     ),
-                                   
-                                        AppFormField(
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return "this field is required";
-                                              }
-                                              return null;
-                                            },
-                                            inputType: TextInputType.text,
-                                            height: size.height * 0.065,
-                                            width: size.width,
-                                            // hintText: "Enter Email",
-                                            // hintfontSize: 12.sp,
-                                            labelText: "Enter Email",
-                                            fontSize: 12.sp,
-                                           // controller: viewModel.email,
-                                            fontWeight: FontWeight.w400),
-                                        const SizedBox(
-                                          height: kToolbarHeight * 0.7,
+
+                                    AppFormField(
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return "this field is required";
+                                          }
+                                          return null;
+                                        },
+                                        inputType: TextInputType.text,
+                                        height: size.height * 0.065,
+                                        width: size.width,
+                                        // hintText: "Enter Email",
+                                        // hintfontSize: 12.sp,
+                                        labelText: "Enter Email",
+                                        fontSize: 12.sp,
+                                        controller: emailController,
+                                        fontWeight: FontWeight.w400),
+                                    const SizedBox(
+                                      height: kToolbarHeight * 0.7,
+                                    ),
+                                    AppFormField(
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return "this field is required";
+                                          }
+                                          return null;
+                                        },
+                                        inputType: TextInputType.text,
+                                        height: size.height * 0.065,
+                                        width: size.width,
+                                        // hintText: "Enter Email",
+                                        // hintfontSize: 12.sp,
+                                        labelText: "Enter Name",
+                                        fontSize: 12.sp,
+                                        controller: nameController,
+                                        fontWeight: FontWeight.w400),
+                                    const SizedBox(
+                                      height: kToolbarHeight * 0.7,
+                                    ),
+                                    AppFormField(
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return "this field is required";
+                                          }
+                                          return null;
+                                        },
+                                        inputType: TextInputType.text,
+                                        height: size.height * 0.065,
+                                        width: size.width,
+                                        // hintText: "Enter Email",
+                                        // hintfontSize: 12.sp,
+                                        labelText: "Enter Password",
+                                        fontSize: 12.sp,
+                                        controller: passwordController,
+                                        fontWeight: FontWeight.w400),
+                                    const SizedBox(
+                                      height: kToolbarHeight * 0.7,
+                                    ),
+                                    AppFormField(
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return "this field is required";
+                                          }
+                                          return null;
+                                        },
+                                        inputType: TextInputType.text,
+                                        height: size.height * 0.065,
+                                        width: size.width,
+                                        labelText: "Enter Confirm Password",
+                                        fontSize: 12.sp,
+                                        suffixIcon: const Padding(
+                                          padding: EdgeInsets.only(right: 16),
+                                          child: Icon(
+                                            Icons.remove_red_eye,
+                                            color: backgroundColor,
+                                          ),
                                         ),
-                                         AppFormField(
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return "this field is required";
-                                              }
-                                              return null;
-                                            },
-                                            inputType: TextInputType.text,
-                                            height: size.height * 0.065,
-                                            width: size.width,
-                                            // hintText: "Enter Email",
-                                            // hintfontSize: 12.sp,
-                                            labelText: "Enter Phone No",
-                                            fontSize: 12.sp,
-                                           // controller: viewModel.email,
-                                            fontWeight: FontWeight.w400),
-                                        const SizedBox(
-                                          height: kToolbarHeight * 0.7,
-                                        ),
-                                         AppFormField(
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return "this field is required";
-                                              }
-                                              return null;
-                                            },
-                                            inputType: TextInputType.text,
-                                            height: size.height * 0.065,
-                                            width: size.width,
-                                            // hintText: "Enter Email",
-                                            // hintfontSize: 12.sp,
-                                            labelText: "Enter Password",
-                                            fontSize: 12.sp,
-                                           // controller: viewModel.email,
-                                            fontWeight: FontWeight.w400),
-                                        const SizedBox(
-                                          height: kToolbarHeight * 0.7,
-                                        ),
-                                        AppFormField(
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return "this field is required";
-                                              }
-                                              return null;
-                                            },
-                                            inputType: TextInputType.text,
-                                            height: size.height * 0.065,
-                                            width: size.width,
-                                            
-                                            labelText: "Enter Confirm Password",
-                                            fontSize: 12.sp,
-                                            suffixIcon: const Padding(
-                                              padding:
-                                                  EdgeInsets.only(right: 16),
-                                              child: Icon(
-                                                Icons.remove_red_eye,
-                                                color: backgroundColor,
-                                              ),
-                                            ),
-                                           // controller: viewModel.password,
-                                            fontWeight: FontWeight.w400),
-                      
+                                        controller: confirmPasswordController,
+                                        fontWeight: FontWeight.w400),
+
                                     // ... rest of your form fields
-                                     const SizedBox(
+                                    const SizedBox(
                                       height: kToolbarHeight * 0.5,
                                     ),
                                     CustomButton(
@@ -208,18 +216,18 @@ class SignUp extends StatelessWidget {
                                         debugPrint("login button");
                                         formKey.currentState!.save();
                                         if (formKey.currentState!.validate()) {
-                                          // viewModel.loginController(context);
+                                          _userSignUp(authProvider, context);
                                         }
                                       },
                                       width: double.infinity,
                                     ),
-                                  
-                                      const SizedBox(
-                                          height: kToolbarHeight * 0.3,
-                                        ),
-                                         const SizedBox(
-                                          height: 55,
-                                        ),
+
+                                    const SizedBox(
+                                      height: kToolbarHeight * 0.3,
+                                    ),
+                                    const SizedBox(
+                                      height: 55,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -230,13 +238,35 @@ class SignUp extends StatelessWidget {
                     ),
                   ),
                 ),
-
-
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  _userSignUp(SignUpNotifier authProvider, context) {
+    authProvider.userSignUp(
+      userSignUpModel: SignUpModel(
+        email: emailController.text,
+        name: nameController.text,
+        isVerified: false,
+        password: passwordController.text,
+      ),
+      onError: (e) {
+        AppException.onError(e);
+      },
+      onSuccess: ((result) {
+        //TODO: navigate to verification screen
+
+        log("message $result");
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => VerificationPage(),
+          ),
+        );
+      }),
     );
   }
 }

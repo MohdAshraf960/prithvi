@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:prithvi/features/auth/pages/login_view.dart';
 import 'package:prithvi/services/services.dart';
 
 class VerificationPage extends ConsumerStatefulWidget {
@@ -41,6 +42,12 @@ class _VerificationPageState extends ConsumerState<VerificationPage> {
         firebaseAuth: FirebaseAuth.instance,
       ).updateUserField(result);
       //TODO: Navigate to Login Page
+
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => Login(),
+        ),
+      );
     }
   }
 

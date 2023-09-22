@@ -178,8 +178,7 @@ class Login extends ConsumerWidget {
                                         debugPrint("login button");
                                         formKey.currentState!.save();
                                         if (formKey.currentState!.validate()) {
-                                          // viewModel.loginController(context);
-                                          _userSignUp(authProvider);
+                                          //  _userSignUp(authProvider);
                                         }
                                       },
                                       width: double.infinity,
@@ -203,29 +202,6 @@ class Login extends ConsumerWidget {
           ),
         ],
       ),
-    );
-  }
-
-  _userSignUp(SignUpNotifier authProvider) {
-    authProvider.userSignUp(
-      userSignUpModel: SignUpModel(
-        email: "example@gmail.com",
-        name: "John",
-        isVerified: false,
-        password: "password",
-      ),
-      onError: (e) {
-        AppException.onError(e);
-      },
-      onSuccess: ((result) {
-        //TODO: navigate to verification screen
-        log("message $result");
-        // Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (_) => VerificationPage(),
-        //   ),
-        // );
-      }),
     );
   }
 }
