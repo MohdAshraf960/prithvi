@@ -1,21 +1,15 @@
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prithvi/config/config.dart';
-import 'package:prithvi/config/di/di.dart';
 
 import 'package:prithvi/config/utils/assets.dart';
 import 'package:prithvi/config/utils/custom_button.dart';
 import 'package:prithvi/config/utils/validator.dart';
 import 'package:prithvi/core/colors/colors.dart';
-import 'package:prithvi/features/auth/auth.dart';
-import 'package:prithvi/features/auth/pages/verification_view.dart';
 
 import 'package:prithvi/features/auth/widgets/textformfield.dart';
-import 'package:prithvi/models/model.dart';
 
 import 'package:sizer/sizer.dart';
 
@@ -30,8 +24,6 @@ class Login extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
     final media = MediaQuery.of(context);
-
-    final authProvider = ref.read(authStateNotifierProvider);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -166,15 +158,6 @@ class Login extends ConsumerWidget {
                                       color: backgroundColor,
                                       text: "LOGIN",
                                       onTap: () async {
-                                        // Navigator.pushAndRemoveUntil<void>(
-                                        //   context,
-                                        //   MaterialPageRoute<void>(
-                                        //     builder: (BuildContext context) =>
-                                        //         const BottomBar(),
-                                        //   ),
-                                        //   ModalRoute.withName('/bottombar'),
-                                        // );
-                                        // Navigator.pushNamed(context,"/signup");
                                         debugPrint("login button");
                                         formKey.currentState!.save();
                                         if (formKey.currentState!.validate()) {

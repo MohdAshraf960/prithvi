@@ -111,9 +111,12 @@ class AuthService {
           _firestore.collection(FirebaseCollection.user).doc(user.email);
 
       // Update the specific field using the update method
-      await userReference.update({
-        'isVerified': isVerified,
-      });
+      await userReference.update(
+        {
+          'isVerified': isVerified,
+          'uid': user.uid,
+        },
+      );
     } catch (e) {
       rethrow;
     }

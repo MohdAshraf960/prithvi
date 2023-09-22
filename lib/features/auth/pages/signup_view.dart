@@ -122,6 +122,25 @@ class SignUp extends ConsumerWidget {
                                     const SizedBox(
                                       height: kToolbarHeight * 0.5,
                                     ),
+                                    AppFormField(
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return "this field is required";
+                                          }
+                                          return null;
+                                        },
+                                        inputType: TextInputType.text,
+                                        height: size.height * 0.065,
+                                        width: size.width,
+                                        // hintText: "Enter Email",
+                                        // hintfontSize: 12.sp,
+                                        labelText: "Enter Name",
+                                        fontSize: 12.sp,
+                                        controller: nameController,
+                                        fontWeight: FontWeight.w400),
+                                    const SizedBox(
+                                      height: kToolbarHeight * 0.7,
+                                    ),
 
                                     AppFormField(
                                         validator: (value) {
@@ -142,25 +161,7 @@ class SignUp extends ConsumerWidget {
                                     const SizedBox(
                                       height: kToolbarHeight * 0.7,
                                     ),
-                                    AppFormField(
-                                        validator: (value) {
-                                          if (value == null || value.isEmpty) {
-                                            return "this field is required";
-                                          }
-                                          return null;
-                                        },
-                                        inputType: TextInputType.text,
-                                        height: size.height * 0.065,
-                                        width: size.width,
-                                        // hintText: "Enter Email",
-                                        // hintfontSize: 12.sp,
-                                        labelText: "Enter Name",
-                                        fontSize: 12.sp,
-                                        controller: nameController,
-                                        fontWeight: FontWeight.w400),
-                                    const SizedBox(
-                                      height: kToolbarHeight * 0.7,
-                                    ),
+
                                     AppFormField(
                                         validator: (value) {
                                           if (value == null || value.isEmpty) {
@@ -258,8 +259,6 @@ class SignUp extends ConsumerWidget {
         AppException.onError(e);
       },
       onSuccess: ((result) {
-        //TODO: navigate to verification screen
-
         log("message $result");
         Navigator.of(context).push(
           MaterialPageRoute(

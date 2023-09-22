@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prithvi/features/home/widgets/customcard.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class Home extends ConsumerStatefulWidget {
   static const id = "/home";

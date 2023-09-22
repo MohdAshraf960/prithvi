@@ -41,7 +41,6 @@ class _VerificationPageState extends ConsumerState<VerificationPage> {
         firestore: FirebaseFirestore.instance,
         firebaseAuth: FirebaseAuth.instance,
       ).updateUserField(result);
-      //TODO: Navigate to Login Page
 
       Navigator.of(context).push(
         MaterialPageRoute(
