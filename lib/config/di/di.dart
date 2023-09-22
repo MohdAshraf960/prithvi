@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prithvi/features/features.dart';
-import 'package:prithvi/services/auth_service.dart';
+import 'package:prithvi/services/services.dart';
 
 final Provider<FirebaseFirestore> fireStoreProvider =
     Provider<FirebaseFirestore>(
@@ -17,7 +17,8 @@ final Provider<AuthService> authServiceProvider = Provider<AuthService>(
   },
 );
 
-final authStateNotifierProvider = ChangeNotifierProvider<SignUpNotifier>(
+final ChangeNotifierProvider<SignUpNotifier> authStateNotifierProvider =
+    ChangeNotifierProvider<SignUpNotifier>(
   (ref) {
     final AuthService authService = ref.read(authServiceProvider);
 
