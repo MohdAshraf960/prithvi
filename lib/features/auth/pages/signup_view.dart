@@ -186,6 +186,10 @@ class SignUp extends ConsumerWidget {
                                           if (value == null || value.isEmpty) {
                                             return "this field is required";
                                           }
+                                          if (value !=
+                                              passwordController.text) {
+                                            return "password do match";
+                                          }
                                           return null;
                                         },
                                         inputType: TextInputType.text,
