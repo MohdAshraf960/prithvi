@@ -20,13 +20,14 @@ class SignUp extends ConsumerWidget {
   static const id = "/signup";
   SignUp({super.key});
 
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
 
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
-  TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,9 +37,10 @@ class SignUp extends ConsumerWidget {
     Size size = MediaQuery.of(context).size;
     final media = MediaQuery.of(context);
 
-    final authProvider = ref.read(authStateNotifierProvider);
+    final authProvider = ref.watch(authStateNotifierProvider);
 
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           Container(
@@ -211,21 +213,27 @@ class SignUp extends ConsumerWidget {
                                     const SizedBox(
                                       height: kToolbarHeight * 0.5,
                                     ),
-                                    CustomButton(
-                                      textfontsize: 16,
-                                      height: 6.h,
-                                      textColor: whiteColor,
-                                      color: backgroundColor,
-                                      text: "SIGNUP",
-                                      onTap: () {
-                                        debugPrint("login button");
-                                        formKey.currentState!.save();
-                                        if (formKey.currentState!.validate()) {
-                                          _userSignUp(authProvider, context);
-                                        }
-                                      },
-                                      width: double.infinity,
-                                    ),
+                                    authProvider.isLoading
+                                        ? Center(
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        : CustomButton(
+                                            textfontsize: 16,
+                                            height: 6.h,
+                                            textColor: whiteColor,
+                                            color: backgroundColor,
+                                            text: "SIGNUP",
+                                            onTap: () {
+                                              debugPrint("login button");
+                                              formKey.currentState!.save();
+                                              if (formKey.currentState!
+                                                  .validate()) {
+                                                _userSignUp(
+                                                    authProvider, context);
+                                              }
+                                            },
+                                            width: double.infinity,
+                                          ),
 
                                     const SizedBox(
                                       height: kToolbarHeight * 0.3,

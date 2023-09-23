@@ -1,14 +1,17 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:prithvi/config/utils/shared_prefernces.dart';
+
 import 'package:prithvi/core/routes/routes.dart';
 
-import 'package:prithvi/features/auth/pages/signup_view.dart';
+import 'package:prithvi/features/splash/splash.dart';
 import 'package:prithvi/firebase_options.dart';
 import 'package:sizer/sizer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferencesService.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -20,11 +23,11 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Sizer(
       builder: (context, orientation, deviceType) => MaterialApp(
         navigatorKey: RoutePage.navigatorKey,
@@ -34,7 +37,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.orange,
         ),
         debugShowCheckedModeBanner: false,
-        home: SignUp(),
+        home: SplashScreen(),
         onGenerateRoute: (settings) => RoutePage.getPage(settings),
       ),
     );
