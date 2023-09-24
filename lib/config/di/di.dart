@@ -36,6 +36,14 @@ final Provider<AuthService> authServiceProvider = Provider<AuthService>(
   },
 );
 
+final Provider<CategoriesService> categoryServiceProvider =
+    Provider<CategoriesService>(
+  (ref) {
+    final firestore = ref.read(fireStoreProvider);
+    return CategoriesService(firestore: firestore);
+  },
+);
+
 final ChangeNotifierProvider<SignUpNotifier> authStateNotifierProvider =
     ChangeNotifierProvider<SignUpNotifier>(
   (ref) {
