@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prithvi/config/di/di.dart';
 import 'package:prithvi/core/routes/routes.dart';
 import 'package:prithvi/features/auth/pages/login_view.dart';
-import 'package:prithvi/features/home/pages/home_view.dart';
+import 'package:prithvi/features/dashboard/widgets/bottombar.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -25,7 +25,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         ref.watch(sharedPreferencesServiceProvider);
 
     if (sharedPreferencesService.isLoggedIn) {
-      goToPage(Home.id);
+      goToPage(BottomBar.id);
     } else {
       goToPage(Login.id);
     }

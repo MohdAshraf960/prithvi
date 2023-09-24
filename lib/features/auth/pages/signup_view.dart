@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prithvi/features/auth/notifiers/sign_up_notfiier.dart';
+import 'package:prithvi/features/auth/notifiers/sign_up_notfier.dart';
 import 'package:prithvi/features/auth/pages/verification_view.dart';
 import 'package:prithvi/features/auth/widgets/textformfield.dart';
 import 'package:prithvi/models/sign_up_model.dart';
