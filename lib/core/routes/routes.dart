@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:prithvi/features/auth/pages/login_view.dart';
 import 'package:prithvi/features/auth/pages/signup_view.dart';
 import 'package:prithvi/features/category/pages/category_view.dart';
+import 'package:prithvi/features/dashboard/widgets/bottombar.dart';
 import 'package:prithvi/features/home/pages/home_view.dart';
 import 'package:prithvi/features/profile/pages/userprofile_view.dart';
 
@@ -32,6 +33,8 @@ class RoutePage {
           case UserProfileScreen.id:
             return UserProfileScreen();
 
+          case BottomBar.id:
+            return BottomBar();
           default:
             return Login();
         }
