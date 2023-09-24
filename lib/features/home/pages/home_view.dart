@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:prithvi/features/auth/pages/verification_view.dart';
 
 import 'package:prithvi/features/home/widgets/customcard.dart';
 
@@ -34,16 +35,25 @@ class _HomeState extends ConsumerState<Home> {
                 SizedBox(
                   height: 20,
                 ),
-                Card(
-                  elevation: 5.0,
-                  child: Container(
-                    height: 100,
-                    width: 300,
-                    child: Column(
-                      children: [
-                        Text('Journey by Air'),
-                        Text('Journey by Air'),
-                      ],
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => VerificationPage(),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    elevation: 5.0,
+                    child: Container(
+                      height: 100,
+                      width: 300,
+                      child: Column(
+                        children: [
+                          Text('Journey by Air'),
+                          Text('Journey by Air'),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -64,8 +74,8 @@ class _HomeState extends ConsumerState<Home> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Journey by Air'),
-                    Text('Journey by Air'),
+                    // Text('Journey by Air'),
+                    // Text('Journey by Air'),
                     JourneyModeCards(
                         image: Image.network(
                             'https://c1.wallpaperflare.com/preview/790/806/402/aircraft-start-propeller-propeller-plane.jpg'),

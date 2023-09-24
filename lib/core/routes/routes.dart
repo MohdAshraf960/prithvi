@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prithvi/features/auth/pages/login_view.dart';
 import 'package:prithvi/features/auth/pages/signup_view.dart';
+import 'package:prithvi/features/category/pages/category_view.dart';
 import 'package:prithvi/features/home/pages/home_view.dart';
+import 'package:prithvi/features/profile/pages/userprofile_view.dart';
 
 class RoutePage {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -23,6 +25,12 @@ class RoutePage {
 
           case Home.id:
             return Home();
+
+          case CategoryView.id:
+            return CategoryView();
+
+          case UserProfileScreen.id:
+            return UserProfileScreen();
 
           default:
             return Login();
