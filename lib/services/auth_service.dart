@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:logger/logger.dart';
+
 import 'package:prithvi/config/config.dart';
 import 'package:prithvi/core/core.dart';
 import 'package:prithvi/models/model.dart';
@@ -152,7 +152,6 @@ class AuthService {
 
       return userModel;
     } catch (e) {
-      Logger().e("$e");
       rethrow;
     }
   }
