@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prithvi/config/config.dart';
 import 'package:prithvi/core/colors/colors.dart';
 import 'package:prithvi/features/auth/pages/login_view.dart';
 import 'package:prithvi/features/category/pages/category_view.dart';
@@ -29,7 +30,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
       case 0:
         return Home();
       case 1:
-        return Category_View();
+        return CategoryView();
       case 2:
         return UserProfileScreen();
     }

@@ -26,8 +26,8 @@ class RoutePage {
           case Home.id:
             return Home();
 
-          case Category_View.id:
-            return Category_View();
+          case CategoryView.id:
+            return CategoryView();
 
           case UserProfileScreen.id:
             return UserProfileScreen();
