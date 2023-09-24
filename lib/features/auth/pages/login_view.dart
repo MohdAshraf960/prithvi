@@ -21,11 +21,9 @@ class Login extends ConsumerWidget {
   Login({super.key});
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final TextEditingController _emailController =
-      TextEditingController(text: 'khanashraf1995@gmail.com');
+  final TextEditingController _emailController = TextEditingController();
 
-  final TextEditingController _passwordController =
-      TextEditingController(text: '123456');
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
