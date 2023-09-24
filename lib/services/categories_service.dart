@@ -19,7 +19,7 @@ class CategoriesService {
 
       // Iterate through the list and add each category to the Firestore collection
       for (var category in categories) {
-        await categoryCollection.add(category.toJson());
+        await categoryCollection.doc(category.type).set(category.toJson());
       }
 
       // Log a successful message
@@ -36,8 +36,10 @@ class CategoriesService {
   Future<List<CategoryModel>> getCategoryList() async {
     try {
       // Query Firestore for all documents in the 'categories' collection
-      QuerySnapshot querySnapshot =
-          await _firestore.collection(FirebaseCollection.categories).get();
+      QuerySnapshot querySnapshot = await _firestore
+          .collection(FirebaseCollection.categories)
+          .orderBy('createdAt')
+          .get();
 
       // Map Firestore documents to CategoryModel objects
       List<CategoryModel> categories = querySnapshot.docs
@@ -45,12 +47,13 @@ class CategoriesService {
               CategoryModel.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
 
-      // Logger().i("$categories");
+      Logger().i('categories ====> $categories');
+
       return categories;
     } catch (e) {
       // Log an error message and rethrow the exception for potential handling
       Logger().e('Error fetching categories: $e');
-      throw e;
+      return [];
     }
   }
 }
@@ -64,3 +67,4 @@ class CategoriesService {
 //  calculationFactor
 //  options
 // **/
+
