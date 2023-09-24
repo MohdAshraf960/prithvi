@@ -40,12 +40,12 @@ class Login extends ConsumerWidget {
           Container(
             decoration: const BoxDecoration(
               color: Colors.white,
-              // image: DecorationImage(
-              //   image: AssetImage(
-              //     Assets.backgroundImage,
-              //   ),
-              //   fit: BoxFit.cover,
-              // ),
+              image: DecorationImage(
+                image: AssetImage(
+                  Assets.backgroundImage,
+                ),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Form(
