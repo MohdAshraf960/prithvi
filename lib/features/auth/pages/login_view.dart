@@ -4,26 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:prithvi/config/utils/assets.dart';
-import 'package:prithvi/config/utils/custom_button.dart';
-import 'package:prithvi/config/utils/validator.dart';
-import 'package:prithvi/core/colors/colors.dart';
+import 'package:prithvi/config/config.dart';
+
+import 'package:prithvi/core/core.dart';
 
 import 'package:prithvi/features/auth/widgets/textformfield.dart';
+import 'package:prithvi/features/features.dart';
+import 'package:prithvi/features/home/pages/home_view.dart';
+import 'package:prithvi/models/model.dart';
 
 import 'package:sizer/sizer.dart';
 
 class Login extends ConsumerWidget {
   static const id = "/login";
   Login({super.key});
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController =
+      TextEditingController(text: 'khanashraf1995@gmail.com');
+
+  final TextEditingController _passwordController =
+      TextEditingController(text: '123456');
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
     final media = MediaQuery.of(context);
+    final signInNotifier = ref.watch(signInStateNotifierProvider);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -32,12 +39,12 @@ class Login extends ConsumerWidget {
           Container(
             decoration: const BoxDecoration(
               color: Colors.white,
-              image: DecorationImage(
-                image: AssetImage(
-                  Assets.backgroundImage,
-                ),
-                fit: BoxFit.cover,
-              ),
+              // image: DecorationImage(
+              //   image: AssetImage(
+              //     Assets.backgroundImage,
+              //   ),
+              //   fit: BoxFit.cover,
+              // ),
             ),
           ),
           Form(
@@ -122,6 +129,7 @@ class Login extends ConsumerWidget {
                                         // hintText: "Enter Email",
                                         // hintfontSize: 12.sp,
                                         labelText: "Enter Email",
+                                        controller: _emailController,
                                         fontSize: 12.sp,
                                         // controller: viewModel.email,
                                         fontWeight: FontWeight.w400),
@@ -133,6 +141,7 @@ class Login extends ConsumerWidget {
                                         validator: (value) =>
                                             Validator.requiredValidator(value),
                                         inputType: TextInputType.text,
+                                        obscureText: true,
                                         height: size.height * 0.065,
                                         width: size.width,
                                         labelText: "Enter Password",
@@ -151,21 +160,24 @@ class Login extends ConsumerWidget {
                                     const SizedBox(
                                       height: kToolbarHeight * 0.5,
                                     ),
-                                    CustomButton(
-                                      textfontsize: 16,
-                                      height: 6.h,
-                                      textColor: whiteColor,
-                                      color: backgroundColor,
-                                      text: "LOGIN",
-                                      onTap: () async {
-                                        debugPrint("login button");
-                                        formKey.currentState!.save();
-                                        if (formKey.currentState!.validate()) {
-                                          //  _userSignUp(authProvider);
-                                        }
-                                      },
-                                      width: double.infinity,
-                                    ),
+                                    signInNotifier.isLoading
+                                        ? Center(
+                                            child: CircularProgressIndicator())
+                                        : CustomButton(
+                                            textfontsize: 16,
+                                            height: 6.h,
+                                            textColor: whiteColor,
+                                            color: backgroundColor,
+                                            text: "LOGIN",
+                                            onTap: () async {
+                                              formKey.currentState!.save();
+                                              if (formKey.currentState!
+                                                  .validate()) {
+                                                _userSignIn(signInNotifier);
+                                              }
+                                            },
+                                            width: double.infinity,
+                                          ),
                                     SizedBox(height: 30),
                                     const SizedBox(
                                       height: kToolbarHeight * 0.9,
@@ -186,5 +198,20 @@ class Login extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  _userSignIn(SignInNotifier signInNotifier) {
+    signInNotifier.userSignIn(
+        userSignInModel: SignInModel(
+          email: _emailController.text,
+          password: _passwordController.text,
+        ),
+        onSuccess: (result) {
+          RoutePage.navigatorKey.currentState!
+              .pushNamedAndRemoveUntil(Home.id, (route) => false);
+        },
+        onError: (error) {
+          AppException.onError(error);
+        });
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:logger/logger.dart';
 import 'package:prithvi/config/config.dart';
 import 'package:prithvi/core/core.dart';
 import 'package:prithvi/models/model.dart';
@@ -120,5 +121,59 @@ class AuthService {
     } catch (e) {
       rethrow;
     }
+  }
+
+  /// Function to handle the sign-in process [email] and //[password]
+  Future<UserCredential?> signInWithEmailAndPassword(
+      {required String email, required String password}) async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return userCredential;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<UserModel?> signInUser({required SignInModel signInModel}) async {
+    try {
+      final doesExist = await doesUserExist(signInModel.email);
+      if (!doesExist) {
+        throw AppException(message: "User does not exists");
+      }
+      final userCredential = await signInWithEmailAndPassword(
+        email: signInModel.email,
+        password: signInModel.password,
+      );
+
+      final userModel = await getUserModelByEmail(userCredential?.user?.email);
+
+      return userModel;
+    } catch (e) {
+      Logger().e("$e");
+      rethrow;
+    }
+  }
+
+  Future<UserModel?> getUserModelByEmail(String? email) async {
+    if (email == null) return null;
+
+    final querySnapshot = await _firestore
+        .collection(FirebaseCollection.user)
+        .where('email', isEqualTo: email)
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      return UserModel.fromMap(querySnapshot.docs.first.data());
+    }
+
+    return null;
+  }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
   }
 }
