@@ -9,8 +9,9 @@ import 'package:prithvi/config/config.dart';
 import 'package:prithvi/core/core.dart';
 
 import 'package:prithvi/features/auth/widgets/textformfield.dart';
+import 'package:prithvi/features/dashboard/widgets/bottombar.dart';
 import 'package:prithvi/features/features.dart';
-import 'package:prithvi/features/home/pages/home_view.dart';
+
 import 'package:prithvi/models/model.dart';
 
 import 'package:sizer/sizer.dart';
@@ -173,7 +174,8 @@ class Login extends ConsumerWidget {
                                               formKey.currentState!.save();
                                               if (formKey.currentState!
                                                   .validate()) {
-                                                _userSignIn(signInNotifier);
+                                                _userSignIn(
+                                                    signInNotifier, context);
                                               }
                                             },
                                             width: double.infinity,
@@ -200,15 +202,20 @@ class Login extends ConsumerWidget {
     );
   }
 
-  _userSignIn(SignInNotifier signInNotifier) {
+  _userSignIn(SignInNotifier signInNotifier, context) {
     signInNotifier.userSignIn(
         userSignInModel: SignInModel(
           email: _emailController.text,
           password: _passwordController.text,
         ),
         onSuccess: (result) {
-          RoutePage.navigatorKey.currentState!
-              .pushNamedAndRemoveUntil(Home.id, (route) => false);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => BottomBar(),
+            ),
+          );
+          // RoutePage.navigatorKey.currentState!
+          //     .pushNamedAndRemoveUntil(Home.id, (route) => false);
         },
         onError: (error) {
           AppException.onError(error);

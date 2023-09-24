@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:prithvi/config/di/di.dart';
+
 import 'package:prithvi/features/home/widgets/customcard.dart';
 
 class Home extends ConsumerStatefulWidget {
@@ -15,15 +15,6 @@ class _HomeState extends ConsumerState<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.purple,
-        title: InkWell(
-          child: Text("Home"),
-          onTap: () {
-            ref.read(sharedPreferencesServiceProvider).setLogout();
-          },
-        ),
-      ),
       body: Column(
         children: [
           Padding(
