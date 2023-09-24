@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:logger/logger.dart';
+
 import 'package:prithvi/core/core.dart';
 import 'package:prithvi/models/model.dart';
 
@@ -21,13 +21,9 @@ class CategoriesService {
       for (var category in categories) {
         await categoryCollection.doc(category.type).set(category.toJson());
       }
-
-      // Log a successful message
-      //Logger().i('Categories added successfully');
     } catch (e) {
-      // Log an error message and optionally rethrow the exception for further handling
-      Logger().e('Error adding categories: $e');
       // Rethrowing the exception may be considered here if you want to handle it differently.
+      rethrow;
     }
   }
 
@@ -47,12 +43,8 @@ class CategoriesService {
               CategoryModel.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
 
-      Logger().i('categories ====> $categories');
-
       return categories;
     } catch (e) {
-      // Log an error message and rethrow the exception for potential handling
-      Logger().e('Error fetching categories: $e');
       return [];
     }
   }
