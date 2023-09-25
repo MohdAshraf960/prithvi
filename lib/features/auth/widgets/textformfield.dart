@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:prithvi/core/colors/colors.dart';
 import 'package:sizer/sizer.dart';
 
@@ -68,15 +68,18 @@ class AppFormField extends StatelessWidget {
         focusNode: focus,
         // autofocus: true,
         readOnly: readonly,
-        style: GoogleFonts.mulish(
-            fontSize: fontSize,
-            color: Colors.black,
-            fontStyle: FontStyle.normal,
-            fontWeight: fontWeight),
+        style: TextStyle(
+          fontSize: fontSize,
+          color: grey,
+          fontStyle: FontStyle.normal,
+          fontWeight: fontWeight,
+        ),
+        cursorColor: grey,
+
         decoration: InputDecoration(
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: c7877BColor, width: 1.0),
+            borderSide: BorderSide(color: greyInputBorder, width: 1.0),
           ),
           floatingLabelBehavior: FloatingLabelBehavior.always,
           suffixIcon: suffixIcon,
@@ -85,19 +88,20 @@ class AppFormField extends StatelessWidget {
           //     const BoxConstraints(maxHeight: 34, maxWidth: 34),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: c7877BColor, width: 1.0),
+            borderSide: BorderSide(color: greyInputBorder, width: 1.0),
           ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: greyInputBorder, width: 1.0),
+          ),
+
           hintText: hint,
           contentPadding: const EdgeInsets.only(left: 16),
-          // hintStyle: GoogleFonts.mulish(
-          //     fontSize: hintfontSize,
-          //     color: Colors.grey,
-          //     fontStyle: FontStyle.normal,
-          //     fontWeight: FontWeight.w100),
+
           labelText: labelText,
-          labelStyle: GoogleFonts.mulish(
+          labelStyle: TextStyle(
               fontSize: 16,
-              color: lableColor,
+              color: grey3Color,
               fontStyle: FontStyle.normal,
               fontWeight: FontWeight.w400),
         ),

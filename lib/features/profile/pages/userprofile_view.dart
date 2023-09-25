@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prithvi/config/config.dart';
 import 'package:prithvi/core/core.dart';
+import 'package:prithvi/features/auth/pages/pages.dart';
 import 'package:sizer/sizer.dart';
 
 class UserProfileScreen extends StatelessWidget {
@@ -78,7 +79,8 @@ class UserProfileScreen extends StatelessWidget {
               color: primaryGreen,
               text: "LOG OUT",
               onTap: () async {
-                //TODO: logout
+                Navigator.pushNamedAndRemoveUntil(
+                    context, Login.id, (route) => false);
               },
               width: double.infinity,
             )

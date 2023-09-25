@@ -36,14 +36,15 @@ class Login extends ConsumerWidget {
         children: [
           Container(
             decoration: const BoxDecoration(
-              color: Colors.white,
-              image: DecorationImage(
-                image: AssetImage(
-                  Assets.backgroundImage,
+                // color: Colors.white,
+                gradient: primaryGreenGradient
+                // image: DecorationImage(
+                //   image: AssetImage(
+                //     Assets.backgroundImage,
+                //   ),
+                //   fit: BoxFit.cover,
+                // ),
                 ),
-                fit: BoxFit.cover,
-              ),
-            ),
           ),
           Form(
             key: formKey,
@@ -101,7 +102,7 @@ class Login extends ConsumerWidget {
                                       "Login",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w400,
-                                          color: lableColor,
+                                          color: primaryGreen,
                                           fontSize: 24),
                                     ),
                                     SizedBox(
@@ -111,7 +112,7 @@ class Login extends ConsumerWidget {
                                       "to your account ✨",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w400,
-                                          color: textColor,
+                                          color: grey2Color,
                                           fontSize: 16),
                                     ),
                                     const SizedBox(
@@ -148,7 +149,7 @@ class Login extends ConsumerWidget {
                                           padding: EdgeInsets.only(right: 16),
                                           child: Icon(
                                             Icons.remove_red_eye,
-                                            color: backgroundColor,
+                                            color: grey3Color,
                                           ),
                                         ),
                                         // controller: viewModel.password,
@@ -165,7 +166,7 @@ class Login extends ConsumerWidget {
                                             textfontsize: 16,
                                             height: 6.h,
                                             textColor: whiteColor,
-                                            color: backgroundColor,
+                                            color: primaryGreen,
                                             text: "LOGIN",
                                             onTap: () async {
                                               formKey.currentState!.save();
