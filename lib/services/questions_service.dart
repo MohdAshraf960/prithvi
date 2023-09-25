@@ -53,17 +53,11 @@ class QuestionsService {
           .map((doc) =>
               QuestionModel.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
-      Logger().e("error ======$questions");
+
       return questions;
     } catch (e) {
       Logger().e("error ======$e");
-
       return [];
     }
   }
 }
-
-
-//**
-// road ,rail ,airplane
-// */

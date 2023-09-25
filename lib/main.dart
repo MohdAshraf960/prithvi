@@ -23,7 +23,7 @@ void main() async {
   await QuestionsService(firestore: FirebaseFirestore.instance)
       .getQuestionsList(categoryType: 'home');
 
-  //     .addQuestions(questions: questions);
+  //   .addQuestions(questions: questions);
 
   runApp(
     ProviderScope(

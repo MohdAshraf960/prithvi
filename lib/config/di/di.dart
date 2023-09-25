@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prithvi/config/config.dart';
-import 'package:prithvi/features/category/notifiers/notifiers.dart';
+import 'package:prithvi/features/category/category.dart';
 import 'package:prithvi/features/features.dart';
+import 'package:prithvi/features/questions/questions.dart';
 import 'package:prithvi/services/services.dart';
 
 // ***************************************************************************
@@ -60,6 +61,17 @@ final Provider<QuestionsService> questionServiceProvider =
 // ***************************************************************************
 // NOTIFIERS
 // ***************************************************************************
+
+final questionNotifierProvider =
+    ChangeNotifierProvider.family<QuestionsNotifier, String>(
+  (ref, categoryType) {
+    final QuestionsService questionsService = ref.read(questionServiceProvider);
+
+    return QuestionsNotifier(
+      questionsService: questionsService,
+    )..getQuestionsList(categoryType: categoryType);
+  },
+);
 
 final ChangeNotifierProvider<CategoryNotifier> categoryNotifierProvider =
     ChangeNotifierProvider<CategoryNotifier>(

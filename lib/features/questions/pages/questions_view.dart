@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:prithvi/config/di/di.dart';
 import 'package:prithvi/core/core.dart';
+import 'package:prithvi/features/questions/questions.dart';
 
 class QuestionView extends ConsumerStatefulWidget {
-  final String questions;
+  final String categoryType;
   final int index;
-  const QuestionView({super.key, required this.questions, required this.index});
+  const QuestionView(
+      {super.key, required this.categoryType, required this.index});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _QuestionViewState();
@@ -14,6 +17,8 @@ class QuestionView extends ConsumerStatefulWidget {
 class _QuestionViewState extends ConsumerState<QuestionView> {
   @override
   Widget build(BuildContext context) {
+    var QuestionsNotifier(:isLoading, :questionsList) =
+        ref.watch(questionNotifierProvider(widget.categoryType));
     return Card(
       shadowColor: shadowColor,
       elevation: 0.5,
@@ -25,15 +30,19 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
         child: Column(
           children: [
             Expanded(
-              child: ListView(
-                children: List.generate(
-                  10,
-                  (index) => Text(
-                    "${index + 1}",
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
+              child: isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView(
+                      children: List.generate(
+                        questionsList.length,
+                        (index) => Text(
+                          questionsList[index].text,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
             ),
             Row(
               mainAxisAlignment: widget.index == 0

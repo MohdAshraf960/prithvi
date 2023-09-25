@@ -55,7 +55,7 @@ class _CategoryViewState extends ConsumerState<CategoryView> {
               .asMap()
               .map(
                 (index, category) => MapEntry(index,
-                    QuestionView(questions: category.type, index: index)),
+                    QuestionView(categoryType: category.type, index: index)),
               )
               .values
               .toList(),
