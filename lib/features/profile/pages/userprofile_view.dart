@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:prithvi/config/config.dart';
+import 'package:prithvi/core/core.dart';
+import 'package:sizer/sizer.dart';
 
 class UserProfileScreen extends StatelessWidget {
   static const id = "/username";
@@ -36,7 +39,7 @@ class UserProfileScreen extends StatelessWidget {
               child: TextFormField(
                 enabled: false,
                 decoration: InputDecoration(
-                  hintText: 'Ashraf Khan',
+                  hintText: 'John Doe',
                   contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
                   border: InputBorder.none, // Hide the default border
                 ),
@@ -61,12 +64,24 @@ class UserProfileScreen extends StatelessWidget {
               child: TextFormField(
                 enabled: false,
                 decoration: InputDecoration(
-                  hintText: 'AshrafKhan@gmail.com',
+                  hintText: 'example@gmail.com',
                   contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
                   border: InputBorder.none, // Hide the default border
                 ),
               ),
             ),
+            Spacer(),
+            CustomButton(
+              textfontsize: 16,
+              height: 6.h,
+              textColor: white,
+              color: primaryGreen,
+              text: "LOG OUT",
+              onTap: () async {
+                //TODO: logout
+              },
+              width: double.infinity,
+            )
           ],
         ),
       ),

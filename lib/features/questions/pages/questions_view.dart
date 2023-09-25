@@ -28,6 +28,7 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: isLoading
@@ -37,9 +38,23 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                   : ListView(
                       children: List.generate(
                         questionsList.length,
-                        (index) => Text(
-                          questionsList[index].text,
-                          textAlign: TextAlign.center,
+                        (index) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("${index + 1})"),
+                              SizedBox(
+                                width: 4,
+                              ),
+                              Expanded(
+                                child: Text(
+                                  questionsList[index].text,
+                                  style: TextStyle(fontSize: 16, color: grey),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
