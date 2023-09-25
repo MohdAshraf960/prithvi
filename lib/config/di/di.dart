@@ -6,6 +6,10 @@ import 'package:prithvi/features/category/notifiers/notifiers.dart';
 import 'package:prithvi/features/features.dart';
 import 'package:prithvi/services/services.dart';
 
+// ***************************************************************************
+// SERVICES
+// ***************************************************************************
+
 final sharedPreferencesServiceInitializerProvider = Provider((ref) {
   SharedPreferencesService.init(); // Initialize SharedPreferencesService here
   return SharedPreferencesService();
@@ -44,6 +48,18 @@ final Provider<CategoriesService> categoryServiceProvider =
     return CategoriesService(firestore: firestore);
   },
 );
+
+final Provider<QuestionsService> questionServiceProvider =
+    Provider<QuestionsService>(
+  (ref) {
+    final firestore = ref.read(fireStoreProvider);
+    return QuestionsService(firestore: firestore);
+  },
+);
+
+// ***************************************************************************
+// NOTIFIERS
+// ***************************************************************************
 
 final ChangeNotifierProvider<CategoryNotifier> categoryNotifierProvider =
     ChangeNotifierProvider<CategoryNotifier>(

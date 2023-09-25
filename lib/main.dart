@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +8,10 @@ import 'package:prithvi/core/core.dart';
 
 import 'package:prithvi/features/splash/splash.dart';
 import 'package:prithvi/firebase_options.dart';
+
 import 'package:sizer/sizer.dart';
+
+import 'services/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,6 +19,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await QuestionsService(firestore: FirebaseFirestore.instance)
+      .getQuestionsList(categoryType: 'home');
+
+  //     .addQuestions(questions: questions);
 
   runApp(
     ProviderScope(
