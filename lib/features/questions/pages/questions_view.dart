@@ -17,7 +17,7 @@ class QuestionView extends ConsumerStatefulWidget {
 class _QuestionViewState extends ConsumerState<QuestionView> {
   @override
   Widget build(BuildContext context) {
-    var QuestionsNotifier(:isLoading, :questionsList) =
+    final QuestionsNotifier(:isLoading, :questionsList) =
         ref.watch(questionNotifierProvider(widget.categoryType));
     return Card(
       shadowColor: shadowColor,
