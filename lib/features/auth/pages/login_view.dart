@@ -15,6 +15,8 @@ import 'package:prithvi/models/model.dart';
 
 import 'package:sizer/sizer.dart';
 
+import 'signup_view.dart';
+
 class Login extends ConsumerWidget {
   static const id = "/login";
   Login({super.key});
@@ -35,16 +37,7 @@ class Login extends ConsumerWidget {
       body: Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
-                // color: Colors.white,
-                gradient: primaryGreenGradient
-                // image: DecorationImage(
-                //   image: AssetImage(
-                //     Assets.backgroundImage,
-                //   ),
-                //   fit: BoxFit.cover,
-                // ),
-                ),
+            decoration: const BoxDecoration(gradient: primaryGreenGradient),
           ),
           Form(
             key: formKey,
@@ -179,6 +172,16 @@ class Login extends ConsumerWidget {
                                             width: double.infinity,
                                           ),
                                     SizedBox(height: 30),
+                                    // TextButton(
+                                    //   onPressed: () {
+                                    //     Navigator.pushNamed(context, SignUp.id);
+                                    //   },
+                                    //   child: Text(
+                                    //     "Do you want to Sign Up?",
+                                    //     style: TextStyle(
+                                    //         color: grey2Color, fontSize: 12),
+                                    //   ),
+                                    // ),
                                     const SizedBox(
                                       height: kToolbarHeight * 0.9,
                                     ),
