@@ -6,6 +6,7 @@ import 'package:prithvi/features/auth/pages/login_view.dart';
 import 'package:prithvi/features/dashboard/widgets/bottombar.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
+  static const id = '/';
   const SplashScreen({super.key});
 
   @override

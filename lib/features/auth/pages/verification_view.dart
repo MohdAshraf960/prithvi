@@ -43,11 +43,11 @@ class _VerificationPageState extends ConsumerState<VerificationPage> {
         firebaseAuth: FirebaseAuth.instance,
       ).updateUserField(result);
 
-      // Navigator.of(context).push(
-      //   MaterialPageRoute(
-      //     builder: (_) => Login(),
-      //   ),
-      // );
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => Login(),
+        ),
+      );
     }
   }
 

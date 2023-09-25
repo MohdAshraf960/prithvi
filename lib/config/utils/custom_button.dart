@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:google_fonts/google_fonts.dart';
-
 class CustomButton extends StatelessWidget {
   final String text;
   final double? width;
@@ -35,7 +33,7 @@ class CustomButton extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: GoogleFonts.roboto(
+            style: TextStyle(
                 fontSize: textfontsize,
                 fontWeight: FontWeight.w500,
                 color: textColor),

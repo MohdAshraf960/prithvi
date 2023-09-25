@@ -1,13 +1,14 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:prithvi/features/auth/pages/login_view.dart';
 import 'package:prithvi/features/auth/pages/signup_view.dart';
 import 'package:prithvi/features/category/pages/category_view.dart';
 import 'package:prithvi/features/dashboard/widgets/bottombar.dart';
 import 'package:prithvi/features/home/pages/home_view.dart';
 import 'package:prithvi/features/profile/pages/userprofile_view.dart';
+import 'package:prithvi/features/splash/splash.dart';
 
 class RoutePage {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -18,6 +19,8 @@ class RoutePage {
     return MaterialPageRoute(
       builder: (context) {
         switch (routePage.name) {
+          case SplashScreen.id:
+            return SplashScreen();
           case Login.id:
             return Login();
 
@@ -60,7 +63,7 @@ class RoutePage {
             Expanded(
               child: Text(
                 message,
-                style: GoogleFonts.roboto(color: Colors.white),
+                style: TextStyle(color: Colors.white),
               ),
             ),
             const Icon(

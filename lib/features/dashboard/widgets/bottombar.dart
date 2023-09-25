@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:prithvi/config/config.dart';
+
 import 'package:prithvi/core/colors/colors.dart';
-import 'package:prithvi/features/auth/pages/login_view.dart';
+
 import 'package:prithvi/features/category/pages/category_view.dart';
 import 'package:prithvi/features/home/pages/home_view.dart';
 import 'package:prithvi/features/profile/pages/userprofile_view.dart';
@@ -23,7 +22,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   List<String> label = ["Home", "Category", "Profile"];
   List<IconData> icon = [Icons.home, Icons.category, Icons.person];
 
-  int selectedIndex = 1;
+  int selectedIndex = 0;
 
   getBody() {
     switch (selectedIndex) {
@@ -63,29 +62,19 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                           height: 35,
                           width: 18.w,
                           decoration: BoxDecoration(
-                              // color: selectedIndex == i
-                              //     ? Colors.green
-                              //     : Colors.grey,
                               borderRadius: BorderRadius.circular(20)),
                           child: Icon(
                             icon[i],
                             color:
-                                selectedIndex == i ? primaryGreen : Colors.grey,
-                          )
-                          // Image.asset(
-                          //   image[i],
-                          //   height: 20,
-                          //   width: 30,
-                          // ),
-                          ),
+                                selectedIndex == i ? primaryGreen : grey3Color,
+                          )),
                       Text(
                         label[i],
-                        style: GoogleFonts.roboto(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                            color: selectedIndex == i
-                                ? primaryGreen
-                                : Colors.grey),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: selectedIndex == i ? primaryGreen : grey3Color,
+                        ),
                       )
                     ],
                   ),
