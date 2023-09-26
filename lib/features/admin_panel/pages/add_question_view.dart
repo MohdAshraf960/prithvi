@@ -1,0 +1,109 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:flutter/material.dart';
+import 'package:prithvi/core/constants/constants.dart';
+
+import '../../../models/questions_model.dart';
+
+class AddQuestionForm extends StatefulWidget {
+  @override
+  _AddQuestionFormState createState() => _AddQuestionFormState();
+}
+
+class _AddQuestionFormState extends State<AddQuestionForm> {
+  TextEditingController textController = TextEditingController();
+  QuestionType selectedType = QuestionType.Input;
+  TextEditingController optionsController = TextEditingController();
+  TextEditingController factorController = TextEditingController();
+  TextEditingController timestampController = TextEditingController();
+  String selectedCategory = 'Home';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Question Form'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'Add a New Question',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: textController,
+              decoration: InputDecoration(labelText: 'Question Text'),
+            ),
+            SizedBox(height: 20),
+            DropdownButtonFormField<QuestionType>(
+              value: selectedType,
+              onChanged: (newValue) {
+                setState(() {
+                  selectedType = newValue!;
+                });
+              },
+              items: QuestionType.values.map((type) {
+                return DropdownMenuItem<QuestionType>(
+                  value: type,
+                  child: Text(type.toString().split('.').last),
+                );
+              }).toList(),
+              decoration: InputDecoration(labelText: 'Question Type'),
+            ),
+            SizedBox(height: 20),
+            DropdownButtonFormField<String>(
+              value: selectedCategory,
+              onChanged: (newValue) {
+                setState(() {
+                  selectedCategory = newValue!;
+                });
+              },
+              items: ['Home', 'Food', 'Travel', 'Other'].map((category) {
+                return DropdownMenuItem<String>(
+                  value: category,
+                  child: Text(category),
+                );
+              }).toList(),
+              decoration: InputDecoration(labelText: 'Category'),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: optionsController,
+              decoration:
+                  InputDecoration(labelText: 'Options (comma-separated)'),
+            ),
+            SizedBox(height: 20),
+            TextFormField(
+              controller: factorController,
+              decoration: InputDecoration(labelText: 'Calculation Factor'),
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Create a QuestionModel object with the entered data
+                QuestionModel newQuestion = QuestionModel(
+                  text: textController.text,
+                  type: selectedType,
+                  options: optionsController.text.split(','),
+                  calculationFactor: double.parse(factorController.text),
+                  timestamp: DateTime.now().millisecondsSinceEpoch,
+                  categoryRef: FirebaseFirestore.instance.doc(
+                      "${FirebaseCollection.categories}/${selectedCategory.toLowerCase()}"),
+                );
+                // You can now use the 'newQuestion' object as needed.
+                // For example, you can save it to a database or perform any other action.
+                print(newQuestion);
+              },
+              child: Text('Submit'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

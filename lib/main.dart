@@ -10,6 +10,8 @@ import 'package:prithvi/firebase_options.dart';
 
 import 'package:sizer/sizer.dart';
 
+import 'features/admin_panel/admin_panel.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesService.init();
@@ -58,6 +60,7 @@ class MyApp extends ConsumerWidget {
         ),
         debugShowCheckedModeBanner: false,
         initialRoute: SplashScreen.id,
+        //   home: AddQuestionForm(),
         onGenerateRoute: (settings) => RoutePage.getPage(settings),
       ),
     );

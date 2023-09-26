@@ -38,33 +38,41 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                   : ListView(
                       children: List.generate(
                         questionsList.length,
-                        (index) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("${index + 1})"),
-                              SizedBox(
-                                width: 4,
+                        (index) => Column(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${index + 1})"),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      questionsList[index].text,
+                                      style:
+                                          TextStyle(fontSize: 16, color: grey),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Expanded(
-                                child: Text(
-                                  questionsList[index].text,
-                                  style: TextStyle(fontSize: 16, color: grey),
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                            // if (questionsList[index].type == QuestionType.Input)
+                            //   TextField()
+                          ],
                         ),
                       ),
                     ),
             ),
             Row(
-              mainAxisAlignment: widget.index == 0
+              mainAxisAlignment: widget.index != 0
                   ? MainAxisAlignment.spaceBetween
                   : MainAxisAlignment.end,
               children: [
-                if (widget.index == 0)
+                if (widget.index != 0)
                   ElevatedButton(
                     onPressed: () {},
                     child: Text("Prev"),
