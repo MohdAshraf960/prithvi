@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 enum QuestionType { Input, MCQ, Slider }
 
 class QuestionModel {
+  String? documentId;
   final String text;
   final QuestionType type;
   final List<String> options;
@@ -12,6 +13,7 @@ class QuestionModel {
   final int timestamp;
 
   QuestionModel({
+    this.documentId,
     required this.text,
     required this.type,
     required this.options,

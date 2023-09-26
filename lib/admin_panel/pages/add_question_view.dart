@@ -1,16 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:prithvi/config/di/di.dart';
 import 'package:prithvi/core/constants/constants.dart';
+import 'package:prithvi/admin_panel/notifiers/admin_questions_notifiers.dart';
 
-import '../../../models/questions_model.dart';
+import '../../models/questions_model.dart';
 
-class AddQuestionForm extends StatefulWidget {
+class AddQuestionForm extends ConsumerStatefulWidget {
   @override
-  _AddQuestionFormState createState() => _AddQuestionFormState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _AddQuestionFormState();
 }
 
-class _AddQuestionFormState extends State<AddQuestionForm> {
+class _AddQuestionFormState extends ConsumerState<AddQuestionForm> {
   TextEditingController textController = TextEditingController();
   QuestionType selectedType = QuestionType.Input;
   TextEditingController optionsController = TextEditingController();
@@ -84,7 +88,7 @@ class _AddQuestionFormState extends State<AddQuestionForm> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 // Create a QuestionModel object with the entered data
                 QuestionModel newQuestion = QuestionModel(
                   text: textController.text,
@@ -98,6 +102,9 @@ class _AddQuestionFormState extends State<AddQuestionForm> {
                 // You can now use the 'newQuestion' object as needed.
                 // For example, you can save it to a database or perform any other action.
                 print(newQuestion);
+                final adminNotifier = ref.read(adminNotifierProvider);
+
+                //  await adminNotifier.createQuestion(questionModel: newQuestion);
               },
               child: Text('Submit'),
             ),

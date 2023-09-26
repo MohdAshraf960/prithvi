@@ -4,13 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prithvi/config/utils/shared_prefernces.dart';
 import 'package:prithvi/core/core.dart';
+import 'package:prithvi/admin_panel/pages/question_list_view.dart';
 
-import 'package:prithvi/features/splash/splash.dart';
 import 'package:prithvi/firebase_options.dart';
 
 import 'package:sizer/sizer.dart';
-
-import 'features/admin_panel/admin_panel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,8 +57,8 @@ class MyApp extends ConsumerWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: SplashScreen.id,
-        //   home: AddQuestionForm(),
+        //initialRoute: SplashScreen.id,
+        home: QuestionList(),
         onGenerateRoute: (settings) => RoutePage.getPage(settings),
       ),
     );

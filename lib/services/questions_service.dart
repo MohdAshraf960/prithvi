@@ -49,10 +49,13 @@ class QuestionsService {
           .get();
 
       // Map Firestore documents to QuestionModel objects
-      List<QuestionModel> questions = querySnapshot.docs
-          .map((doc) =>
-              QuestionModel.fromJson(doc.data() as Map<String, dynamic>))
-          .toList();
+      List<QuestionModel> questions = querySnapshot.docs.map((doc) {
+        final questionData = doc.data() as Map<String, dynamic>;
+        final questionId = doc.id; // Get the document ID
+
+        return QuestionModel.fromJson(questionData)
+          ..documentId = questionId; // Set the document ID in the QuestionModel
+      }).toList();
 
       return questions;
     } catch (e) {
@@ -71,6 +74,20 @@ class QuestionsService {
       await questionsCollection.add(question.toMap());
     } catch (e) {
       Logger().e("error creating question: $e");
+      rethrow;
+    }
+  }
+
+  Future<void> deleteQuestion(String documentId) async {
+    try {
+      // Reference to the collection where the question is stored
+      CollectionReference questionsCollection =
+          _firestore.collection(FirebaseCollection.quesitons);
+
+      // Delete the document with the specified documentId
+      await questionsCollection.doc(documentId).delete();
+    } catch (e) {
+      Logger().e("error deleting question: $e");
       rethrow;
     }
   }

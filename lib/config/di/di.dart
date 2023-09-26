@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:prithvi/admin_panel/services/category_service.dart';
 import 'package:prithvi/config/config.dart';
+import 'package:prithvi/admin_panel/admin_panel.dart';
 import 'package:prithvi/features/category/category.dart';
 import 'package:prithvi/features/features.dart';
 import 'package:prithvi/features/questions/questions.dart';
@@ -58,9 +60,28 @@ final Provider<QuestionsService> questionServiceProvider =
   },
 );
 
+final Provider<AdminQuestionsService> adminQuestionServiceProvider =
+    Provider<AdminQuestionsService>(
+  (ref) {
+    final firestore = ref.read(fireStoreProvider);
+    return AdminQuestionsService(firestore: firestore);
+  },
+);
+
 // ***************************************************************************
 // NOTIFIERS
 // ***************************************************************************
+
+final adminNotifierProvider = ChangeNotifierProvider<AdminQuestionsNotifier>(
+  (ref) {
+    final AdminQuestionsService adminQuestionsService =
+        ref.watch(adminQuestionServiceProvider);
+
+    return AdminQuestionsNotifier(
+      questionsService: adminQuestionsService,
+    );
+  },
+);
 
 final questionNotifierProvider =
     ChangeNotifierProvider.family<QuestionsNotifier, String>(
