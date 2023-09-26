@@ -60,4 +60,18 @@ class QuestionsService {
       return [];
     }
   }
+
+  Future<void> createQuestion({required QuestionModel question}) async {
+    try {
+      // Reference to the collection where you want to add the question
+      CollectionReference questionsCollection =
+          _firestore.collection(FirebaseCollection.quesitons);
+
+      // Add the question data to the collection
+      await questionsCollection.add(question.toMap());
+    } catch (e) {
+      Logger().e("error creating question: $e");
+      rethrow;
+    }
+  }
 }
