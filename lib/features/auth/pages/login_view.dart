@@ -15,8 +15,6 @@ import 'package:prithvi/models/model.dart';
 
 import 'package:sizer/sizer.dart';
 
-import 'signup_view.dart';
-
 class Login extends ConsumerWidget {
   static const id = "/login";
   Login({super.key});
@@ -52,7 +50,7 @@ class Login extends ConsumerWidget {
                 ),
                 Container(
                   // Wrap the BackdropFilter with a Container
-                  height: size.height * 0.5, // Set to 50% of screen height
+                  height: size.height * 0.54, // Set to 50% of screen height
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
                     child: AnimatedContainer(
@@ -79,7 +77,7 @@ class Login extends ConsumerWidget {
                               ),
                               width: size.width,
                               padding: EdgeInsets.only(
-                                top: size.height * 0.029,
+                                top: size.height * 0.016,
                               ),
                               child: Padding(
                                 padding:
@@ -88,9 +86,9 @@ class Login extends ConsumerWidget {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      height: 2.h,
-                                    ),
+                                    // SizedBox(
+                                    //   height: 2.h,
+                                    // ),
                                     Text(
                                       "Login",
                                       style: TextStyle(
@@ -99,7 +97,7 @@ class Login extends ConsumerWidget {
                                           fontSize: 24),
                                     ),
                                     SizedBox(
-                                      height: 1.h,
+                                      height: 0.2.h,
                                     ),
                                     Text(
                                       "to your account ✨",
@@ -126,7 +124,7 @@ class Login extends ConsumerWidget {
                                         // controller: viewModel.email,
                                         fontWeight: FontWeight.w400),
                                     const SizedBox(
-                                      height: kToolbarHeight * 0.7,
+                                      height: kToolbarHeight * 0.6,
                                     ),
                                     AppFormField(
                                         controller: _passwordController,
@@ -149,8 +147,19 @@ class Login extends ConsumerWidget {
                                         fontWeight: FontWeight.w400),
 
                                     // ... rest of your form fields
+
+                                    Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: TextButton(
+                                          onPressed: () {},
+                                          child: Text(
+                                            "Forgot Password",
+                                            style:
+                                                TextStyle(color: primaryGreen),
+                                          )),
+                                    ),
                                     const SizedBox(
-                                      height: kToolbarHeight * 0.5,
+                                      height: kToolbarHeight * 0.1,
                                     ),
                                     signInNotifier.isLoading
                                         ? Center(
@@ -171,7 +180,35 @@ class Login extends ConsumerWidget {
                                             },
                                             width: double.infinity,
                                           ),
-                                    SizedBox(height: 30),
+                                    SizedBox(height: 16),
+                                    Container(
+                                      height: 6.h,
+                                      width: double.infinity,
+                                      child: OutlinedButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                              context, "/signup");
+                                        },
+                                        child: Text(
+                                          'Signup'.toUpperCase(),
+                                          style: TextStyle(
+                                            color: Colors.black, // Text color
+                                          ),
+                                        ),
+                                        style: OutlinedButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 20.0, vertical: 10.0),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                12.0), // Border radius
+                                          ),
+                                          side: BorderSide(
+                                            color: Colors.grey, // Border color
+                                            width: 0.5, // Border width
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                     // TextButton(
                                     //   onPressed: () {
                                     //     Navigator.pushNamed(context, SignUp.id);
