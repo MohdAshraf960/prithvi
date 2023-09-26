@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prithvi/config/config.dart';
 import 'package:prithvi/core/core.dart';
-import 'package:prithvi/features/auth/pages/pages.dart';
+
 import 'package:sizer/sizer.dart';
 
 class UserProfileScreen extends StatelessWidget {

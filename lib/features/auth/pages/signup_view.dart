@@ -12,7 +12,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../config/di/di.dart';
 import '../../../config/exception/exception.dart';
-import '../../../config/utils/assets.dart';
+
 import '../../../config/utils/custom_button.dart';
 import '../../../core/colors/colors.dart';
 
