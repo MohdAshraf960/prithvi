@@ -79,8 +79,10 @@ class UserProfileScreen extends StatelessWidget {
               color: primaryGreen,
               text: "LOG OUT",
               onTap: () async {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, Login.id, (route) => false);
+                // Navigator.pushNamedAndRemoveUntil(
+                //     context, Login.id, (route) => false);
+
+                Navigator.pushNamed(context, "/login");
               },
               width: double.infinity,
             )

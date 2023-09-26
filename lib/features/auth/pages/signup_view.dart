@@ -44,16 +44,19 @@ class SignUp extends ConsumerWidget {
       body: Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              image: DecorationImage(
-                image: AssetImage(
-                  Assets.backgroundImage,
-                ),
-                fit: BoxFit.cover,
-              ),
-            ),
+            decoration: const BoxDecoration(gradient: primaryGreenGradient),
           ),
+          // Container(
+          //   decoration: const BoxDecoration(
+          //     color: Colors.white,
+          //     image: DecorationImage(
+          //       image: AssetImage(
+          //         Assets.backgroundImage,
+          //       ),
+          //       fit: BoxFit.cover,
+          //     ),
+          //   ),
+          // ),
           Form(
             key: formKey,
             child: Column(
@@ -66,7 +69,7 @@ class SignUp extends ConsumerWidget {
                       : 1,
                 ),
                 Container(
-                  height: size.height * 0.7,
+                  height: size.height * 0.6,
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
                     child: AnimatedContainer(
@@ -92,7 +95,7 @@ class SignUp extends ConsumerWidget {
                               ),
                               width: size.width,
                               padding: EdgeInsets.only(
-                                top: size.height * 0.029,
+                                top: size.height * 0.016,
                               ),
                               child: Padding(
                                 padding:
@@ -105,14 +108,14 @@ class SignUp extends ConsumerWidget {
                                     //   height: 1.h,
                                     // ),
                                     Text(
-                                      "SIGNUP",
+                                      "Sign Up",
                                       style: TextStyle(
                                           fontWeight: FontWeight.w400,
-                                          color: lableColor,
+                                          color: primaryGreen,
                                           fontSize: 24),
                                     ),
                                     SizedBox(
-                                      height: 1.h,
+                                      height: 0.2.h,
                                     ),
                                     Text(
                                       "to your account ✨",
@@ -122,7 +125,7 @@ class SignUp extends ConsumerWidget {
                                           fontSize: 16),
                                     ),
                                     const SizedBox(
-                                      height: kToolbarHeight * 0.5,
+                                      height: kToolbarHeight * 0.3,
                                     ),
                                     AppFormField(
                                         validator: (value) {
@@ -141,7 +144,7 @@ class SignUp extends ConsumerWidget {
                                         controller: nameController,
                                         fontWeight: FontWeight.w400),
                                     const SizedBox(
-                                      height: kToolbarHeight * 0.7,
+                                      height: kToolbarHeight * 0.6,
                                     ),
 
                                     AppFormField(
@@ -161,7 +164,7 @@ class SignUp extends ConsumerWidget {
                                         controller: emailController,
                                         fontWeight: FontWeight.w400),
                                     const SizedBox(
-                                      height: kToolbarHeight * 0.7,
+                                      height: kToolbarHeight * 0.6,
                                     ),
 
                                     AppFormField(
@@ -181,7 +184,7 @@ class SignUp extends ConsumerWidget {
                                         controller: passwordController,
                                         fontWeight: FontWeight.w400),
                                     const SizedBox(
-                                      height: kToolbarHeight * 0.7,
+                                      height: kToolbarHeight * 0.6,
                                     ),
                                     AppFormField(
                                         validator: (value) {
@@ -199,13 +202,13 @@ class SignUp extends ConsumerWidget {
                                         width: size.width,
                                         labelText: "Enter Confirm Password",
                                         fontSize: 12.sp,
-                                        suffixIcon: const Padding(
-                                          padding: EdgeInsets.only(right: 16),
-                                          child: Icon(
-                                            Icons.remove_red_eye,
-                                            color: backgroundColor,
-                                          ),
-                                        ),
+                                        // suffixIcon: const Padding(
+                                        //   padding: EdgeInsets.only(right: 16),
+                                        //   child: Icon(
+                                        //     Icons.remove_red_eye,
+                                        //     color: backgroundColor,
+                                        //   ),
+                                        // ),
                                         controller: confirmPasswordController,
                                         fontWeight: FontWeight.w400),
 
@@ -221,8 +224,8 @@ class SignUp extends ConsumerWidget {
                                             textfontsize: 16,
                                             height: 6.h,
                                             textColor: whiteColor,
-                                            color: backgroundColor,
-                                            text: "SIGNUP",
+                                            color: primaryGreen,
+                                            text: "SIGN UP",
                                             onTap: () {
                                               debugPrint("login button");
                                               formKey.currentState!.save();
@@ -236,11 +239,11 @@ class SignUp extends ConsumerWidget {
                                           ),
 
                                     const SizedBox(
-                                      height: kToolbarHeight * 0.3,
+                                      height: kToolbarHeight * 1.18,
                                     ),
-                                    const SizedBox(
-                                      height: 55,
-                                    ),
+                                    // const SizedBox(
+                                    //   height: 49.5,
+                                    // ),
                                   ],
                                 ),
                               ),
