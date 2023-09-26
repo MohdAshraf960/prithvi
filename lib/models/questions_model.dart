@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-enum QuestionType { Input, MCQ }
+enum QuestionType { Input, MCQ, Slider }
 
 class QuestionModel {
   final String text;
@@ -22,8 +22,20 @@ class QuestionModel {
 
   factory QuestionModel.fromMap(Map<String, dynamic> map) {
     // Map the type string to the enum value
-    QuestionType questionType =
-        map['type'] == 'Input' ? QuestionType.Input : QuestionType.MCQ;
+    QuestionType questionType;
+    switch (map['type']) {
+      case 'Input':
+        questionType = QuestionType.Input;
+        break;
+      case 'MCQ':
+        questionType = QuestionType.MCQ;
+        break;
+      case 'Slider':
+        questionType = QuestionType.Slider;
+        break;
+      default:
+        questionType = QuestionType.Input;
+    }
     return QuestionModel(
       text: map['text'] ?? '',
       type: questionType,
@@ -57,3 +69,9 @@ class QuestionModel {
     return 'QuestionModel(text: $text, type: $type, options: $options, calculationFactor: $calculationFactor, categoryRef: $categoryRef, createdAt: $timestamp)';
   }
 }
+
+
+
+//**
+//  question 1 * factor 
+// */
