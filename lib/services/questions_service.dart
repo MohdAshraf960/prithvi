@@ -60,6 +60,31 @@ class QuestionsService {
       return [];
     }
   }
+  // Stream<List<QuestionModel>> getQuestionsList({required String categoryType}) {
+  //   try {
+  //     // Create a reference to the Firestore collection
+  //     final collectionRef = _firestore.collection(FirebaseCollection.quesitons);
+
+  //     // Create a query to filter by 'categoryRef'
+  //     final query = collectionRef.orderBy('createdAt').where(
+  //           'categoryRef',
+  //           isEqualTo: _firestore
+  //               .doc('${FirebaseCollection.categories}/$categoryType'),
+  //         );
+
+  //     // Create a stream of snapshots and map them to QuestionModel objects
+  //     final stream = query.snapshots().map((querySnapshot) {
+  //       return querySnapshot.docs.map((doc) {
+  //         return QuestionModel.fromJson(doc.data());
+  //       }).toList();
+  //     });
+
+  //     return stream;
+  //   } catch (e) {
+  //     Logger().e("error ======$e");
+  //     return Stream.value([]); // Return an empty stream in case of an error
+  //   }
+  // }
 
   Future<void> createQuestion({required QuestionModel question}) async {
     try {

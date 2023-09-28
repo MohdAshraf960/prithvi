@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 enum QuestionType { Input, MCQ, Slider }
@@ -18,6 +19,7 @@ class QuestionModel {
   String? parentId;
   List<String>? childId;
   bool isRelated;
+  TextEditingController controller = TextEditingController();
 
   QuestionModel({
     required this.id,
@@ -50,17 +52,20 @@ class QuestionModel {
         questionType = QuestionType.Input;
     }
     return QuestionModel(
-        id: map['id'] ?? Uuid().v4(),
-        text: map['text'] ?? '',
-        type: questionType,
-        options: (map['options'] as List<dynamic>)
-            .map((e) => Option.fromMap(e))
-            .toList(),
-        calculationFactor:
-            (map['calculationFactor'] as num?)?.toDouble() ?? 0.0,
-        categoryRef: map['categoryRef'] ?? '',
-        timestamp: map['createdAt'] ?? DateTime.now().millisecondsSinceEpoch,
-        unit: map['unit']);
+      id: map['id'] ?? Uuid().v4(),
+      text: map['text'] ?? '',
+      type: questionType,
+      options: (map['options'] as List<dynamic>)
+          .map((e) => Option.fromMap(e))
+          .toList(),
+      calculationFactor: (map['calculationFactor'] as num?)?.toDouble() ?? 0.0,
+      categoryRef: map['categoryRef'] ?? '',
+      timestamp: map['createdAt'] ?? DateTime.now().millisecondsSinceEpoch,
+      unit: map['unit'],
+      parentId: map['parentId'] ?? "",
+      childId: (map['childId'] as List<dynamic>?)?.cast<String>() ?? <String>[],
+      isRelated: map['isRelated'] ?? false,
+    );
   }
 
   Map<String, dynamic> toMap() {
@@ -72,7 +77,10 @@ class QuestionModel {
       'calculationFactor': calculationFactor,
       'categoryRef': categoryRef,
       'createdAt': timestamp,
-      'unit': unit
+      'unit': unit,
+      'parentId': parentId ?? "",
+      'childId': childId ?? [],
+      'isRelated': isRelated
     };
   }
 
@@ -85,7 +93,7 @@ class QuestionModel {
 
   @override
   String toString() {
-    return 'QuestionModel(id: $id, text: $text, type: $type, options: $options, calculationFactor: $calculationFactor, categoryRef: $categoryRef, timestamp: $timestamp, unit: $unit, parentId: $parentId, childId: $childId, isRelated: $isRelated)';
+    return 'QuestionModel(id: $id, text: $text, type: $type, options: $options, calculationFactor: $calculationFactor, categoryRef: $categoryRef, timestamp: $timestamp, unit: $unit, parentId: $parentId, childId: $childId, isRelated: $isRelated, controller: ${controller?.text})';
   }
 }
 
@@ -103,8 +111,8 @@ class Option {
 
   factory Option.fromMap(Map<String, dynamic> map) {
     return Option(
-      key: map['key'] as String,
-      value: map['value'] as double,
+      key: map['key'] ?? "",
+      value: map['value'] ?? 0.0,
     );
   }
 

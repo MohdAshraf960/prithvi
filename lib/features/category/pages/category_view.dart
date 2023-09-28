@@ -13,72 +13,82 @@ class CategoryView extends ConsumerStatefulWidget {
 }
 
 class _CategoryViewState extends ConsumerState<CategoryView>
-    with TickerProviderStateMixin {
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late TabController _tabController;
+
+  final PageStorageBucket bucket = PageStorageBucket();
 
   @override
   void initState() {
     super.initState();
-
     _tabController = TabController(length: 0, vsync: this);
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     final provider = ref.watch(categoryNotifierProvider);
     _tabController = TabController(
       length: provider.categoryList.length,
       vsync: this,
     );
 
-    return DefaultTabController(
-      length: provider.categoryList.length,
-      initialIndex: 0,
-      child: Scaffold(
-        backgroundColor: scaffoldBackgroundColor,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: primaryGreen,
-          title: Text(
-            "Category",
-            style: TextStyle(
-              fontSize: 20,
+    return PageStorage(
+      bucket: bucket,
+      child: DefaultTabController(
+        length: provider.categoryList.length,
+        initialIndex: 0,
+        child: Scaffold(
+          backgroundColor: scaffoldBackgroundColor,
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: primaryGreen,
+            title: Text(
+              "Category",
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            //  centerTitle: true,
+            bottom: TabBar(
+              controller: _tabController,
+              padding: EdgeInsets.symmetric(vertical: 10),
+              indicatorColor: white,
+              indicatorSize: TabBarIndicatorSize.label,
+              tabs: provider.categoryList
+                  .map(
+                    (e) => Tab(
+                      icon: Image.network(
+                        e.image,
+                        width: 24,
+                        height: 24,
+                      ),
+                      text: e.name,
+                    ),
+                  )
+                  .toList(),
             ),
           ),
-          //  centerTitle: true,
-          bottom: TabBar(
+          body: TabBarView(
             controller: _tabController,
-            padding: EdgeInsets.symmetric(vertical: 10),
-            indicatorColor: white,
-            indicatorSize: TabBarIndicatorSize.label,
-            tabs: provider.categoryList
+            children: provider.categoryList
+                .asMap()
                 .map(
-                  (e) => Tab(
-                    icon: Image.network(
-                      e.image,
-                      width: 24,
-                      height: 24,
-                    ),
-                    text: e.name,
-                  ),
-                )
-                .toList(),
-          ),
-        ),
-        body: TabBarView(
-          controller: _tabController,
-          children: provider.categoryList
-              .asMap()
-              .map(
-                (index, category) => MapEntry(
+                  (index, category) => MapEntry(
                     index,
                     QuestionView(
+                        key: PageStorageKey(category.name),
                         tabController: _tabController,
                         categoryType: category.type,
-                        index: index)),
-              )
-              .values
-              .toList(),
+                        index: index),
+                  ),
+                )
+                .values
+                .toList(),
+          ),
         ),
       ),
     );
