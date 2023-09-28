@@ -35,6 +35,7 @@ class CategoriesService {
       QuerySnapshot querySnapshot = await _firestore
           .collection(FirebaseCollection.categories)
           .orderBy('createdAt')
+          .where('isActive', isEqualTo: true)
           .get();
 
       // Map Firestore documents to CategoryModel objects
