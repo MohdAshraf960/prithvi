@@ -13,15 +13,22 @@ class QuestionModel {
   DocumentReference categoryRef;
   int timestamp;
   String unit;
+  String? parentId;
+  List<String>? childId;
+  bool isRelated;
 
-  QuestionModel(
-      {required this.text,
-      required this.type,
-      required this.options,
-      required this.calculationFactor,
-      required this.categoryRef,
-      required this.timestamp,
-      required this.unit});
+  QuestionModel({
+    required this.text,
+    required this.type,
+    required this.options,
+    required this.calculationFactor,
+    required this.categoryRef,
+    required this.timestamp,
+    required this.unit,
+    this.parentId,
+    this.childId,
+    this.isRelated = false,
+  });
 
   factory QuestionModel.fromMap(Map<String, dynamic> map) {
     // Map the type string to the enum value
@@ -101,3 +108,14 @@ class Option {
   factory Option.fromJson(String source) =>
       Option.fromMap(json.decode(source) as Map<String, dynamic>);
 }
+
+
+//**
+//  1) check is Releated field while creating quesiton and answer
+//  2) maintain answered question Id
+//  3) while creating question save parentId and childId apporoaite
+//  4) while ansering question check parentid in answered list
+//  5) child answer not in answered list
+//  6) if parent id answered lirt and child id nul and current question answer then make api call 
+// 7) maintain a map of id with entered values
+// */
