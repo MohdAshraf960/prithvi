@@ -93,7 +93,9 @@ class _AddQuestionFormState extends ConsumerState<AddQuestionForm> {
                 QuestionModel newQuestion = QuestionModel(
                   text: textController.text,
                   type: selectedType,
-                  options: optionsController.text.split(','),
+                  // this will throw error need to fix afterwards
+                  options: [optionsController.text.split(',') as Option],
+                  unit: "kwh",
                   calculationFactor: double.parse(factorController.text),
                   timestamp: DateTime.now().millisecondsSinceEpoch,
                   categoryRef: FirebaseFirestore.instance.doc(
