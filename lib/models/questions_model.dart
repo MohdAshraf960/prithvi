@@ -2,10 +2,12 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
 
 enum QuestionType { Input, MCQ, Slider }
 
 class QuestionModel {
+  String id;
   String text;
   QuestionType type;
   List<Option> options;
@@ -18,6 +20,7 @@ class QuestionModel {
   bool isRelated;
 
   QuestionModel({
+    required this.id,
     required this.text,
     required this.type,
     required this.options,
@@ -47,6 +50,7 @@ class QuestionModel {
         questionType = QuestionType.Input;
     }
     return QuestionModel(
+        id: map['id'] ?? Uuid().v4(),
         text: map['text'] ?? '',
         type: questionType,
         options: (map['options'] as List<dynamic>)
@@ -61,6 +65,7 @@ class QuestionModel {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'text': text,
       'type': type.toString().split('.').last,
       'options': options.map((e) => e.toMap()).toList(),
@@ -80,7 +85,7 @@ class QuestionModel {
 
   @override
   String toString() {
-    return 'QuestionModel(text: $text, type: $type, options: $options, calculationFactor: $calculationFactor, categoryRef: $categoryRef, createdAt: $timestamp,unit: $unit)';
+    return 'QuestionModel(id: $id, text: $text, type: $type, options: $options, calculationFactor: $calculationFactor, categoryRef: $categoryRef, timestamp: $timestamp, unit: $unit, parentId: $parentId, childId: $childId, isRelated: $isRelated)';
   }
 }
 
@@ -107,6 +112,9 @@ class Option {
 
   factory Option.fromJson(String source) =>
       Option.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() => 'Option(key: $key, value: $value)';
 }
 
 
