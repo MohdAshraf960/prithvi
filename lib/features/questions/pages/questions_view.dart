@@ -7,8 +7,12 @@ import 'package:prithvi/features/questions/questions.dart';
 class QuestionView extends ConsumerStatefulWidget {
   final String categoryType;
   final int index;
+  final TabController? tabController;
   const QuestionView(
-      {super.key, required this.categoryType, required this.index});
+      {super.key,
+      required this.categoryType,
+      required this.index,
+      this.tabController});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _QuestionViewState();
@@ -72,13 +76,21 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                   ? MainAxisAlignment.spaceBetween
                   : MainAxisAlignment.end,
               children: [
-                if (widget.index != 0)
+                // if (widget.index != 0)
+                if (widget.index > 0)
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      widget.tabController?.animateTo(widget.index - 1);
+                    },
                     child: Text("Prev"),
                   ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (widget.index < widget.tabController!.length - 1) {
+                      widget.tabController
+                          ?.animateTo(widget.index + 1); // Go to the next tab
+                    }
+                  },
                   child: Text("Next"),
                 ),
               ],

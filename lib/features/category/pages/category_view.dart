@@ -12,10 +12,24 @@ class CategoryView extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _CategoryViewState();
 }
 
-class _CategoryViewState extends ConsumerState<CategoryView> {
+class _CategoryViewState extends ConsumerState<CategoryView>
+    with TickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _tabController = TabController(length: 0, vsync: this);
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = ref.watch(categoryNotifierProvider);
+    _tabController = TabController(
+      length: provider.categoryList.length,
+      vsync: this,
+    );
 
     return DefaultTabController(
       length: provider.categoryList.length,
@@ -33,6 +47,7 @@ class _CategoryViewState extends ConsumerState<CategoryView> {
           ),
           //  centerTitle: true,
           bottom: TabBar(
+            controller: _tabController,
             padding: EdgeInsets.symmetric(vertical: 10),
             indicatorColor: white,
             indicatorSize: TabBarIndicatorSize.label,
@@ -51,11 +66,16 @@ class _CategoryViewState extends ConsumerState<CategoryView> {
           ),
         ),
         body: TabBarView(
+          controller: _tabController,
           children: provider.categoryList
               .asMap()
               .map(
-                (index, category) => MapEntry(index,
-                    QuestionView(categoryType: category.type, index: index)),
+                (index, category) => MapEntry(
+                    index,
+                    QuestionView(
+                        tabController: _tabController,
+                        categoryType: category.type,
+                        index: index)),
               )
               .values
               .toList(),
