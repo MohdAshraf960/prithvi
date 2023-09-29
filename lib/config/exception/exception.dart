@@ -30,7 +30,6 @@ class AppException implements Exception {
     if (e is SocketException) {
       debugPrint("SocketException ==> ${e.message}");
       RoutePage.showErrorSnackbars(e.message);
-
       return;
     }
     if (e is FormatException) {
@@ -41,12 +40,11 @@ class AppException implements Exception {
     if (e is TimeoutException) {
       debugPrint("TimeoutException ==> ${e.message}");
       RoutePage.showErrorSnackbars("Oops!!! request time out");
-
       return;
     }
     if (e is Exception) {
       debugPrint("Exception ==> ${e.toString()}");
-
+      RoutePage.showErrorSnackbars("${e.toString()}");
       return;
     }
   }

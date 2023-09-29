@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:prithvi/config/config.dart';
@@ -7,6 +8,7 @@ import 'package:prithvi/services/services.dart';
 class QuestionsNotifier extends ChangeNotifier {
   final QuestionsService _questionsService;
   List<QuestionModel> questionsList = [];
+  List<String> answersList = [];
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -15,6 +17,8 @@ class QuestionsNotifier extends ChangeNotifier {
     _isLoading = value;
     notifyListeners();
   }
+
+  //Map<String, dynamic> carDetails = {"": "","":""};
 
   QuestionsNotifier({required QuestionsService questionsService})
       : _questionsService = questionsService;
@@ -30,5 +34,11 @@ class QuestionsNotifier extends ChangeNotifier {
       isLoading = false;
       AppException.onError(e);
     }
+  }
+
+  addIds(String id) {
+    answersList.add(id);
+
+    print("object ===> $answersList");
   }
 }

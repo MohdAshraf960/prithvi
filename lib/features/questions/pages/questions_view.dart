@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
+
 import 'package:prithvi/config/di/di.dart';
 import 'package:prithvi/core/core.dart';
 import 'package:prithvi/features/auth/widgets/textformfield.dart';
@@ -105,8 +106,11 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                                             questionsList[index]
                                                 .options
                                                 .first
-                                                .value,
+                                                .value
+                                                .toDouble(),
                                     showLabels: true,
+                                    showDividers: true,
+
                                     onChanged: (value) {
                                       setState(() {
                                         questionsList[index].sliderValue =
@@ -131,20 +135,27 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                                     // },
                                   ),
                                 ),
-                              if (questionsList[index].type ==
-                                      QuestionType.MCQ &&
-                                  questionsList[index].isSearchable == false)
+                              if (questionsList[index].type == QuestionType.MCQ)
                                 SelectOptions(
                                   index: index,
+                                  categoryType: widget.categoryType,
+                                  onChanged: (value) {
+                                    setState(() {});
+                                    if (value == null) {
+                                      // RoutePage.showErrorSnackbars(
+                                      //     "Please select value from above dropdown");
+                                    }
+                                  },
                                   questionsList: questionsList,
+                                  key: UniqueKey(),
                                 ),
-                              if (questionsList[index].type ==
-                                      QuestionType.MCQ &&
-                                  questionsList[index].isSearchable == true)
-                                SearchWidget(
-                                  questionsList: questionsList,
-                                  index: index,
-                                ),
+                              // if (questionsList[index].type ==
+                              //         QuestionType.MCQ &&
+                              //     questionsList[index].isSearchable == true)
+                              //   SearchWidget(
+                              //     questionsList: questionsList,
+                              //     index: index,
+                              //   ),
                             ],
                           ),
                         ),
@@ -165,42 +176,42 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                     child: Text("Prev"),
                   ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     // if (widget.index < widget.tabController!.length - 1) {
                     //   widget.tabController
                     //       ?.animateTo(widget.index + 1); // Go to the next tab
                     // }
 
-                    Logger()
-                        .i(questionsList.map((e) => e.sliderValue).toList());
-                    Logger()
-                        .i(questionsList.map((e) => e.selectedOption).toList());
-                    Logger().i(
-                        questionsList.map((e) => e.controller.text).toList());
-                    //var uuid = Uuid();
+                    // Logger()
+                    //     .i(questionsList.map((e) => e.sliderValue).toList());
+                    // Logger()
+                    //     .i(questionsList.map((e) => e.selectedOption).toList());
+                    questionsList.map((e) {
+                      Logger().i(e);
+                    }).toList();
+
+                    var uuid = Uuid();
+
                     // QuestionsService(firestore: FirebaseFirestore.instance)
                     //     .createQuestion(
                     //   question: QuestionModel(
                     //     id: uuid.v4(),
-                    //     text:
-                    //         "How many kms have you travelled by air in one year?",
+                    //     text: "What is the fuel used?",
                     //     type: QuestionType.MCQ,
                     //     options: [
-                    //       Option(key: "start", value: 0.0),
-                    //       Option(key: "begin", value: 250.0),
-                    //       Option(key: "mid", value: 500.0),
-                    //       Option(key: "midend", value: 750.0),
-                    //       Option(key: "end", value: 1000.0)
+                    //       Option(key: "Petrol", value: "Petrol"),
+                    //       Option(key: "CNG", value: "CNG"),
+                    //       Option(key: "Diesel", value: "Diesel"),
                     //     ],
                     //     calculationFactor: 0,
                     //     categoryRef:
                     //         FirebaseFirestore.instance.doc("categories/travel"),
                     //     timestamp: DateTime.now().microsecondsSinceEpoch,
-                    //     unit: "km",
-                    //     parentId: null,
+                    //     unit: "",
+                    //     parentId: "f9b54c9d-7985-4818-a1c5-dd8ad830581d",
                     //     childId: [],
-                    //     isRelated: false,
-                    //     isSearchable: true,
+                    //     isRelated: true,
+                    //     isSearchable: false,
                     //   ),
                     // );
                   },

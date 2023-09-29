@@ -14,13 +14,15 @@ class SearchWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Autocomplete<Option>(
+        initialValue: TextEditingValue(
+            text: questionsList[index].selectedOption?.value ?? ""),
         optionsBuilder: (TextEditingValue textEditingValue) {
           if (textEditingValue.text.isEmpty) {
             return Iterable<Option>.empty();
           }
 
           return questionsList[index].options.where((Option option) {
-            return option.key
+            return option.value
                 .toLowerCase()
                 .contains(textEditingValue.text.toLowerCase());
           });

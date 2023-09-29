@@ -105,7 +105,7 @@ class QuestionModel {
 
 class Option {
   String key;
-  double value;
+  dynamic value;
   Option({required this.key, required this.value});
 
   Map<String, dynamic> toMap() {
@@ -116,10 +116,17 @@ class Option {
   }
 
   factory Option.fromMap(Map<String, dynamic> map) {
-    return Option(
-      key: map['key'] ?? "",
-      value: map['value'] ?? 0.0,
-    );
+    final dynamic mapValue = map['value'];
+    if (mapValue is int) {
+      return Option(key: map['key'] ?? "", value: mapValue);
+    } else if (mapValue is double) {
+      return Option(key: map['key'] ?? "", value: mapValue);
+    } else if (mapValue is String) {
+      return Option(key: map['key'] ?? "", value: mapValue);
+    } else {
+      // Default to a string if the type is not recognized.
+      return Option(key: map['key'] ?? "", value: mapValue.toString());
+    }
   }
 
   String toJson() => json.encode(toMap());
