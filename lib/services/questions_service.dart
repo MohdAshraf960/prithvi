@@ -53,7 +53,7 @@ class QuestionsService {
           .map((doc) =>
               QuestionModel.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
-
+      Logger().i("questions ======$questions");
       return questions;
     } catch (e) {
       Logger().e("error ======$e");
@@ -93,7 +93,9 @@ class QuestionsService {
           _firestore.collection(FirebaseCollection.quesitons);
 
       // Add the question data to the collection
-      await questionsCollection.add(question.toMap());
+      await questionsCollection
+          .doc('${question.categoryRef.path.split('/').last}-${question.id}')
+          .set(question.toMap());
     } catch (e) {
       Logger().e("error creating question: $e");
       rethrow;

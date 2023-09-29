@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
@@ -5,7 +6,11 @@ import 'package:prithvi/config/di/di.dart';
 import 'package:prithvi/core/core.dart';
 import 'package:prithvi/features/auth/widgets/textformfield.dart';
 import 'package:prithvi/features/questions/questions.dart';
+
 import 'package:prithvi/models/questions_model.dart';
+import 'package:prithvi/services/services.dart';
+import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:uuid/uuid.dart';
 
 class QuestionView extends ConsumerStatefulWidget {
   final String categoryType;
@@ -22,12 +27,11 @@ class QuestionView extends ConsumerStatefulWidget {
 }
 
 class _QuestionViewState extends ConsumerState<QuestionView> {
-  TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final QuestionsNotifier(:isLoading, :questionsList) =
         ref.watch(questionNotifierProvider(widget.categoryType));
-    print("$questionsList");
+
     return Card(
       shadowColor: shadowColor,
       elevation: 0.5,
@@ -81,6 +85,66 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                                     inputType: TextInputType.number,
                                   ),
                                 ),
+                              if (questionsList[index].type ==
+                                  QuestionType.Slider)
+                                Padding(
+                                  padding: EdgeInsets.all(8),
+                                  child: SfSlider(
+                                    activeColor: primaryGreen,
+                                    inactiveColor:
+                                        primaryGreen.withOpacity(0.4),
+                                    min: questionsList[index]
+                                        .options
+                                        .first
+                                        .value,
+                                    max:
+                                        questionsList[index].options.last.value,
+                                    value: questionsList[index].sliderValue,
+                                    interval:
+                                        questionsList[index].options[1].value -
+                                            questionsList[index]
+                                                .options
+                                                .first
+                                                .value,
+                                    showLabels: true,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        questionsList[index].sliderValue =
+                                            value;
+                                      });
+                                    },
+                                    showTicks:
+                                        true, // To show ticks on the slider
+                                    // shouldAlwaysShowTooltip: true,
+                                    // tooltipTextFormatterCallback:
+                                    //     (dynamic actualValue,
+                                    //         String formattedText) {
+                                    //   var value;
+                                    //   if (actualValue.runtimeType == double) {
+                                    //     value = (actualValue as double).ceil();
+                                    //   } else if (actualValue.runtimeType ==
+                                    //       int) {
+                                    //     value = actualValue;
+                                    //   }
+
+                                    //   return value.toString();
+                                    // },
+                                  ),
+                                ),
+                              if (questionsList[index].type ==
+                                      QuestionType.MCQ &&
+                                  questionsList[index].isSearchable == false)
+                                SelectOptions(
+                                  index: index,
+                                  questionsList: questionsList,
+                                ),
+                              if (questionsList[index].type ==
+                                      QuestionType.MCQ &&
+                                  questionsList[index].isSearchable == true)
+                                SearchWidget(
+                                  questionsList: questionsList,
+                                  index: index,
+                                ),
                             ],
                           ),
                         ),
@@ -107,13 +171,38 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                     //       ?.animateTo(widget.index + 1); // Go to the next tab
                     // }
 
+                    Logger()
+                        .i(questionsList.map((e) => e.sliderValue).toList());
+                    Logger()
+                        .i(questionsList.map((e) => e.selectedOption).toList());
                     Logger().i(
-                      "${questionsList.map((e) => e.calculationFactor)}",
-                    );
-
-                    Logger().i(
-                      "${questionsList.where((element) => element.controller.text.isNotEmpty).map((e) => int.parse(e.controller.text) * e.calculationFactor)}",
-                    );
+                        questionsList.map((e) => e.controller.text).toList());
+                    //var uuid = Uuid();
+                    // QuestionsService(firestore: FirebaseFirestore.instance)
+                    //     .createQuestion(
+                    //   question: QuestionModel(
+                    //     id: uuid.v4(),
+                    //     text:
+                    //         "How many kms have you travelled by air in one year?",
+                    //     type: QuestionType.MCQ,
+                    //     options: [
+                    //       Option(key: "start", value: 0.0),
+                    //       Option(key: "begin", value: 250.0),
+                    //       Option(key: "mid", value: 500.0),
+                    //       Option(key: "midend", value: 750.0),
+                    //       Option(key: "end", value: 1000.0)
+                    //     ],
+                    //     calculationFactor: 0,
+                    //     categoryRef:
+                    //         FirebaseFirestore.instance.doc("categories/travel"),
+                    //     timestamp: DateTime.now().microsecondsSinceEpoch,
+                    //     unit: "km",
+                    //     parentId: null,
+                    //     childId: [],
+                    //     isRelated: false,
+                    //     isSearchable: true,
+                    //   ),
+                    // );
                   },
                   child: Text("Next"),
                 ),

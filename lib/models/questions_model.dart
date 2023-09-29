@@ -20,20 +20,23 @@ class QuestionModel {
   List<String>? childId;
   bool isRelated;
   TextEditingController controller = TextEditingController();
+  bool isSearchable;
+  double sliderValue = 0.0;
+  Option? selectedOption;
 
-  QuestionModel({
-    required this.id,
-    required this.text,
-    required this.type,
-    required this.options,
-    required this.calculationFactor,
-    required this.categoryRef,
-    required this.timestamp,
-    required this.unit,
-    this.parentId,
-    this.childId,
-    this.isRelated = false,
-  });
+  QuestionModel(
+      {required this.id,
+      required this.text,
+      required this.type,
+      required this.options,
+      required this.calculationFactor,
+      required this.categoryRef,
+      required this.timestamp,
+      required this.unit,
+      this.parentId,
+      this.childId,
+      this.isRelated = false,
+      this.isSearchable = false});
 
   factory QuestionModel.fromMap(Map<String, dynamic> map) {
     // Map the type string to the enum value
@@ -52,20 +55,22 @@ class QuestionModel {
         questionType = QuestionType.Input;
     }
     return QuestionModel(
-      id: map['id'] ?? Uuid().v4(),
-      text: map['text'] ?? '',
-      type: questionType,
-      options: (map['options'] as List<dynamic>)
-          .map((e) => Option.fromMap(e))
-          .toList(),
-      calculationFactor: (map['calculationFactor'] as num?)?.toDouble() ?? 0.0,
-      categoryRef: map['categoryRef'] ?? '',
-      timestamp: map['createdAt'] ?? DateTime.now().millisecondsSinceEpoch,
-      unit: map['unit'],
-      parentId: map['parentId'] ?? "",
-      childId: (map['childId'] as List<dynamic>?)?.cast<String>() ?? <String>[],
-      isRelated: map['isRelated'] ?? false,
-    );
+        id: map['id'] ?? Uuid().v4(),
+        text: map['text'] ?? '',
+        type: questionType,
+        options: (map['options'] as List<dynamic>)
+            .map((e) => Option.fromMap(e))
+            .toList(),
+        calculationFactor:
+            (map['calculationFactor'] as num?)?.toDouble() ?? 0.0,
+        categoryRef: map['categoryRef'] ?? '',
+        timestamp: map['createdAt'] ?? DateTime.now().millisecondsSinceEpoch,
+        unit: map['unit'],
+        parentId: map['parentId'] ?? "",
+        childId:
+            (map['childId'] as List<dynamic>?)?.cast<String>() ?? <String>[],
+        isRelated: map['isRelated'] ?? false,
+        isSearchable: map['isSearchable'] ?? false);
   }
 
   Map<String, dynamic> toMap() {
@@ -80,7 +85,8 @@ class QuestionModel {
       'unit': unit,
       'parentId': parentId ?? "",
       'childId': childId ?? [],
-      'isRelated': isRelated
+      'isRelated': isRelated,
+      'isSearchable': isSearchable
     };
   }
 
@@ -93,7 +99,7 @@ class QuestionModel {
 
   @override
   String toString() {
-    return 'QuestionModel(id: $id, text: $text, type: $type, options: $options, calculationFactor: $calculationFactor, categoryRef: $categoryRef, timestamp: $timestamp, unit: $unit, parentId: $parentId, childId: $childId, isRelated: $isRelated, controller: ${controller?.text})';
+    return 'QuestionModel(id: $id, text: $text, type: $type, options: $options, calculationFactor: $calculationFactor, categoryRef: $categoryRef, timestamp: $timestamp, unit: $unit, parentId: $parentId, childId: $childId, isRelated: $isRelated, controller: ${controller.text})';
   }
 }
 
