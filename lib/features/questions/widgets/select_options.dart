@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prithvi/config/di/di.dart';
 import 'package:prithvi/core/core.dart';
-import 'package:prithvi/features/questions/questions.dart';
+
 import 'package:prithvi/models/questions_model.dart';
 
 class SelectOptions extends ConsumerStatefulWidget {

@@ -18,6 +18,7 @@ class QuestionsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  //TODO: create maps for multilevel dropdown and try to calculate data
   //Map<String, dynamic> carDetails = {"": "","":""};
 
   QuestionsNotifier({required QuestionsService questionsService})
