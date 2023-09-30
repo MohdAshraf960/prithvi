@@ -58,6 +58,13 @@ final Provider<QuestionsService> questionServiceProvider =
   },
 );
 
+final Provider<CarService> carServiceProvider = Provider<CarService>(
+  (ref) {
+    final firestore = ref.read(fireStoreProvider);
+    return CarService(firestore: firestore);
+  },
+);
+
 // ***************************************************************************
 // NOTIFIERS
 // ***************************************************************************
@@ -66,10 +73,11 @@ final questionNotifierProvider =
     ChangeNotifierProvider.family<QuestionsNotifier, String>(
   (ref, categoryType) {
     final QuestionsService questionsService = ref.read(questionServiceProvider);
+    final CarService carService = ref.read(carServiceProvider);
 
     return QuestionsNotifier(
-      questionsService: questionsService,
-    )..getQuestionsList(categoryType: categoryType);
+        questionsService: questionsService, carService: carService)
+      ..getQuestionsList(categoryType: categoryType);
   },
 );
 

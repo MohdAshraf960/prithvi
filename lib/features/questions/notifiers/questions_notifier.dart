@@ -7,6 +7,7 @@ import 'package:prithvi/services/services.dart';
 
 class QuestionsNotifier extends ChangeNotifier {
   final QuestionsService _questionsService;
+  final CarService _carService;
   List<QuestionModel> questionsList = [];
   List<String> answersList = [];
 
@@ -19,10 +20,17 @@ class QuestionsNotifier extends ChangeNotifier {
   }
 
   //TODO: create maps for multilevel dropdown and try to calculate data
-  //Map<String, dynamic> carDetails = {"": "","":""};
+  Map<String, dynamic> carDetails = {
+    "engineCC": "",
+    "fuelType": "",
+    "category": ""
+  };
 
-  QuestionsNotifier({required QuestionsService questionsService})
-      : _questionsService = questionsService;
+  QuestionsNotifier(
+      {required QuestionsService questionsService,
+      required CarService carService})
+      : _questionsService = questionsService,
+        _carService = carService;
 
   void getQuestionsList({required categoryType}) async {
     try {
@@ -41,5 +49,24 @@ class QuestionsNotifier extends ChangeNotifier {
     answersList.add(id);
 
     print("object ===> $answersList");
+  }
+
+  setCarValues() {
+    final carCategory = questionsList
+        .firstWhere((element) => element.text.contains("type of car"));
+
+    final engineCapacity = questionsList.firstWhere(
+        (element) => element.text.toLowerCase().contains("engine cc"));
+
+    final fuel = questionsList
+        .firstWhere((element) => element.text.contains("fuel used"));
+
+    carDetails['category'] = carCategory.selectedOption?.key;
+    carDetails['engineCC'] = engineCapacity.selectedOption?.key;
+    carDetails['fuelType'] = fuel.selectedOption?.key;
+
+    // Process car details here
+    Logger().d("carDetails ${carDetails}");
+    //TODO: call car service
   }
 }

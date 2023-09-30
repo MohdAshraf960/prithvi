@@ -142,8 +142,8 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                                   onChanged: (value) {
                                     setState(() {});
                                     if (value == null) {
-                                      // RoutePage.showErrorSnackbars(
-                                      //     "Please select value from above dropdown");
+                                      RoutePage.showErrorSnackbars(
+                                          "Please select value from above dropdown");
                                     }
                                   },
                                   questionsList: questionsList,
