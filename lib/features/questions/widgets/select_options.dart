@@ -26,7 +26,6 @@ class SelectOptions extends ConsumerStatefulWidget {
 }
 
 class _SelectOptionsState extends ConsumerState<SelectOptions> {
-  List<Option?> selectedParentOptions = [];
   @override
   Widget build(BuildContext context) {
     final notifier = ref.watch(questionNotifierProvider(widget.categoryType));
@@ -98,6 +97,9 @@ class _SelectOptionsState extends ConsumerState<SelectOptions> {
             }
           } else {
             widget.questionsList[widget.index].selectedOption = newValue;
+            notifier.calculateEmissionValue(widget.categoryType, widget.index);
+            Logger().d(
+                "OPTION ===> ${widget.questionsList[widget.index].selectedOption}");
           }
         },
         items: widget.questionsList[widget.index].options.map((Option option) {

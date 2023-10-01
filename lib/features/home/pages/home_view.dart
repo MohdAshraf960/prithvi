@@ -1,12 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:prithvi/core/core.dart';
-import 'package:prithvi/features/auth/pages/verification_view.dart';
-
-import 'package:prithvi/features/home/widgets/customcard.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+
+import 'package:prithvi/config/config.dart';
+import 'package:prithvi/config/utils/string.dart';
+import 'package:prithvi/core/core.dart';
+import 'package:prithvi/features/home/widgets/customcard.dart';
 
 class Home extends ConsumerStatefulWidget {
   static const id = "/home";
@@ -17,12 +17,12 @@ class Home extends ConsumerStatefulWidget {
 }
 
 class _HomeState extends ConsumerState<Home> {
-  final List<ChartData> _chartData = [
-    ChartData('Category 1', 30),
-    ChartData('Category 2', 40),
-    ChartData('Category 3', 20),
-    ChartData('Category 4', 10),
-  ];
+  // final List<ChartData> _chartData = [
+  //   ChartData('Category 1', 30),
+  //   ChartData('Category 2', 0),
+  //   ChartData('Category 3', 0),
+  //   ChartData('Category 4', 0),
+  // ];
 
   @override
   void initState() {
@@ -31,6 +31,7 @@ class _HomeState extends ConsumerState<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final notifier = ref.watch(questionNotifierProvider(''));
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -55,14 +56,10 @@ class _HomeState extends ConsumerState<Home> {
                 child: Column(
                   children: [
                     SfCircularChart(
-                      legend: Legend(
-                        isVisible: true,
-                        isResponsive: true,
-                      ),
                       series: <CircularSeries>[
                         // Create a pie series
                         PieSeries<ChartData, String>(
-                          dataSource: _chartData,
+                          dataSource: notifier.chartList,
                           xValueMapper: (ChartData data, _) => data.category,
                           yValueMapper: (ChartData data, _) => data.value,
                           dataLabelSettings: DataLabelSettings(isVisible: true),
@@ -88,14 +85,14 @@ class _HomeState extends ConsumerState<Home> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextButton(
-                        onPressed: () async {
-                          print("hvghv");
-                          await FirebaseAnalytics.instance.logEvent(
-                              name: "rafiq",
-                              parameters: {"note": "ashrafkhankondhwa"});
-                        },
-                        child: Text("jfcxvbvnm,")),
+                    // TextButton(
+                    //     onPressed: () async {
+                    //       print("hvghv");
+                    //       await FirebaseAnalytics.instance.logEvent(
+                    //           name: "rafiq",
+                    //           parameters: {"note": "ashrafkhankondhwa"});
+                    //     },
+                    //     child: Text("jfcxvbvnm,")),
                     JourneyModeCards(
                         image: Image.network(
                             'https://c1.wallpaperflare.com/preview/790/806/402/aircraft-start-propeller-propeller-plane.jpg'),
@@ -245,7 +242,10 @@ class HomeScreen extends StatelessWidget {
  */
 class ChartData {
   final String category;
-  final double value;
+  double value;
 
   ChartData(this.category, this.value);
+
+  @override
+  String toString() => 'ChartData(category: $category, value: $value)';
 }

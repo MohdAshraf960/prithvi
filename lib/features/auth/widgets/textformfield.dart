@@ -14,6 +14,7 @@ class AppFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final void Function(String)? onChanged;
   final void Function()? onTap;
+  final void Function(String)? onFieldSubmitted;
   final TextInputType inputType;
   final TextInputAction? inputAction;
   final TextEditingController? controller;
@@ -25,28 +26,29 @@ class AppFormField extends StatelessWidget {
   final bool obscureText;
 
   final FontWeight fontWeight;
-  const AppFormField({
-    Key? key,
-    //required this.hintText,
-    this.onTap,
-    this.onChanged,
-    this.validator,
-    this.inputType = TextInputType.text,
-    this.inputAction,
-    // required this.hintfontSize,
-    this.fontStyles,
-    this.obscureText = false,
-    required this.labelText,
-    required this.fontSize,
-    this.suffixIcon,
-    this.controller,
-    required this.width,
-    required this.height,
-    this.focus,
-    this.readonly = false,
-    required this.fontWeight,
-    this.hint,
-  }) : super(key: key);
+  const AppFormField(
+      {Key? key,
+      //required this.hintText,
+      this.onTap,
+      this.onChanged,
+      this.validator,
+      this.inputType = TextInputType.text,
+      this.inputAction,
+      // required this.hintfontSize,
+      this.fontStyles,
+      this.obscureText = false,
+      required this.labelText,
+      required this.fontSize,
+      this.suffixIcon,
+      this.controller,
+      required this.width,
+      required this.height,
+      this.focus,
+      this.readonly = false,
+      required this.fontWeight,
+      this.hint,
+      this.onFieldSubmitted})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +107,7 @@ class AppFormField extends StatelessWidget {
               fontStyle: FontStyle.normal,
               fontWeight: FontWeight.w400),
         ),
+        onFieldSubmitted: onFieldSubmitted,
       ),
     );
   }

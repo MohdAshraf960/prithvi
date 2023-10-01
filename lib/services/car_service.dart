@@ -7,6 +7,7 @@ class CarService {
 
   getCarDetails(
       {required String engineCC, required String fuelType, required category}) {
+    // ignore: unused_local_variable
     Query query = _firestore
         .collection('cars')
         .where('engineCC', isEqualTo: engineCC)

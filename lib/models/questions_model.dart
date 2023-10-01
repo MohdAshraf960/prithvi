@@ -23,6 +23,7 @@ class QuestionModel {
   bool isSearchable;
   double sliderValue = 0.0;
   Option? selectedOption;
+  num calculatedValue = 0.0;
 
   QuestionModel(
       {required this.id,
