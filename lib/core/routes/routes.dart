@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:flutter/material.dart';
+import 'package:prithvi/features/auth/pages/forgot_password_view.dart';
 
 import 'package:prithvi/features/auth/pages/login_view.dart';
 import 'package:prithvi/features/auth/pages/signup_view.dart';
@@ -23,6 +24,8 @@ class RoutePage {
             return SplashScreen();
           case Login.id:
             return Login();
+          case ForgotPassword.id:
+            return ForgotPassword();
 
           case SignUp.id:
             return SignUp();

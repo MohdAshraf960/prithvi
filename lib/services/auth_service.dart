@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:logger/logger.dart';
 
 import 'package:prithvi/config/config.dart';
 import 'package:prithvi/core/core.dart';
@@ -148,15 +149,18 @@ class AuthService {
         password: signInModel.password,
       );
 
+      Logger().i(userCredential);
       final userModel = await getUserModelByEmail(userCredential?.user?.email);
 
       return userModel;
     } catch (e) {
+      Logger().i("Errror ==========> $e");
       rethrow;
     }
   }
 
   Future<UserModel?> getUserModelByEmail(String? email) async {
+    Logger().i("email ==========> $email");
     if (email == null) return null;
 
     final querySnapshot = await _firestore
