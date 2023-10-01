@@ -29,10 +29,10 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      uid: map['uid'] as String,
-      name: map['name'] as String,
-      email: map['email'] as String,
-      isVerified: map['isVerified'] as bool,
+      uid: map['uid'] ?? "",
+      name: map['name'] ?? "",
+      email: map['email'] ?? "",
+      isVerified: map['isVerified'] ?? false,
     );
   }
 

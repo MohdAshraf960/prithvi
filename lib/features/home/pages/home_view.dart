@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prithvi/features/auth/pages/verification_view.dart';
 
 import 'package:prithvi/features/home/widgets/customcard.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class Home extends ConsumerStatefulWidget {
   static const id = "/home";
@@ -13,52 +16,61 @@ class Home extends ConsumerStatefulWidget {
 }
 
 class _HomeState extends ConsumerState<Home> {
+  final List<ChartData> _chartData = [
+    ChartData('Category 1', 30),
+    ChartData('Category 2', 40),
+    ChartData('Category 3', 20),
+    ChartData('Category 4', 10),
+  ];
+  late FirebaseFirestore _firebaseFirestore;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _firebaseFirestore = FirebaseFirestore.instance;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Backdrop',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 30,
-                        color: Colors.white),
-                  ),
+          Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Backdrop',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 30,
+                      color: Colors.white),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => VerificationPage(),
-                      ),
-                    );
-                  },
-                  child: Card(
-                    elevation: 5.0,
-                    child: Container(
-                      height: 100,
-                      width: 300,
-                      child: Column(
-                        children: [
-                          Text('Journey by Air'),
-                          Text('Journey by Air'),
-                        ],
-                      ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 300,
+                width: 300,
+                child: Column(
+                  children: [
+                    SfCircularChart(
+                      series: <CircularSeries>[
+                        // Create a pie series
+                        PieSeries<ChartData, String>(
+                          dataSource: _chartData,
+                          xValueMapper: (ChartData data, _) => data.category,
+                          yValueMapper: (ChartData data, _) => data.value,
+                          dataLabelSettings: DataLabelSettings(isVisible: true),
+                        ),
+                      ],
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           Expanded(
             child: Container(
@@ -74,8 +86,14 @@ class _HomeState extends ConsumerState<Home> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Text('Journey by Air'),
-                    // Text('Journey by Air'),
+                    TextButton(
+                        onPressed: () async {
+                          print("hvghv");
+                          await FirebaseAnalytics.instance.logEvent(
+                              name: "rafiq",
+                              parameters: {"note": "ashrafkhankondhwa"});
+                        },
+                        child: Text("jfcxvbvnm,")),
                     JourneyModeCards(
                         image: Image.network(
                             'https://c1.wallpaperflare.com/preview/790/806/402/aircraft-start-propeller-propeller-plane.jpg'),
@@ -99,12 +117,6 @@ class _HomeState extends ConsumerState<Home> {
                         mode: 'Car Travel',
                         desc:
                             'On the average how many hours per day do you spend traveling by car'),
-                    JourneyModeCards(
-                        image: Image.network(
-                            'https://img.freepik.com/free-vector/happy-family-travelling-by-car-with-camping-equipment-top_74855-10751.jpg'),
-                        mode: 'Car Travel',
-                        desc:
-                            'On the average how many hours per day do you spend traveling by car')
                   ],
                 ),
               ),

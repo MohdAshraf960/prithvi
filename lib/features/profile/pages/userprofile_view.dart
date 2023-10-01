@@ -1,26 +1,89 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prithvi/config/config.dart';
 import 'package:prithvi/core/core.dart';
+import 'package:prithvi/features/auth/pages/login_view.dart';
+import 'package:prithvi/models/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sizer/sizer.dart';
 
-class UserProfileScreen extends StatelessWidget {
+import '../../../models/sign_in_model.dart';
+import '../../auth/widgets/textformfield.dart';
+
+class UserProfileScreen extends ConsumerStatefulWidget {
   static const id = "/username";
-  UserProfileScreen();
 
   @override
-  Widget build(BuildContext context) {
+  ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
+}
+
+class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
+  // UserProfileScreen();
+  SharedPreferencesService service = SharedPreferencesService();
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  String userName = "";
+  String userEmail = "";
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch user data from SharedPreferences when the widget initializes
+    getUser();
+  }
+
+  // Method to fetch user data from SharedPreferences
+  void getUser() async {
+    final getuser = await SharedPreferences.getInstance().then((prefs) {
+      return prefs.getString(SharedPreferencesService.userKey);
+    });
+
+    if (getuser != null) {
+      final userModel = UserModel.fromJson(getuser);
+      setState(() {
+        userName = userModel.name
+            .toString(); // Update the user variable with the user data
+        userEmail = userModel.email.toString();
+      });
+    }
+  }
+
+  bool isDisable = false;
+
+  @override
+  Widget build(
+    BuildContext context,
+  ) {
+    Size size = MediaQuery.of(context).size;
+    final media = MediaQuery.of(context);
+    nameController.text = userName;
+    emailController.text = userEmail;
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('User Profile'),
-      // ),
+      appBar: AppBar(
+        backgroundColor: primaryGreen,
+        title: Text('User Profile'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: InkWell(
+                onTap: () {
+                  setState(() {
+                    isDisable = true;
+                  });
+                },
+                child: Icon(Icons.edit)),
+          )
+        ],
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
-              height: 100,
+              height: 30,
             ),
             Text(
               'Name:',
@@ -29,23 +92,18 @@ class UserProfileScreen extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.grey, // Border color
-                  width: 1.0, // Border width
-                ),
-                borderRadius: BorderRadius.circular(10.0), // Border radius
-              ),
-              child: TextFormField(
-                enabled: false,
-                decoration: InputDecoration(
-                  hintText: 'John Doe',
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
-                  border: InputBorder.none, // Hide the default border
-                ),
-              ),
-            ),
+            AppFormField(
+                readonly: true,
+                controller: nameController,
+                validator: (value) => Validator.requiredValidator(value),
+                inputType: TextInputType.text,
+                height: size.height * 0.065,
+                width: size.width,
+                labelText: "",
+                fontSize: 12.sp,
+
+                // controller: viewModel.password,
+                fontWeight: FontWeight.w400),
             SizedBox(height: 16.0),
             Text(
               'Email:',
@@ -54,38 +112,54 @@ class UserProfileScreen extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.grey, // Border color
-                  width: 1.0, // Border width
-                ),
-                borderRadius: BorderRadius.circular(10.0), // Border radius
-              ),
-              child: TextFormField(
-                enabled: false,
-                decoration: InputDecoration(
-                  hintText: 'example@gmail.com',
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
-                  border: InputBorder.none, // Hide the default border
-                ),
-              ),
-            ),
-            Spacer(),
-            CustomButton(
-              textfontsize: 16,
-              height: 6.h,
-              textColor: white,
-              color: primaryGreen,
-              text: "LOG OUT",
-              onTap: () async {
-                // Navigator.pushNamedAndRemoveUntil(
-                //     context, Login.id, (route) => false);
+            AppFormField(
+                readonly: true,
+                controller: emailController,
+                validator: (value) => Validator.requiredValidator(value),
+                inputType: TextInputType.text,
+                height: size.height * 0.065,
+                width: size.width,
+                labelText: "",
+                fontSize: 12.sp,
 
-                Navigator.pushNamed(context, "/login");
-              },
-              width: double.infinity,
-            )
+                // controller: viewModel.password,
+                fontWeight: FontWeight.w400),
+            Spacer(),
+            isDisable == false
+                ? CustomButton(
+                    textfontsize: 16,
+                    height: 6.h,
+                    textColor: white,
+                    color: primaryGreen,
+                    text: "LOG OUT",
+                    onTap: () async {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, Login.id, (route) => false);
+
+                      //Navigator.pushNamed(context, "/login");
+
+                      service.getUser();
+                    },
+                    width: double.infinity,
+                  )
+                : CustomButton(
+                    textfontsize: 16,
+                    height: 6.h,
+                    textColor: white,
+                    color: Colors.blue,
+                    text: "UPDATE",
+                    onTap: () async {
+                      // Navigator.pushNamedAndRemoveUntil(
+                      //     context, Login.id, (route) => false);
+
+                      //Navigator.pushNamed(context, "/login");
+                      setState(() {
+                        isDisable = false;
+                      });
+                      service.getUser();
+                    },
+                    width: double.infinity,
+                  )
           ],
         ),
       ),

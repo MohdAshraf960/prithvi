@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:logger/logger.dart';
 import 'package:prithvi/config/utils/shared_prefernces.dart';
 
 import 'package:prithvi/models/model.dart';
@@ -46,7 +47,7 @@ class SignInNotifier extends ChangeNotifier {
       // If an exception occurred, call the onError callback with the exception
       onError(e);
       // Optionally, log the error for debugging purposes
-      //log('Error during sign-in: $e');
+      Logger().e('Error during sign-in: $e');
     }
   }
 

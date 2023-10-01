@@ -46,6 +46,7 @@ class SignUp extends ConsumerWidget {
           Container(
             decoration: const BoxDecoration(gradient: primaryGreenGradient),
           ),
+
           // Container(
           //   decoration: const BoxDecoration(
           //     color: Colors.white,
@@ -209,6 +210,7 @@ class SignUp extends ConsumerWidget {
                                         //     color: backgroundColor,
                                         //   ),
                                         // ),
+
                                         controller: confirmPasswordController,
                                         fontWeight: FontWeight.w400),
 

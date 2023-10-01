@@ -2,8 +2,9 @@
   "project_info": {
     "project_number": "797878551578",
     "project_id": "prithvi-70646",
-    "storage_bucket": "prithvi-70646.appspot.com"
-  },
+    "storage_bucket": "prithvi-70646.appspot.com",
+    "firebase_url": "https://console.firebase.google.com/project/prithvi-70646/overview"
+},
   "client": [
     {
       "client_info": {

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,8 +13,11 @@ import 'package:prithvi/features/dashboard/widgets/bottombar.dart';
 import 'package:prithvi/features/features.dart';
 
 import 'package:prithvi/models/model.dart';
+import 'package:prithvi/services/locator.dart';
 
 import 'package:sizer/sizer.dart';
+
+import '../../../services/firebase_analytics.dart';
 
 class Login extends ConsumerWidget {
   static const id = "/login";
@@ -23,6 +27,25 @@ class Login extends ConsumerWidget {
   final TextEditingController _emailController = TextEditingController();
 
   final TextEditingController _passwordController = TextEditingController();
+  // final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
+  Future<void> handleLogin() async {
+    final email = _emailController.text;
+
+    try {
+      print("ttttttttttttttttttttttttttttttttttttttttttttttt");
+      // Perform your login logic here
+
+      // If login is successful, log the "login" event
+      await locator<AnalyticsServices>().logLoginEvent(email);
+
+      // Navigate to the home screen or perform other actions
+    } catch (error) {
+      print("catch");
+
+      // Handle login error
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -176,6 +199,7 @@ class Login extends ConsumerWidget {
                                                   .validate()) {
                                                 _userSignIn(
                                                     signInNotifier, context);
+                                                handleLogin();
                                               }
                                             },
                                             width: double.infinity,
