@@ -1,13 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get_it/get_it.dart';
+
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:prithvi/config/utils/shared_prefernces.dart';
 import 'package:prithvi/core/core.dart';
-import 'package:prithvi/features/auth/pages/login_view.dart';
-import 'package:prithvi/features/home/pages/home_view.dart';
 
 import 'package:prithvi/features/splash/splash.dart';
 import 'package:prithvi/firebase_options.dart';

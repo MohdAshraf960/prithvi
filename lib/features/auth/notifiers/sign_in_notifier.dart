@@ -39,7 +39,8 @@ class SignInNotifier extends ChangeNotifier {
         onSuccess(userResult);
       } else {
         // If signup failed, call the onError callback with the error message
-        onError('Unable to login');
+        //onError();
+        throw Exception('Unable to login');
       }
       isLoading = false;
     } catch (e) {

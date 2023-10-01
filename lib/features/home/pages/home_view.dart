@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:prithvi/core/core.dart';
 import 'package:prithvi/features/auth/pages/verification_view.dart';
 
 import 'package:prithvi/features/home/widgets/customcard.dart';
@@ -22,41 +23,42 @@ class _HomeState extends ConsumerState<Home> {
     ChartData('Category 3', 20),
     ChartData('Category 4', 10),
   ];
-  late FirebaseFirestore _firebaseFirestore;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _firebaseFirestore = FirebaseFirestore.instance;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Home",
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: primaryGreen,
+      ),
       body: Column(
         children: [
           Column(
             children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Backdrop',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 30,
-                      color: Colors.white),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
+              // SizedBox(
+              //   height: 20,
+              // ),
               Container(
                 height: 300,
                 width: 300,
                 child: Column(
                   children: [
                     SfCircularChart(
+                      legend: Legend(
+                        isVisible: true,
+                        isResponsive: true,
+                      ),
                       series: <CircularSeries>[
                         // Create a pie series
                         PieSeries<ChartData, String>(

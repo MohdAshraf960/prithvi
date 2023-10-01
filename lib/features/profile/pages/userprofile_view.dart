@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sizer/sizer.dart';
 
-import '../../../models/sign_in_model.dart';
 import '../../auth/widgets/textformfield.dart';
 
 class UserProfileScreen extends ConsumerStatefulWidget {
@@ -53,28 +52,32 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   bool isDisable = false;
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final media = MediaQuery.of(context);
+    // final media = MediaQuery.of(context);
     nameController.text = userName;
     emailController.text = userEmail;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryGreen,
-        title: Text('User Profile'),
+        title: Text(
+          "Profile",
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
+        elevation: 0,
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16),
-            child: InkWell(
-                onTap: () {
-                  setState(() {
-                    isDisable = true;
-                  });
-                },
-                child: Icon(Icons.edit)),
-          )
+          // Padding(
+          //   padding: const EdgeInsets.only(right: 16),
+          //   child: InkWell(
+          //       onTap: () {
+          //         setState(() {
+          //           isDisable = true;
+          //         });
+          //       },
+          //       child: Icon(Icons.edit)),
+          // )
         ],
       ),
       body: Padding(
@@ -133,12 +136,9 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     color: primaryGreen,
                     text: "LOG OUT",
                     onTap: () async {
+                      service.setLogout();
                       Navigator.pushNamedAndRemoveUntil(
                           context, Login.id, (route) => false);
-
-                      //Navigator.pushNamed(context, "/login");
-
-                      service.getUser();
                     },
                     width: double.infinity,
                   )
@@ -149,10 +149,6 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     color: Colors.blue,
                     text: "UPDATE",
                     onTap: () async {
-                      // Navigator.pushNamedAndRemoveUntil(
-                      //     context, Login.id, (route) => false);
-
-                      //Navigator.pushNamed(context, "/login");
                       setState(() {
                         isDisable = false;
                       });

@@ -1,19 +1,16 @@
 import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:prithvi/config/config.dart';
 
 import 'package:prithvi/core/core.dart';
+import 'package:prithvi/features/auth/pages/login_view.dart';
 
 import 'package:prithvi/features/auth/widgets/textformfield.dart';
-import 'package:prithvi/features/dashboard/widgets/bottombar.dart';
-import 'package:prithvi/features/features.dart';
-
-import 'package:prithvi/models/model.dart';
 
 import 'package:sizer/sizer.dart';
 
@@ -28,8 +25,6 @@ class ForgotPassword extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
     final media = MediaQuery.of(context);
-    final signInNotifier = ref.watch(signInStateNotifierProvider);
-    bool _obscureText = true;
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -97,16 +92,7 @@ class ForgotPassword extends ConsumerWidget {
                                           color: primaryGreen,
                                           fontSize: 24),
                                     ),
-                                    SizedBox(
-                                      height: 0.2.h,
-                                    ),
-                                    Text(
-                                      "to your account ✨",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: grey2Color,
-                                          fontSize: 16),
-                                    ),
+
                                     const SizedBox(
                                       height: kToolbarHeight * 0.5,
                                     ),
@@ -122,12 +108,6 @@ class ForgotPassword extends ConsumerWidget {
                                         labelText: "Enter Email",
                                         controller: _forgotemailController,
                                         fontSize: 12.sp,
-                                        //obscureText: _obscureText,
-                                        // onTap: () {
-                                        //   _obscureText = !_obscureText;
-                                        // },
-                                        // suffixIcon: _obscureText ? Icon(Icons.visibility) : Icons.visibility_off,
-                                        // controller: viewModel.email,
                                         fontWeight: FontWeight.w400),
                                     const SizedBox(
                                       height: kToolbarHeight * 0.6,
@@ -136,17 +116,13 @@ class ForgotPassword extends ConsumerWidget {
                                     const SizedBox(
                                       height: kToolbarHeight * 0.1,
                                     ),
-                                    // signInNotifier.isLoading
-                                    //     ? Center(
-                                    //         child: CircularProgressIndicator())
-                                    //     :
 
                                     CustomButton(
                                       textfontsize: 16,
                                       height: 6.h,
                                       textColor: whiteColor,
                                       color: primaryGreen,
-                                      text: "ForgotPassword".toUpperCase(),
+                                      text: "Forgot Password".toUpperCase(),
                                       onTap: () async {
                                         formKey.currentState!.save();
                                         if (formKey.currentState!.validate()) {
@@ -187,8 +163,8 @@ class ForgotPassword extends ConsumerWidget {
       );
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _forgotemailController.text.trim());
-      RoutePage.showSucessSnackbar("Password Reset Email Sent");
-      Navigator.pushNamed(context, "/login");
+      RoutePage.showSucessSnackbar("Please check you email for reset password");
+      Navigator.pushNamed(context, Login.id);
     } on FirebaseAuthException catch (e) {
       print(e);
       AppException.onError(e);

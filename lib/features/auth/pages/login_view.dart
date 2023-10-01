@@ -1,12 +1,13 @@
 import 'dart:ui';
 
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:prithvi/config/config.dart';
 
 import 'package:prithvi/core/core.dart';
+import 'package:prithvi/features/auth/pages/forgot_password_view.dart';
+import 'package:prithvi/features/auth/pages/pages.dart';
 
 import 'package:prithvi/features/auth/widgets/textformfield.dart';
 import 'package:prithvi/features/dashboard/widgets/bottombar.dart';
@@ -73,7 +74,7 @@ class Login extends ConsumerWidget {
                 ),
                 Container(
                   // Wrap the BackdropFilter with a Container
-                  height: size.height * 0.54, // Set to 50% of screen height
+                  height: size.height * 0.52, // Set to 50% of screen height
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
                     child: AnimatedContainer(
@@ -174,12 +175,17 @@ class Login extends ConsumerWidget {
                                     Align(
                                       alignment: Alignment.bottomRight,
                                       child: TextButton(
-                                          onPressed: () {},
-                                          child: Text(
-                                            "Forgot Password",
-                                            style:
-                                                TextStyle(color: primaryGreen),
-                                          )),
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            ForgotPassword.id,
+                                          );
+                                        },
+                                        child: Text(
+                                          "Forgot Password",
+                                          style: TextStyle(color: primaryGreen),
+                                        ),
+                                      ),
                                     ),
                                     const SizedBox(
                                       height: kToolbarHeight * 0.1,
@@ -211,7 +217,9 @@ class Login extends ConsumerWidget {
                                       child: OutlinedButton(
                                         onPressed: () {
                                           Navigator.pushNamed(
-                                              context, "/signup");
+                                            context,
+                                            SignUp.id,
+                                          );
                                         },
                                         child: Text(
                                           'Signup'.toUpperCase(),
@@ -233,16 +241,7 @@ class Login extends ConsumerWidget {
                                         ),
                                       ),
                                     ),
-                                    // TextButton(
-                                    //   onPressed: () {
-                                    //     Navigator.pushNamed(context, SignUp.id);
-                                    //   },
-                                    //   child: Text(
-                                    //     "Do you want to Sign Up?",
-                                    //     style: TextStyle(
-                                    //         color: grey2Color, fontSize: 12),
-                                    //   ),
-                                    // ),
+
                                     const SizedBox(
                                       height: kToolbarHeight * 0.9,
                                     ),
@@ -271,13 +270,12 @@ class Login extends ConsumerWidget {
           password: _passwordController.text,
         ),
         onSuccess: (result) {
-          Navigator.of(context).push(
+          Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (_) => BottomBar(),
             ),
+            (route) => false,
           );
-          // RoutePage.navigatorKey.currentState!
-          //     .pushNamedAndRemoveUntil(Home.id, (route) => false);
         },
         onError: (error) {
           AppException.onError(error);
