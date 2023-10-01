@@ -177,40 +177,42 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                   ),
                 ElevatedButton(
                   onPressed: () async {
-                    // if (widget.index < widget.tabController!.length - 1) {
-                    //   widget.tabController
-                    //       ?.animateTo(widget.index + 1); // Go to the next tab
-                    // }
+                    if (widget.index < widget.tabController!.length - 1) {
+                      widget.tabController
+                          ?.animateTo(widget.index + 1); // Go to the next tab
+                    }
 
                     // Logger()
                     //     .i(questionsList.map((e) => e.sliderValue).toList());
                     // Logger()
                     //     .i(questionsList.map((e) => e.selectedOption).toList());
-                    questionsList.map((e) {
-                      Logger().i(e);
-                    }).toList();
+                    // questionsList.map((e) {
+                    //   Logger().i(e.id);
+                    // }).toList();
 
-                    var uuid = Uuid();
+                    //  var uuid = Uuid();
 
                     // QuestionsService(firestore: FirebaseFirestore.instance)
                     //     .createQuestion(
                     //   question: QuestionModel(
                     //     id: uuid.v4(),
-                    //     text: "What is the fuel used?",
-                    //     type: QuestionType.MCQ,
+                    //     text: "How often do you buy a laptop?",
+                    //     type: QuestionType.Input,
                     //     options: [
-                    //       Option(key: "Petrol", value: "Petrol"),
-                    //       Option(key: "CNG", value: "CNG"),
-                    //       Option(key: "Diesel", value: "Diesel"),
+                    //       Option(key: "Every year", value: 422),
+                    //       Option(key: "Once in three years", value: 422 / 3),
+                    //       Option(key: "Once in 5 years", value: 422 / 5),
+                    //       Option(key: "Once in 7 years", value: 422 / 7),
+                    //       Option(key: "Once in 10 years", value: 422 / 10),
                     //     ],
                     //     calculationFactor: 0,
                     //     categoryRef:
-                    //         FirebaseFirestore.instance.doc("categories/travel"),
+                    //         FirebaseFirestore.instance.doc("categories/other"),
                     //     timestamp: DateTime.now().microsecondsSinceEpoch,
                     //     unit: "",
-                    //     parentId: "f9b54c9d-7985-4818-a1c5-dd8ad830581d",
+                    //     parentId: "",
                     //     childId: [],
-                    //     isRelated: true,
+                    //     isRelated: false,
                     //     isSearchable: false,
                     //   ),
                     // );

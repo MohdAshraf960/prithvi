@@ -58,59 +58,11 @@ class _SelectOptionsState extends ConsumerState<SelectOptions> {
         ),
         value: widget.questionsList[widget.index].selectedOption,
         onChanged: (Option? newValue) {
-          // if (widget.questionsList[widget.index].isRelated) {
-          //   final parentId = widget.questionsList[widget.index].parentId;
-
-          //   //  Logger().d("parentId ====> $parentId");
-
-          //   bool allChildIdsPresent = widget.questionsList
-          //       .map((e) => e.childId)
-          //       .expand((element) => element!.toList())
-          //       .any((childId) => notifier.answersList.contains(childId));
-
-          //   // Logger().d("allChildIdsPresent $allChildIdsPresent");
-
-          //   if (parentId!.isEmpty || notifier.answersList.contains(parentId)) {
-          //     widget.questionsList[widget.index].selectedOption = newValue;
-          //     if (allChildIdsPresent == false) {
-          //       notifier.addIds(widget.questionsList[widget.index].id);
-          //       // Logger().d("answersList ${notifier.answersList}");
-          //     } else {
-          //       final result = widget.questionsList[widget.index];
-
-          //       if (result.selectedOption != null) {
-          //         final carCategory = widget.questionsList.firstWhere(
-          //             (element) => element.text.contains("type of car"));
-
-          //         final engineCapacity = widget.questionsList.firstWhere(
-          //             (element) =>
-          //                 element.text.toLowerCase().contains("engine cc"));
-
-          //         final fuel = widget.questionsList.firstWhere(
-          //             (element) => element.text.contains("fuel used"));
-          //         notifier.carDetails['category'] =
-          //             carCategory.selectedOption?.key;
-
-          //         notifier.carDetails['engineCC'] =
-          //             engineCapacity.selectedOption?.key;
-
-          //         notifier.carDetails['fuelType'] = fuel.selectedOption?.key;
-
           //1) find by string contains enigne,fuel,cateogry and add selected value to the map accordingly
           //2) table responses store map of dependant values
           //3) answers table actual containing calculated value from responses table calfactr,final answer
           //4) TODO: call car service
 
-          //         Logger().d("carDetails ${notifier.carDetails}");
-          //       }
-          //     }
-          //   } else {
-          //     widget.onChanged(null);
-          //     Logger().e("Exception ========= ${notifier.answersList}");
-          //   }
-          // } else {
-          //   widget.questionsList[widget.index].selectedOption = newValue;
-          // }
           if (widget.questionsList[widget.index].isRelated) {
             final question = widget.questionsList[widget.index];
             final parentId = question.parentId;
@@ -136,22 +88,6 @@ class _SelectOptionsState extends ConsumerState<SelectOptions> {
                 } else if (widget.categoryType == "other") {
                   //TODO: set dependant values
                 }
-                // final carCategory = widget.questionsLis
-                // t.firstWhere(
-                //     (element) => element.text.contains("type of car"));
-
-                // final engineCapacity = widget.questionsList.firstWhere(
-                //     (element) =>
-                //         element.text.toLowerCase().contains("engine cc"));
-
-                // final fuel = widget.questionsList.firstWhere(
-                //     (element) => element.text.contains("fuel used"));
-
-                // notifier.carDetails['category'] =
-                //     carCategory.selectedOption?.key;
-                // notifier.carDetails['engineCC'] =
-                //     engineCapacity.selectedOption?.key;
-                // notifier.carDetails['fuelType'] = fuel.selectedOption?.key;
 
                 // Process car details here
                 Logger().d("carDetails ${notifier.carDetails}");
@@ -167,7 +103,7 @@ class _SelectOptionsState extends ConsumerState<SelectOptions> {
         items: widget.questionsList[widget.index].options.map((Option option) {
           return DropdownMenuItem<Option>(
             value: option,
-            child: Text('${option.value}'),
+            child: Text('${option.key}'),
           );
         }).toList(),
       ),

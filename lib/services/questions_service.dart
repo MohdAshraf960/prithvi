@@ -46,6 +46,7 @@ class QuestionsService {
               '${FirebaseCollection.categories}/$categoryType',
             ),
           )
+          .where('isRelated', isEqualTo: false)
           .get();
 
       // Map Firestore documents to QuestionModel objects
