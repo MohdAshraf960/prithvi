@@ -194,6 +194,7 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                           ?.animateTo(widget.index + 1); // Go to the next tab
                     }
 
+/*
                     // Logger()
                     //     .i(questionsList.map((e) => e.sliderValue).toList());
                     // Logger()
@@ -228,6 +229,7 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                     //     isSearchable: false,
                     //   ),
                     // );
+*/
                   },
                   child: Text("Next"),
                 ),

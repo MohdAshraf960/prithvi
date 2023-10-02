@@ -52,6 +52,21 @@ class _CategoryViewState extends ConsumerState<CategoryView>
                 fontSize: 20,
               ),
             ),
+            /* 
+         cat3goryList=   [
+{
+"image":"backend/img1.png",
+"text":"first text"
+},
+{
+"image":"backend/img1.png",
+"text":"first text"
+},
+
+
+            ]
+            
+            */
             bottom: TabBar(
               controller: _tabController,
               padding: EdgeInsets.symmetric(vertical: 10),

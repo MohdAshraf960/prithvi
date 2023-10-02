@@ -23,8 +23,6 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  String userName = "";
-  String userEmail = "";
 
   @override
   void initState() {
@@ -42,9 +40,9 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
     if (getuser != null) {
       final userModel = UserModel.fromJson(getuser);
       setState(() {
-        userName = userModel.name
+        nameController.text = userModel.name
             .toString(); // Update the user variable with the user data
-        userEmail = userModel.email.toString();
+        emailController.text = userModel.email.toString();
       });
     }
   }
@@ -54,9 +52,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    // final media = MediaQuery.of(context);
-    nameController.text = userName;
-    emailController.text = userEmail;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryGreen,
@@ -67,18 +63,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
           ),
         ),
         elevation: 0,
-        actions: [
-          // Padding(
-          //   padding: const EdgeInsets.only(right: 16),
-          //   child: InkWell(
-          //       onTap: () {
-          //         setState(() {
-          //           isDisable = true;
-          //         });
-          //       },
-          //       child: Icon(Icons.edit)),
-          // )
-        ],
+        actions: [],
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),

@@ -13,7 +13,7 @@ class QuestionsNotifier extends ChangeNotifier {
   List<String> answersList = [];
   List reponseList = [];
 
-  List<ChartData> chartList = [];
+  // List<ChartData> chartList = [];
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -134,11 +134,11 @@ class QuestionsNotifier extends ChangeNotifier {
       // } else {
       //   // If the category does not exist, add it to chartList
 
-      chartList.add(ChartData(category, output.toDouble()));
+      //  I m doing comment here  // chartList.add(ChartData(category, output.toDouble()));
       // }
     }
     Logger().f("category   $category");
-    Logger().f("chartList  ==== $chartList");
+    //  Logger().f("chartList  ==== $chartList");
 
     // chartList = chartList.toSet().toList();
 

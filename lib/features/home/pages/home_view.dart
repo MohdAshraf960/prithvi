@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -8,6 +9,112 @@ import 'package:prithvi/config/utils/string.dart';
 import 'package:prithvi/core/core.dart';
 import 'package:prithvi/features/home/widgets/customcard.dart';
 
+class Home extends StatefulWidget {
+  static const id = "/home";
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  PageController _pageController =
+      PageController(); // Define _pageController here
+  int _currentPage = 0;
+
+  final List<Map<String, String>> data = [
+    {
+      'image': Assets.first,
+      'text': 'We are thrilled to welcome \nyou to the Prithivi community',
+    },
+    {
+      'image': Assets.second,
+      'text':
+          'Conveniently track the environmental \nimpact of your daily activities such as food,\ndaily commute,travel and consumption',
+    },
+    {
+      'image': Assets.third,
+      'text': 'Get easy suggetion to reduce your impact',
+    },
+    {
+      'image': Assets.emailVerification,
+      'text': 'Image 4 Description',
+    },
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController.addListener(() {
+      setState(() {
+        _currentPage = _pageController.page!.toInt();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: primaryGreen,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [Text('Prithivi'), Icon(Icons.close)],
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                return buildPageItem(data[index]);
+              },
+            ),
+          ),
+          DotsIndicator(
+            dotsCount: data.length,
+            position: _currentPage,
+            decorator: DotsDecorator(
+              color: Colors.grey, // Inactive dot color
+              activeColor: primaryGreen, // Active dot color
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildPageItem(Map<String, String> item) {
+    return Container(
+      padding: EdgeInsets.only(left: 16, right: 16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            item['image'].toString(),
+            // width: 200.0,
+            // height: 200.0,
+            fit: BoxFit.contain,
+          ),
+          SizedBox(height: 16.0),
+          Text(
+            item['text'].toString(),
+            style: TextStyle(fontSize: 18.0),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/*
 class Home extends ConsumerStatefulWidget {
   static const id = "/home";
   const Home({super.key});
@@ -127,6 +234,10 @@ class _HomeState extends ConsumerState<Home> {
   }
 }
 
+
+
+*/
+
 /*
 
 
@@ -240,6 +351,8 @@ class HomeScreen extends StatelessWidget {
 
 
  */
+
+/*
 class ChartData {
   final String category;
   double value;
@@ -249,3 +362,4 @@ class ChartData {
   @override
   String toString() => 'ChartData(category: $category, value: $value)';
 }
+*/

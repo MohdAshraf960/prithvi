@@ -6,4 +6,8 @@ class Assets {
   static const String bottom2 = "${baseUri}bottom2.png";
   static const String bottom3 = "${baseUri}bottom3.png";
   static const String emailVerification = "${baseUri}Email-Confirmation.png";
+
+  static const String first = "${baseUri}first.jpeg";
+  static const String second = "${baseUri}second.jpeg";
+  static const String third = "${baseUri}third.jpeg";
 }
