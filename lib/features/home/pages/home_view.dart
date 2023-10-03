@@ -1,13 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:dots_indicator/dots_indicator.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 import 'package:prithvi/config/config.dart';
-import 'package:prithvi/config/utils/string.dart';
+
 import 'package:prithvi/core/core.dart';
-import 'package:prithvi/features/home/widgets/customcard.dart';
 
 class Home extends StatefulWidget {
   static const id = "/home";
@@ -61,10 +60,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryGreen,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [Text('Prithivi'), Icon(Icons.close)],
-        ),
+        title: Text('Home'),
       ),
       body: Column(
         children: [
@@ -94,8 +90,25 @@ class _HomeState extends State<Home> {
     return Container(
       padding: EdgeInsets.only(left: 16, right: 16),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        //mainAxisAlignment: MainAxisAlignment.st,
         children: [
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              children: [
+                TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    "SKIP",
+                    style: TextStyle(
+                      color: grey,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Spacer(),
           Image.asset(
             item['image'].toString(),
             // width: 200.0,

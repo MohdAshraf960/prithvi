@@ -1,91 +1,33 @@
-class Survey {
-  final String userId;
-  final List<SubcollectionData> subcollections;
+class SurveyModel {
+  final String id; // Unique identifier for the survey
+  final String title;
+  final String description;
+  final num categoryTotal;
 
-  Survey({
-    required this.userId,
-    required this.subcollections,
+  SurveyModel({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.categoryTotal,
   });
 
-  factory Survey.fromJson(Map<String, dynamic> json) {
-    final subcollectionList = (json['subcollections'] as List)
-        .map((subcollectionJson) =>
-            SubcollectionData.fromJson(subcollectionJson))
-        .toList();
-
-    return Survey(
-      userId: json['userId'] as String,
-      subcollections: subcollectionList,
+  // Factory constructor to create a SurveyModel from a Map
+  factory SurveyModel.fromJson(Map<String, dynamic> json) {
+    return SurveyModel(
+      id: json['id'] ?? '',
+      title: json['title'] ?? '',
+      description: json['description'] ?? '',
+      categoryTotal: json['categoryTotal'] ?? 0,
     );
   }
 
-  Map<String, dynamic> toJson() {
+  // Convert SurveyModel to a Map for Firestore
+  Map<String, dynamic> toMap() {
     return {
-      'userId': userId,
-      'subcollections': subcollections
-          .map((subcollection) => subcollection.toJson())
-          .toList(),
-    };
-  }
-}
-
-class SubcollectionData {
-  final String name;
-  final List<SubcollectionDocument> documents;
-
-  SubcollectionData({
-    required this.name,
-    required this.documents,
-  });
-
-  factory SubcollectionData.fromJson(Map<String, dynamic> json) {
-    final documentList = (json['documents'] as List)
-        .map((documentJson) => SubcollectionDocument.fromJson(documentJson))
-        .toList();
-
-    return SubcollectionData(
-      name: json['name'] as String,
-      documents: documentList,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'documents': documents.map((document) => document.toJson()).toList(),
-    };
-  }
-}
-
-class SubcollectionDocument {
-  final String answerId;
-  final String answer;
-  final dynamic calculation; // Can be int, double, or String
-  final String questionId;
-
-  SubcollectionDocument({
-    required this.answerId,
-    required this.answer,
-    required this.calculation,
-    required this.questionId,
-  });
-
-  factory SubcollectionDocument.fromJson(Map<String, dynamic> json) {
-    return SubcollectionDocument(
-      answerId: json['answerId'] as String,
-      answer: json['answer'] as String,
-      calculation:
-          json['calculation'], // Dynamic type, can be int, double, or String
-      questionId: json['questionId'] as String,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'answerId': answerId,
-      'answer': answer,
-      'calculation': calculation,
-      'questionId': questionId,
+      'id': id,
+      'title': title,
+      'description': description,
+      'categoryTotal': categoryTotal,
     };
   }
 }

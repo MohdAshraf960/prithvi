@@ -46,7 +46,7 @@ class QuestionsService {
               '${FirebaseCollection.categories}/$categoryType',
             ),
           )
-          .where('isRelated', isEqualTo: false)
+          .where('isActive', isEqualTo: true)
           .get();
 
       // Map Firestore documents to QuestionModel objects
@@ -61,31 +61,6 @@ class QuestionsService {
       return [];
     }
   }
-  // Stream<List<QuestionModel>> getQuestionsList({required String categoryType}) {
-  //   try {
-  //     // Create a reference to the Firestore collection
-  //     final collectionRef = _firestore.collection(FirebaseCollection.quesitons);
-
-  //     // Create a query to filter by 'categoryRef'
-  //     final query = collectionRef.orderBy('createdAt').where(
-  //           'categoryRef',
-  //           isEqualTo: _firestore
-  //               .doc('${FirebaseCollection.categories}/$categoryType'),
-  //         );
-
-  //     // Create a stream of snapshots and map them to QuestionModel objects
-  //     final stream = query.snapshots().map((querySnapshot) {
-  //       return querySnapshot.docs.map((doc) {
-  //         return QuestionModel.fromJson(doc.data());
-  //       }).toList();
-  //     });
-
-  //     return stream;
-  //   } catch (e) {
-  //     Logger().e("error ======$e");
-  //     return Stream.value([]); // Return an empty stream in case of an error
-  //   }
-  // }
 
   Future<void> createQuestion({required QuestionModel question}) async {
     try {
@@ -97,9 +72,57 @@ class QuestionsService {
       await questionsCollection
           .doc('${question.categoryRef.path.split('/').last}-${question.id}')
           .set(question.toMap());
+      Logger().i("Question created sucessfuly");
     } catch (e) {
       Logger().e("error creating question: $e");
       rethrow;
+    }
+  }
+
+// Function to add the "isActive" field to all documents
+  Future<void> addIsActiveFieldToAllQuestions() async {
+    try {
+      // Reference to the Firestore collection
+      CollectionReference questionsCollection =
+          FirebaseFirestore.instance.collection(FirebaseCollection.quesitons);
+
+      // Fetch all documents in the collection
+      QuerySnapshot questionsSnapshot = await questionsCollection.get();
+
+      // Loop through each document and add the "isActive" field
+      questionsSnapshot.docs.forEach((doc) async {
+        // Check if the "isActive" field doesn't already exist in the document
+
+        await doc.reference.update({'isActive': true});
+        print('Added "isActive" field to document ${doc.id}');
+      });
+
+      print('Added "isActive" field to all documents');
+    } catch (e) {
+      print('Error adding "isActive" field: $e');
+    }
+  }
+
+  // Function to set "isActive" to false for documents with "isRelated" as true
+  Future<void> setActiveForRelatedQuestions() async {
+    try {
+      // Reference to the Firestore collection
+      CollectionReference questionsCollection =
+          FirebaseFirestore.instance.collection('questions');
+
+      // Query for documents where "isRelated" is true
+      QuerySnapshot relatedQuestionsSnapshot =
+          await questionsCollection.where('isRelated', isEqualTo: true).get();
+
+      // Loop through each related document and set "isActive" to true
+      relatedQuestionsSnapshot.docs.forEach((doc) async {
+        await doc.reference.update({'isActive': false});
+        print('Set "isActive" to true for document ${doc.id}');
+      });
+
+      print('Set "isActive" to true for related questions');
+    } catch (e) {
+      print('Error setting "isActive" for related questions: $e');
     }
   }
 }

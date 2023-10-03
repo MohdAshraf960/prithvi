@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:prithvi/config/config.dart';
-import 'package:prithvi/features/home/pages/home_view.dart';
+
 import 'package:prithvi/models/model.dart';
 import 'package:prithvi/services/services.dart';
+import 'package:uuid/uuid.dart';
 
 class QuestionsNotifier extends ChangeNotifier {
   final QuestionsService _questionsService;
+  final SurveyService _surveyService;
+  SharedPreferencesService _sharedPreferencesService;
   // ignore: unused_field
   final CarService _carService;
   List<QuestionModel> questionsList = [];
   List<String> answersList = [];
   List reponseList = [];
+
+  List<num> homeEmission = [];
+  List<num> travelEmission = [];
+  num homeEmissionTotal = 0.0;
+  num travelEmissionTotal = 0.0;
 
   // List<ChartData> chartList = [];
 
@@ -32,9 +40,13 @@ class QuestionsNotifier extends ChangeNotifier {
 
   QuestionsNotifier(
       {required QuestionsService questionsService,
-      required CarService carService})
+      required CarService carService,
+      required SurveyService surveyService,
+      required SharedPreferencesService sharedPreferencesService})
       : _questionsService = questionsService,
-        _carService = carService;
+        _carService = carService,
+        _surveyService = surveyService,
+        _sharedPreferencesService = sharedPreferencesService;
 
   void getQuestionsList({required categoryType}) async {
     try {
@@ -73,30 +85,6 @@ class QuestionsNotifier extends ChangeNotifier {
     //TODO: call car service
   }
 
-  calculateEmissionValue(String categoryType, int index) {
-    Logger().d("CATEGORY TYPE ==> $categoryType");
-    // reponseList.clear();
-    if (isStringValid(questionsList[index].controller.text)) {
-      if (questionsList[index].isRelated) {
-        //TODO: handle on change logic for related fields
-      } else {
-        if (questionsList[index].type == QuestionType.Input) {
-          questionsList[index].calculatedValue =
-              double.parse(questionsList[index].controller.text) *
-                  questionsList[index].calculationFactor;
-        }
-        if (questionsList[index].type == QuestionType.MCQ) {
-          questionsList[index].calculatedValue =
-              questionsList[index].calculationFactor;
-        }
-      }
-
-      print(
-          "$categoryType calculatedValue ==> ${questionsList[index].calculatedValue}");
-      calculateDataCategoryWise(categoryType);
-    }
-  }
-
   bool isStringValid(String inputString) {
     for (int i = 0; i < inputString.length; i++) {
       if (!isNumeric(inputString[i])) {
@@ -113,35 +101,74 @@ class QuestionsNotifier extends ChangeNotifier {
     return double.tryParse(s) != null;
   }
 
-  void calculateDataCategoryWise(String category) {
-    final categoryQuestions = questionsList
-        .where((element) => element.categoryRef.path.contains(category));
-
-    Logger().d("categoryQuestions   $categoryQuestions");
-
-    if (categoryQuestions.isNotEmpty) {
-      final output = categoryQuestions
-          .map((e) => e.calculatedValue)
-          .reduce((value, element) => value + element);
-      Logger().d("output  ==== $output");
-      // Check if the category already exists in chartList
-      // final existingCategoryIndex = chartList.indexWhere((chartData) =>
-      //     chartData.category.toLowerCase() == category.toLowerCase());
-
-      // if (existingCategoryIndex != -1) {
-      //   // If the category exists, update its value
-      //   chartList[existingCategoryIndex].value = output.toDouble();
-      // } else {
-      //   // If the category does not exist, add it to chartList
-
-      //  I m doing comment here  // chartList.add(ChartData(category, output.toDouble()));
-      // }
+  calculateEmissionForInput(String value, int index) {
+    if (isStringValid(value)) {
+      questionsList[index].calculatedValue = num.parse(
+        (double.tryParse(value)! * questionsList[index].calculationFactor)
+            .toStringAsFixed(2),
+      );
     }
-    Logger().f("category   $category");
-    //  Logger().f("chartList  ==== $chartList");
 
-    // chartList = chartList.toSet().toList();
+    Logger().e(
+        "${questionsList[index].categoryRef.path.split("/").last}  TEXT ${questionsList[index].text} =======  VALUE ${questionsList[index].calculatedValue} === ${questionsList[index].calculationFactor}");
+    getCategory(index);
+  }
 
-    notifyListeners();
+  calculationEmissionForMcq(int index) {
+    questionsList[index].calculatedValue = num.parse(
+      ((questionsList[index].selectedOption?.value as num) *
+              questionsList[index].calculationFactor)
+          .toStringAsFixed(2),
+    );
+
+    getCategory(index);
+  }
+
+  getCategory(int index) {
+    if (questionsList[index].categoryRef.path.split("/").last == "home") {
+      homeEmission = [...questionsList.map((e) => e.calculatedValue).toList()];
+
+      homeEmissionTotal = num.parse(homeEmission
+              .reduce((value, element) => value + element)
+              .toStringAsFixed(2)) /
+          1000;
+      notifyListeners();
+      createUpdateSurvey(
+          categoryName: "home",
+          total: num.parse(homeEmissionTotal.toStringAsPrecision(2)) / 1000);
+    }
+
+    if (questionsList[index].categoryRef.path.split("/").last == "travel") {
+      travelEmission = [
+        ...questionsList.map((e) => e.calculatedValue).toList()
+      ];
+
+      travelEmissionTotal = num.parse(travelEmission
+              .reduce((value, element) => value + element)
+              .toStringAsFixed(2)) /
+          1000;
+      notifyListeners();
+      createUpdateSurvey(
+        categoryName: "travel",
+        total: num.parse(travelEmissionTotal.toStringAsPrecision(2)) / 1000,
+      );
+    }
+
+    Logger().f("${travelEmissionTotal} ${homeEmissionTotal}");
+  }
+
+  createUpdateSurvey({required String categoryName, required num total}) async {
+    try {
+      await _surveyService.createOrUpdateTotalField(
+          categoryName: categoryName, categoryTotal: total);
+      //   totalEmission
+      // if (categoryName == "home") {
+      //   await _sharedPreferencesService.setHomeTotal(total);
+      // } else {
+      //   await _sharedPreferencesService.setTravelTotal(total);
+      // }
+    } catch (e) {
+      AppException.onError(e);
+    }
   }
 }

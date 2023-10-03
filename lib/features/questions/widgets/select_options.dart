@@ -97,9 +97,10 @@ class _SelectOptionsState extends ConsumerState<SelectOptions> {
             }
           } else {
             widget.questionsList[widget.index].selectedOption = newValue;
-            notifier.calculateEmissionValue(widget.categoryType, widget.index);
+
             Logger().d(
-                "OPTION ===> ${widget.questionsList[widget.index].selectedOption}");
+                "OPTION ===> ${widget.questionsList[widget.index].selectedOption?.value.runtimeType}");
+            notifier.calculationEmissionForMcq(widget.index);
           }
         },
         items: widget.questionsList[widget.index].options.map((Option option) {

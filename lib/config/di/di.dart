@@ -5,6 +5,8 @@ import 'package:prithvi/config/config.dart';
 import 'package:prithvi/features/category/category.dart';
 import 'package:prithvi/features/features.dart';
 import 'package:prithvi/features/questions/questions.dart';
+import 'package:prithvi/features/survey/notifiers/survey_notifiers.dart';
+
 import 'package:prithvi/services/services.dart';
 
 // ***************************************************************************
@@ -65,18 +67,51 @@ final Provider<CarService> carServiceProvider = Provider<CarService>(
   },
 );
 
+final Provider<SurveyService> surveyServiceProvider = Provider<SurveyService>(
+  (ref) {
+    final firestore = ref.read(fireStoreProvider);
+    final sharedPreference = ref.read(sharedPreferencesServiceProvider);
+
+    return SurveyService(
+      firestore: firestore,
+      sharedPreferencesService: sharedPreference,
+    );
+  },
+);
+
 // ***************************************************************************
 // NOTIFIERS
 // ***************************************************************************
 
+final ChangeNotifierProvider<SurveyNotifier> SurveyNotifierProvider =
+    ChangeNotifierProvider<SurveyNotifier>(
+  (ref) {
+    final SurveyService surveyService = ref.watch(surveyServiceProvider);
+    final SharedPreferencesService sharedPreferencesService =
+        ref.watch(sharedPreferencesServiceProvider);
+
+    return SurveyNotifier(
+        surveyService: surveyService,
+        sharedPreferencesService: sharedPreferencesService)
+      ..getSurveyTotal();
+  },
+);
+
 final questionNotifierProvider =
     ChangeNotifierProvider.family<QuestionsNotifier, String>(
   (ref, categoryType) {
-    final QuestionsService questionsService = ref.read(questionServiceProvider);
-    final CarService carService = ref.read(carServiceProvider);
+    final QuestionsService questionsService =
+        ref.watch(questionServiceProvider);
+    final CarService carService = ref.watch(carServiceProvider);
+    final SurveyService surveyService = ref.watch(surveyServiceProvider);
+    final SharedPreferencesService sharedPreferencesService =
+        ref.watch(sharedPreferencesServiceProvider);
 
     return QuestionsNotifier(
-        questionsService: questionsService, carService: carService)
+        questionsService: questionsService,
+        carService: carService,
+        surveyService: surveyService,
+        sharedPreferencesService: sharedPreferencesService)
       ..getQuestionsList(categoryType: categoryType);
   },
 );

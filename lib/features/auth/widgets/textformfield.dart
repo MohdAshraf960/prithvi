@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:prithvi/core/colors/colors.dart';
 import 'package:sizer/sizer.dart';
@@ -24,6 +25,7 @@ class AppFormField extends StatelessWidget {
   final FocusNode? focus;
   final bool readonly;
   final bool obscureText;
+  final List<TextInputFormatter>? inputFormatter;
 
   final FontWeight fontWeight;
   const AppFormField(
@@ -47,7 +49,8 @@ class AppFormField extends StatelessWidget {
       this.readonly = false,
       required this.fontWeight,
       this.hint,
-      this.onFieldSubmitted})
+      this.onFieldSubmitted,
+      this.inputFormatter})
       : super(key: key);
 
   @override
@@ -108,6 +111,7 @@ class AppFormField extends StatelessWidget {
               fontWeight: FontWeight.w400),
         ),
         onFieldSubmitted: onFieldSubmitted,
+        inputFormatters: inputFormatter,
       ),
     );
   }

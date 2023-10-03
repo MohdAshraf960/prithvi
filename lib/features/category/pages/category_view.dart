@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prithvi/config/di/di.dart';
 import 'package:prithvi/core/core.dart';
 import 'package:prithvi/features/questions/questions.dart';
+import 'package:prithvi/features/survey/survey.dart';
 
 class CategoryView extends ConsumerStatefulWidget {
   static const id = '/category-view';
@@ -91,14 +92,19 @@ class _CategoryViewState extends ConsumerState<CategoryView>
             children: provider.categoryList
                 .asMap()
                 .map(
-                  (index, category) => MapEntry(
-                    index,
-                    QuestionView(
-                        key: PageStorageKey(category.name),
-                        tabController: _tabController,
-                        categoryType: category.type,
-                        index: index),
-                  ),
+                  (index, category) {
+                    if (category.type == "result")
+                      return MapEntry(index, SurveyView());
+                    else
+                      return MapEntry(
+                        index,
+                        QuestionView(
+                            key: PageStorageKey(category.name),
+                            tabController: _tabController,
+                            categoryType: category.type,
+                            index: index),
+                      );
+                  },
                 )
                 .values
                 .toList(),

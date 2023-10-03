@@ -22,10 +22,16 @@ class SharedPreferencesService {
   // KEYS
   static const String userKey = "userKey";
   static const String isLoggedInKey = "isLoggedIn";
+  static const String totalKey = "total";
+  static const String homeKey = "homeKey";
+  static const String travelKey = "travelKey";
 
   // GETTERS
   String get user => _sharedPrefs!.getString(userKey) ?? "";
   bool get isLoggedIn => _sharedPrefs!.getBool(isLoggedInKey) ?? false;
+  num get totalEmission => _sharedPrefs!.getDouble(totalKey) ?? 0.0;
+  num get homeEmission => _sharedPrefs!.getDouble(homeKey) ?? 0.0;
+  num get travelEmission => _sharedPrefs!.getDouble(travelKey) ?? 0.0;
 
   // SETTERS
   void setUser(String user) {
@@ -40,6 +46,18 @@ class SharedPreferencesService {
 
   void setLoggedIn(bool isLoggedIn) {
     _sharedPrefs!.setBool(isLoggedInKey, isLoggedIn);
+  }
+
+  setTotal(num total) {
+    _sharedPrefs!.getDouble(totalKey);
+  }
+
+  setHomeTotal(num total) {
+    _sharedPrefs!.getDouble(homeKey);
+  }
+
+  setTravelTotal(num total) {
+    _sharedPrefs!.getDouble(travelKey);
   }
 
   // SETTER TO CLEAR PREFS FOR LOGOUT

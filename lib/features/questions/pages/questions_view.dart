@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 
 import 'package:prithvi/config/di/di.dart';
 import 'package:prithvi/core/core.dart';
@@ -7,18 +11,21 @@ import 'package:prithvi/features/auth/widgets/textformfield.dart';
 import 'package:prithvi/features/questions/questions.dart';
 
 import 'package:prithvi/models/questions_model.dart';
+import 'package:prithvi/services/services.dart';
 
 import 'package:syncfusion_flutter_sliders/sliders.dart';
+import 'package:uuid/uuid.dart';
 
 class QuestionView extends ConsumerStatefulWidget {
   final String categoryType;
   final int index;
   final TabController? tabController;
-  const QuestionView(
-      {super.key,
-      required this.categoryType,
-      required this.index,
-      this.tabController});
+  const QuestionView({
+    super.key,
+    required this.categoryType,
+    required this.index,
+    this.tabController,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _QuestionViewState();
@@ -81,19 +88,11 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                                     fontWeight: FontWeight.w400,
                                     height: 50,
                                     inputType: TextInputType.number,
+                                    inputFormatter: [
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
                                     onChanged: (value) {
-                                      final questionNotifier = ref.read(
-                                        questionNotifierProvider(
-                                            widget.categoryType),
-                                      );
-                                      Future.delayed(
-                                          Duration(milliseconds: 500), () {
-                                        if (value.isNotEmpty) {
-                                          questionNotifier
-                                              .calculateEmissionValue(
-                                                  widget.categoryType, index);
-                                        }
-                                      });
+                                      calculateEmissionOnChanged(value, index);
                                     },
                                     onFieldSubmitted: (value) {},
                                   ),
@@ -199,37 +198,42 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                     //     .i(questionsList.map((e) => e.sliderValue).toList());
                     // Logger()
                     //     .i(questionsList.map((e) => e.selectedOption).toList());
-                    // questionsList.map((e) {
-                    //   Logger().i(e.id);
-                    // }).toList();
+                  
 
-                    //  var uuid = Uuid();
+ */
+                    questionsList.map((e) {
+                      Logger().i(
+                          "ID======> ${e.id} TEXT==== ${e.text} ${e.timestamp} ${e.options}");
+                    }).toList();
+                    // var uuid = Uuid();
 
                     // QuestionsService(firestore: FirebaseFirestore.instance)
                     //     .createQuestion(
                     //   question: QuestionModel(
                     //     id: uuid.v4(),
-                    //     text: "How often do you buy a laptop?",
+                    //     text: "How many kms have you travelled by 3 wheeler?",
                     //     type: QuestionType.Input,
                     //     options: [
-                    //       Option(key: "Every year", value: 422),
-                    //       Option(key: "Once in three years", value: 422 / 3),
-                    //       Option(key: "Once in 5 years", value: 422 / 5),
-                    //       Option(key: "Once in 7 years", value: 422 / 7),
-                    //       Option(key: "Once in 10 years", value: 422 / 10),
+                    //       // Option(key: "zero", value: 0),
+                    //       // Option(key: "two", value: 2),
+                    //       // Option(key: "four", value: 4),
+                    //       // Option(key: "six", value: 6),
+                    //       // Option(key: "eight", value: 8),
+                    //       // Option(key: "ten", value: 10)
                     //     ],
-                    //     calculationFactor: 0,
+                    //     calculationFactor: 0.117,
                     //     categoryRef:
-                    //         FirebaseFirestore.instance.doc("categories/other"),
-                    //     timestamp: DateTime.now().microsecondsSinceEpoch,
-                    //     unit: "",
+                    //         FirebaseFirestore.instance.doc("categories/travel"),
+                    //     timestamp:
+                    //         1696096862384193, //DateTime.now().microsecondsSinceEpoch,
+                    //     unit: "kg CO2/km",
                     //     parentId: "",
                     //     childId: [],
                     //     isRelated: false,
                     //     isSearchable: false,
+                    //     isActive: true,
                     //   ),
                     // );
-*/
                   },
                   child: Text("Next"),
                 ),
@@ -239,5 +243,23 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
         ),
       ),
     );
+  }
+
+  void calculateEmissionOnChanged(String value, int index) {
+    //TODO: 1) check if parent exists or not
+    //TODO: 2) if parent exists then check values is selected or not and type of cateogry
+    //TODO: 3) if no parent is assigned then calculate directly by its calculaltionFactor
+    //TODO: 4) if parent exists then check what type of field is it then multiple the user input by retireved value
+
+    final questionNotifier = ref.read(
+      questionNotifierProvider(widget.categoryType),
+    );
+    Future.delayed(Duration(milliseconds: 500), () {
+      if (value.trim().isNotEmpty) {
+        questionNotifier.calculateEmissionForInput(value, index);
+      } else {
+        questionNotifier.calculateEmissionForInput("0", index);
+      }
+    });
   }
 }

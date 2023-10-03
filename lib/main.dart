@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,6 +23,7 @@ void main() async {
   );
 
   setUpLocator();
+
   runApp(
     ProviderScope(
       child: MyApp(),
@@ -36,11 +38,6 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Sizer(
       builder: (context, orientation, deviceType) => MaterialApp(
-        // builder: (context, child) =>Navigator(
-        //   key: locator<DialoSerive>().dialogNavigationKey,
-        //   onGenerateRoute: (setting)=>MaterialPageRoute(builder: (context) => DialogManager(child:child),)
-        // ),
-
         navigatorKey: RoutePage.navigatorKey,
         navigatorObservers: [
           locator<AnalyticsServices>().getAnalyticsObserver()
@@ -75,5 +72,30 @@ class MyApp extends ConsumerWidget {
         onGenerateRoute: (settings) => RoutePage.getPage(settings),
       ),
     );
+  }
+}
+
+//**
+//  input calculation store value in calculatedValue then add all values
+//  mcq calculation store value in calculatedValue then add all values
+// */
+
+Future<void> createSurvey(
+    String userEmail, String subcollectionName, int total) async {
+  try {
+    final firestore = FirebaseFirestore.instance;
+
+    // Create a document with the user's email as the ID
+    final userDoc = firestore.collection('survey').doc(userEmail);
+
+    // Create a subcollection with the passed name
+    final subcollection = userDoc.collection(subcollectionName);
+
+    // Create a document in the subcollection with the "total" field
+    final documentRef = await subcollection.add({'total': total});
+
+    print('Survey created successfully with ID: ${documentRef.id}');
+  } catch (e) {
+    print('Error creating survey: $e');
   }
 }

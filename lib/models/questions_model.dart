@@ -24,6 +24,7 @@ class QuestionModel {
   double sliderValue = 0.0;
   Option? selectedOption;
   num calculatedValue = 0.0;
+  bool isActive;
 
   QuestionModel(
       {required this.id,
@@ -37,7 +38,8 @@ class QuestionModel {
       this.parentId,
       this.childId,
       this.isRelated = false,
-      this.isSearchable = false});
+      this.isSearchable = false,
+      required this.isActive});
 
   factory QuestionModel.fromMap(Map<String, dynamic> map) {
     // Map the type string to the enum value
@@ -71,7 +73,8 @@ class QuestionModel {
         childId:
             (map['childId'] as List<dynamic>?)?.cast<String>() ?? <String>[],
         isRelated: map['isRelated'] ?? false,
-        isSearchable: map['isSearchable'] ?? false);
+        isSearchable: map['isSearchable'] ?? false,
+        isActive: map['isActive'] ?? false);
   }
 
   Map<String, dynamic> toMap() {
@@ -87,7 +90,8 @@ class QuestionModel {
       'parentId': parentId ?? "",
       'childId': childId ?? [],
       'isRelated': isRelated,
-      'isSearchable': isSearchable
+      'isSearchable': isSearchable,
+      'isActive': isActive
     };
   }
 
