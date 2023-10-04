@@ -94,7 +94,11 @@ class _CategoryViewState extends ConsumerState<CategoryView>
                 .map(
                   (index, category) {
                     if (category.type == "result")
-                      return MapEntry(index, SurveyView());
+                      return MapEntry(
+                          index,
+                          SurveyView(
+                            tabController: _tabController,
+                          ));
                     else
                       return MapEntry(
                         index,

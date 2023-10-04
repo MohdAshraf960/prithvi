@@ -192,48 +192,6 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                       widget.tabController
                           ?.animateTo(widget.index + 1); // Go to the next tab
                     }
-
-/*
-                    // Logger()
-                    //     .i(questionsList.map((e) => e.sliderValue).toList());
-                    // Logger()
-                    //     .i(questionsList.map((e) => e.selectedOption).toList());
-                  
-
- */
-                    questionsList.map((e) {
-                      Logger().i(
-                          "ID======> ${e.id} TEXT==== ${e.text} ${e.timestamp} ${e.options}");
-                    }).toList();
-                    // var uuid = Uuid();
-
-                    // QuestionsService(firestore: FirebaseFirestore.instance)
-                    //     .createQuestion(
-                    //   question: QuestionModel(
-                    //     id: uuid.v4(),
-                    //     text: "How many kms have you travelled by 3 wheeler?",
-                    //     type: QuestionType.Input,
-                    //     options: [
-                    //       // Option(key: "zero", value: 0),
-                    //       // Option(key: "two", value: 2),
-                    //       // Option(key: "four", value: 4),
-                    //       // Option(key: "six", value: 6),
-                    //       // Option(key: "eight", value: 8),
-                    //       // Option(key: "ten", value: 10)
-                    //     ],
-                    //     calculationFactor: 0.117,
-                    //     categoryRef:
-                    //         FirebaseFirestore.instance.doc("categories/travel"),
-                    //     timestamp:
-                    //         1696096862384193, //DateTime.now().microsecondsSinceEpoch,
-                    //     unit: "kg CO2/km",
-                    //     parentId: "",
-                    //     childId: [],
-                    //     isRelated: false,
-                    //     isSearchable: false,
-                    //     isActive: true,
-                    //   ),
-                    // );
                   },
                   child: Text("Next"),
                 ),

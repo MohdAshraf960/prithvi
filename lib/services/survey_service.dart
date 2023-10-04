@@ -15,52 +15,82 @@ class SurveyService {
   })  : _firestore = firestore,
         _sharedPreferencesService = sharedPreferencesService;
 
-  Future<void> createOrUpdateTotalField({
-    required String categoryName,
-    //  required String uuid,
-    required num categoryTotal,
-  }) async {
+  Future<void> addSurveyDocument(Map<String, double> surveyData) async {
     try {
       final user = UserModel.fromJson(_sharedPreferencesService.user);
 
-      // Reference the subcollection within the user's document
-      final collectionReference = _firestore
-          .collection(FirebaseCollection.survey)
-          .doc(user.email)
-          .collection(categoryName);
+      final userEmail = user.email;
 
-      // Query the subcollection to find the document with the matching UUID
-      final querySnapshot = await collectionReference.get();
+      // Check if a document with the user's email already exists
+      final docRef =
+          FirebaseFirestore.instance.collection('survey').doc(userEmail);
+      final docSnapshot = await docRef.get();
 
-      if (querySnapshot.docs.isNotEmpty) {
-        // Document with the given UUID exists, update the "total" field
-        final documentReference = querySnapshot.docs.first.reference;
-        await documentReference.update({
-          'total': categoryTotal,
+      if (!docSnapshot.exists) {
+        // Document does not exist, create it
+        surveyData.forEach((key, value) {
+          surveyData[key] =
+              num.parse(surveyData.values.first.toStringAsPrecision(2))
+                  .toDouble();
         });
-        Logger().d('Document updated successfully');
+        await docRef.set(surveyData);
       } else {
-        // Document with the given UUID does not exist, create it with the "total" field
-        final documentReference = collectionReference.doc();
-        await documentReference.set({
-          'total': categoryTotal,
-        });
-        Logger().d('Document created successfully');
+        // Document already exists, you can choose to update it or do nothing
+        Logger().i(
+            'Document with user email $userEmail already exists. $surveyData');
+
+        addOrUpdateSurveyKey(surveyData.keys.first,
+            num.parse(surveyData.values.first.toStringAsPrecision(2)));
       }
     } catch (e) {
-      Logger().e('Error creating or updating document: $e');
+      Logger().e(e);
       rethrow;
     }
   }
 
-  getSurveyList() async {
+  Future<void> addOrUpdateSurveyKey(String key, num value) async {
+    try {
+      final user = UserModel.fromJson(_sharedPreferencesService.user);
+
+      final userEmail = user.email;
+
+      // Get the reference to the user's survey document
+      final docRef =
+          _firestore.collection(FirebaseCollection.survey).doc(userEmail);
+
+      // Retrieve the existing survey data
+      final docSnapshot = await docRef.get();
+
+      // Create or update the key within the survey data
+      Map<String, dynamic> surveyData =
+          docSnapshot.exists ? docSnapshot.data() as Map<String, dynamic> : {};
+      surveyData[key] = value;
+
+      // Set the updated survey data in the document
+      await docRef.set(surveyData);
+    } catch (e) {
+      // TODO
+      Logger().e(e);
+    }
+  }
+
+  Stream<Map<String, dynamic>> getSurveyData() {
     final user = UserModel.fromJson(_sharedPreferencesService.user);
 
-    // Reference the document within the subcollection under the user's document
-    final documentReference =
-        _firestore.collection(FirebaseCollection.survey).doc(user.email);
+    final userEmail = user.email;
 
-    Logger().d(
-        "documentReference ===> ${await documentReference.snapshots().first.then((value) => value.data())}");
+    // Get the reference to the user's survey document
+    final docRef =
+        _firestore.collection(FirebaseCollection.survey).doc(userEmail);
+
+    // Return a stream of the survey data
+    return docRef.snapshots().map((snapshot) {
+      if (snapshot.exists) {
+        return snapshot.data() as Map<String, dynamic>;
+      } else {
+        // Return an empty map if the document doesn't exist
+        return {};
+      }
+    });
   }
 }

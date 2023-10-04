@@ -4,7 +4,6 @@ import 'package:prithvi/config/config.dart';
 
 import 'package:prithvi/models/model.dart';
 import 'package:prithvi/services/services.dart';
-import 'package:uuid/uuid.dart';
 
 class QuestionsNotifier extends ChangeNotifier {
   final QuestionsService _questionsService;
@@ -159,14 +158,8 @@ class QuestionsNotifier extends ChangeNotifier {
 
   createUpdateSurvey({required String categoryName, required num total}) async {
     try {
-      await _surveyService.createOrUpdateTotalField(
-          categoryName: categoryName, categoryTotal: total);
-      //   totalEmission
-      // if (categoryName == "home") {
-      //   await _sharedPreferencesService.setHomeTotal(total);
-      // } else {
-      //   await _sharedPreferencesService.setTravelTotal(total);
-      // }
+      await _surveyService.addSurveyDocument(
+          {categoryName: num.parse(total.toStringAsPrecision(2)).toDouble()});
     } catch (e) {
       AppException.onError(e);
     }
