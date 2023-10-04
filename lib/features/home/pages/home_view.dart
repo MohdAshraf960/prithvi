@@ -33,10 +33,6 @@ class _HomeState extends State<Home> {
       'image': Assets.third,
       'text': 'Get easy suggetion to reduce your impact',
     },
-    {
-      'image': Assets.emailVerification,
-      'text': 'Image 4 Description',
-    },
   ];
 
   @override
@@ -58,6 +54,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: white,
       appBar: AppBar(
         backgroundColor: primaryGreen,
         title: Text('Home'),
@@ -81,6 +78,9 @@ class _HomeState extends State<Home> {
               activeColor: primaryGreen, // Active dot color
             ),
           ),
+          SizedBox(
+            height: 30,
+          ),
         ],
       ),
     );
@@ -92,28 +92,32 @@ class _HomeState extends State<Home> {
       child: Column(
         //mainAxisAlignment: MainAxisAlignment.st,
         children: [
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: Row(
-              children: [
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "SKIP",
-                    style: TextStyle(
-                      color: grey,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.all(16),
+          //   child: Row(
+          //     children: [
+          //       TextButton(
+          //         onPressed: () {},
+          //         child: Text(
+          //           "SKIP",
+          //           style: TextStyle(
+          //             color: grey,
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // Spacer(),
+
           Spacer(),
-          Image.asset(
-            item['image'].toString(),
-            // width: 200.0,
-            // height: 200.0,
-            fit: BoxFit.contain,
+          Center(
+            child: Image.asset(
+              item['image'].toString(),
+              // width: 200.0,
+              // height: 200.0,
+              fit: BoxFit.contain,
+            ),
           ),
           SizedBox(height: 16.0),
           Text(
@@ -121,6 +125,7 @@ class _HomeState extends State<Home> {
             style: TextStyle(fontSize: 18.0),
             textAlign: TextAlign.center,
           ),
+          Spacer(),
         ],
       ),
     );
