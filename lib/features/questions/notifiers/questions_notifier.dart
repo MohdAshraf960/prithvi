@@ -104,7 +104,7 @@ class QuestionsNotifier extends ChangeNotifier {
     if (isStringValid(value)) {
       questionsList[index].calculatedValue = num.parse(
         (double.tryParse(value)! * questionsList[index].calculationFactor)
-            .toStringAsFixed(2),
+            .toStringAsFixed(4),
       );
     }
 
@@ -117,7 +117,7 @@ class QuestionsNotifier extends ChangeNotifier {
     questionsList[index].calculatedValue = num.parse(
       ((questionsList[index].selectedOption?.value as num) *
               questionsList[index].calculationFactor)
-          .toStringAsFixed(2),
+          .toStringAsFixed(4),
     );
 
     getCategory(index);
@@ -129,12 +129,13 @@ class QuestionsNotifier extends ChangeNotifier {
 
       homeEmissionTotal = num.parse(homeEmission
               .reduce((value, element) => value + element)
-              .toStringAsFixed(2)) /
+              .toStringAsFixed(6)) /
           1000;
+
       notifyListeners();
       createUpdateSurvey(
           categoryName: "home",
-          total: num.parse(homeEmissionTotal.toStringAsPrecision(2)) / 1000);
+          total: num.parse(homeEmissionTotal.toStringAsFixed(6)));
     }
 
     if (questionsList[index].categoryRef.path.split("/").last == "travel") {
@@ -144,22 +145,23 @@ class QuestionsNotifier extends ChangeNotifier {
 
       travelEmissionTotal = num.parse(travelEmission
               .reduce((value, element) => value + element)
-              .toStringAsFixed(2)) /
+              .toStringAsFixed(6)) /
           1000;
+
       notifyListeners();
       createUpdateSurvey(
         categoryName: "travel",
-        total: num.parse(travelEmissionTotal.toStringAsPrecision(2)) / 1000,
+        total: num.parse(travelEmissionTotal.toStringAsFixed(6)),
       );
     }
 
-    Logger().f("${travelEmissionTotal} ${homeEmissionTotal}");
+    Logger().f(
+        "travel ====> ${travelEmissionTotal}  home ===> ${homeEmissionTotal}");
   }
 
   createUpdateSurvey({required String categoryName, required num total}) async {
     try {
-      await _surveyService.addSurveyDocument(
-          {categoryName: num.parse(total.toStringAsPrecision(2)).toDouble()});
+      await _surveyService.addSurveyDocument({categoryName: total.toDouble()});
     } catch (e) {
       AppException.onError(e);
     }

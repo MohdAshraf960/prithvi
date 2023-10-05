@@ -29,9 +29,8 @@ class SurveyService {
       if (!docSnapshot.exists) {
         // Document does not exist, create it
         surveyData.forEach((key, value) {
-          surveyData[key] =
-              num.parse(surveyData.values.first.toStringAsPrecision(2))
-                  .toDouble();
+          surveyData[key] = surveyData.values.first;
+          // num.parse(surveyData.values.first.toStringAsPrecision(2)).toDouble();
         });
         await docRef.set(surveyData);
       } else {
@@ -39,8 +38,7 @@ class SurveyService {
         Logger().i(
             'Document with user email $userEmail already exists. $surveyData');
 
-        addOrUpdateSurveyKey(surveyData.keys.first,
-            num.parse(surveyData.values.first.toStringAsPrecision(2)));
+        addOrUpdateSurveyKey(surveyData.keys.first, surveyData.values.first);
       }
     } catch (e) {
       Logger().e(e);
