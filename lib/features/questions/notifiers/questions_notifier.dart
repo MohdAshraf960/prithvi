@@ -8,17 +8,18 @@ import 'package:prithvi/services/services.dart';
 class QuestionsNotifier extends ChangeNotifier {
   final QuestionsService _questionsService;
   final SurveyService _surveyService;
-  SharedPreferencesService _sharedPreferencesService;
+
   // ignore: unused_field
   final CarService _carService;
   List<QuestionModel> questionsList = [];
   List<String> answersList = [];
-  List reponseList = [];
 
   List<num> homeEmission = [];
   List<num> travelEmission = [];
+  List<num> otherEmission = [];
   num homeEmissionTotal = 0.0;
   num travelEmissionTotal = 0.0;
+  num otherEmissionTotal = 0.0;
 
   // List<ChartData> chartList = [];
 
@@ -37,15 +38,13 @@ class QuestionsNotifier extends ChangeNotifier {
     "category": ""
   };
 
-  QuestionsNotifier(
-      {required QuestionsService questionsService,
-      required CarService carService,
-      required SurveyService surveyService,
-      required SharedPreferencesService sharedPreferencesService})
-      : _questionsService = questionsService,
+  QuestionsNotifier({
+    required QuestionsService questionsService,
+    required CarService carService,
+    required SurveyService surveyService,
+  })  : _questionsService = questionsService,
         _carService = carService,
-        _surveyService = surveyService,
-        _sharedPreferencesService = sharedPreferencesService;
+        _surveyService = surveyService;
 
   void getQuestionsList({required categoryType}) async {
     try {
@@ -104,12 +103,16 @@ class QuestionsNotifier extends ChangeNotifier {
     if (isStringValid(value)) {
       questionsList[index].calculatedValue = num.parse(
         (double.tryParse(value)! * questionsList[index].calculationFactor)
-            .toStringAsFixed(4),
+            .toStringAsFixed(6),
       );
     }
 
-    Logger().e(
-        "${questionsList[index].categoryRef.path.split("/").last}  TEXT ${questionsList[index].text} =======  VALUE ${questionsList[index].calculatedValue} === ${questionsList[index].calculationFactor}");
+    // Logger().e(
+    //     "${questionsList[index].categoryRef.path.split("/").last}
+    //  TEXT ${questionsList[index].text} =======
+    //VALUE ${questionsList[index].calculatedValue}
+    // === ${questionsList[index].calculationFactor}"
+    // );
     getCategory(index);
   }
 
@@ -117,49 +120,27 @@ class QuestionsNotifier extends ChangeNotifier {
     questionsList[index].calculatedValue = num.parse(
       ((questionsList[index].selectedOption?.value as num) *
               questionsList[index].calculationFactor)
-          .toStringAsFixed(4),
+          .toStringAsFixed(6),
     );
 
     getCategory(index);
   }
 
   getCategory(int index) {
-    if (questionsList[index].categoryRef.path.split("/").last == "home") {
-      homeEmission = [...questionsList.map((e) => e.calculatedValue).toList()];
+    final category = questionsList[index].categoryRef.path.split('/').last;
+    final emission = questionsList.map((e) => e.calculatedValue).toList();
+    final emissionTotal = num.parse(
+      (emission.reduce((value, element) => value + element) / 1000)
+          .toStringAsFixed(6),
+    );
 
-      homeEmissionTotal = num.parse(homeEmission
-              .reduce((value, element) => value + element)
-              .toStringAsFixed(6)) /
-          1000;
+    createUpdateSurvey(categoryName: category, total: emissionTotal);
 
-      notifyListeners();
-      createUpdateSurvey(
-          categoryName: "home",
-          total: num.parse(homeEmissionTotal.toStringAsFixed(6)));
-    }
-
-    if (questionsList[index].categoryRef.path.split("/").last == "travel") {
-      travelEmission = [
-        ...questionsList.map((e) => e.calculatedValue).toList()
-      ];
-
-      travelEmissionTotal = num.parse(travelEmission
-              .reduce((value, element) => value + element)
-              .toStringAsFixed(6)) /
-          1000;
-
-      notifyListeners();
-      createUpdateSurvey(
-        categoryName: "travel",
-        total: num.parse(travelEmissionTotal.toStringAsFixed(6)),
-      );
-    }
-
-    Logger().f(
-        "travel ====> ${travelEmissionTotal}  home ===> ${homeEmissionTotal}");
+    // Logger().f('$category ===> $emissionTotal');
   }
 
-  createUpdateSurvey({required String categoryName, required num total}) async {
+  void createUpdateSurvey(
+      {required String categoryName, required num total}) async {
     try {
       await _surveyService.addSurveyDocument({categoryName: total.toDouble()});
     } catch (e) {

@@ -23,7 +23,9 @@ class SurveyView extends ConsumerWidget {
       ).getSurveyData(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // Display a loading indicator while data is loading.
+          return Center(
+            child: CircularProgressIndicator(),
+          ); // Display a loading indicator while data is loading.
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -70,7 +72,7 @@ class SurveyView extends ConsumerWidget {
                       ),
                     ),
                     child: Text(
-                      "${totalEmission(surveyData)}",
+                      "${totalEmission(surveyData).toStringAsFixed(6)}",
                       style: TextStyle(
                         fontSize: 32,
                         color: primaryGreen,

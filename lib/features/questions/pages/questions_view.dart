@@ -178,11 +178,12 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                   ? MainAxisAlignment.spaceBetween
                   : MainAxisAlignment.end,
               children: [
-                // if (widget.index != 0)
                 if (widget.index > 0)
                   ElevatedButton(
                     onPressed: () {
                       widget.tabController?.animateTo(widget.index - 1);
+                      // questionsList.map((e) =>
+                      //     print("text ${e.text}  timestamp ${e.timestamp}"));
                     },
                     child: Text("Prev"),
                   ),
@@ -192,8 +193,27 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                       widget.tabController
                           ?.animateTo(widget.index + 1); // Go to the next tab
                     }
+
+                    // QuestionsService(firestore: FirebaseFirestore.instance)
+                    //     .createQuestion(
+                    //   question: QuestionModel(
+                    //     id: Uuid().v4(),
+                    //     text:
+                    //         "How many single use plastic bags do you use in a year?",
+                    //     type: QuestionType.Input,
+                    //     options: [],
+                    //     calculationFactor: 1.58,
+                    //     categoryRef: FirebaseFirestore.instance
+                    //         .doc("${FirebaseCollection.categories}/other"),
+                    //     timestamp: DateTime.now().microsecondsSinceEpoch,
+                    //     unit: "kg",
+                    //     isActive: true,
+                    //   ),
+                    // );
                   },
-                  child: Text("Next"),
+                  child: Text(widget.index == widget.tabController!.length - 2
+                      ? "See Results"
+                      : "Next"),
                 ),
               ],
             )

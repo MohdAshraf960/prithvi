@@ -104,15 +104,12 @@ final questionNotifierProvider =
         ref.watch(questionServiceProvider);
     final CarService carService = ref.watch(carServiceProvider);
     final SurveyService surveyService = ref.watch(surveyServiceProvider);
-    final SharedPreferencesService sharedPreferencesService =
-        ref.watch(sharedPreferencesServiceProvider);
 
     return QuestionsNotifier(
-        questionsService: questionsService,
-        carService: carService,
-        surveyService: surveyService,
-        sharedPreferencesService: sharedPreferencesService)
-      ..getQuestionsList(categoryType: categoryType);
+      questionsService: questionsService,
+      carService: carService,
+      surveyService: surveyService,
+    )..getQuestionsList(categoryType: categoryType);
   },
 );
 

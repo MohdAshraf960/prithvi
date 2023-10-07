@@ -100,7 +100,11 @@ class _SelectOptionsState extends ConsumerState<SelectOptions> {
 
             Logger().d(
                 "OPTION ===> ${widget.questionsList[widget.index].selectedOption?.value.runtimeType}");
-            notifier.calculationEmissionForMcq(widget.index);
+            if (widget.questionsList[widget.index].selectedOption?.value
+                    .runtimeType !=
+                String) {
+              notifier.calculationEmissionForMcq(widget.index);
+            }
           }
         },
         items: widget.questionsList[widget.index].options.map((Option option) {
