@@ -160,6 +160,7 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                                   questionsList: questionsList,
                                   key: UniqueKey(),
                                 ),
+
                               // if (questionsList[index].type ==
                               //         QuestionType.MCQ &&
                               //     questionsList[index].isSearchable == true)
@@ -198,16 +199,20 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                     //     .createQuestion(
                     //   question: QuestionModel(
                     //     id: Uuid().v4(),
-                    //     text:
-                    //         "How many single use plastic bags do you use in a year?",
+                    //     text: "What is the monthly consumption of cooking oil?",
                     //     type: QuestionType.Input,
                     //     options: [],
-                    //     calculationFactor: 1.58,
+                    //     calculationFactor: 125 / 1000,
                     //     categoryRef: FirebaseFirestore.instance
-                    //         .doc("${FirebaseCollection.categories}/other"),
-                    //     timestamp: DateTime.now().microsecondsSinceEpoch,
+                    //         .doc("${FirebaseCollection.categories}/diet"),
+                    //     timestamp: 1696694696330853,
                     //     unit: "kg",
                     //     isActive: true,
+                    //     isRelated: false,
+                    //     isVeg: true,
+                    //     isSearchable: false,
+                    //     childId: [],
+                    //     parentId: "",
                     //   ),
                     // );
                   },

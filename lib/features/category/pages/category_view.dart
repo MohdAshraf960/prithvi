@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prithvi/config/di/di.dart';
 import 'package:prithvi/core/core.dart';
+import 'package:prithvi/features/questions/pages/diet_questions.dart';
 import 'package:prithvi/features/questions/questions.dart';
 import 'package:prithvi/features/survey/survey.dart';
 
@@ -95,18 +96,29 @@ class _CategoryViewState extends ConsumerState<CategoryView>
                   (index, category) {
                     if (category.type == "result")
                       return MapEntry(
-                          index,
-                          SurveyView(
-                            tabController: _tabController,
-                          ));
+                        index,
+                        SurveyView(
+                          tabController: _tabController,
+                        ),
+                      );
+                    if (category.type == "diet")
+                      return MapEntry(
+                        index,
+                        DietQuestionView(
+                          categoryType: category.type,
+                          index: index,
+                          tabController: _tabController,
+                        ),
+                      );
                     else
                       return MapEntry(
                         index,
                         QuestionView(
-                            key: PageStorageKey(category.name),
-                            tabController: _tabController,
-                            categoryType: category.type,
-                            index: index),
+                          key: PageStorageKey(category.name),
+                          tabController: _tabController,
+                          categoryType: category.type,
+                          index: index,
+                        ),
                       );
                   },
                 )

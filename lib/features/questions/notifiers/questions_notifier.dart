@@ -6,6 +6,8 @@ import 'package:prithvi/models/model.dart';
 import 'package:prithvi/services/services.dart';
 
 class QuestionsNotifier extends ChangeNotifier {
+  String? dietType;
+
   final QuestionsService _questionsService;
   final SurveyService _surveyService;
 
@@ -13,6 +15,8 @@ class QuestionsNotifier extends ChangeNotifier {
   final CarService _carService;
   List<QuestionModel> questionsList = [];
   List<String> answersList = [];
+
+  List<QuestionModel> filteredDietList = [];
 
   List<num> homeEmission = [];
   List<num> travelEmission = [];
@@ -146,5 +150,14 @@ class QuestionsNotifier extends ChangeNotifier {
     } catch (e) {
       AppException.onError(e);
     }
+  }
+
+  filterQuestionsByDietType({required String dietType}) {
+    filteredDietList = (dietType.toLowerCase() == "veg")
+        ? questionsList.where((element) => element.isVeg == true).toList()
+        : questionsList;
+    notifyListeners();
+
+    Logger().i("filteredDietList ===$filteredDietList");
   }
 }

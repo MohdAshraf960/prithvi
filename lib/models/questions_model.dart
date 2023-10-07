@@ -25,6 +25,7 @@ class QuestionModel {
   Option? selectedOption;
   num calculatedValue = 0.0;
   bool isActive;
+  bool isVeg;
 
   QuestionModel(
       {required this.id,
@@ -39,7 +40,8 @@ class QuestionModel {
       this.childId,
       this.isRelated = false,
       this.isSearchable = false,
-      required this.isActive});
+      required this.isActive,
+      this.isVeg = false});
 
   factory QuestionModel.fromMap(Map<String, dynamic> map) {
     // Map the type string to the enum value
@@ -74,7 +76,8 @@ class QuestionModel {
             (map['childId'] as List<dynamic>?)?.cast<String>() ?? <String>[],
         isRelated: map['isRelated'] ?? false,
         isSearchable: map['isSearchable'] ?? false,
-        isActive: map['isActive'] ?? false);
+        isActive: map['isActive'] ?? false,
+        isVeg: map['isVeg'] ?? false);
   }
 
   Map<String, dynamic> toMap() {
@@ -91,7 +94,8 @@ class QuestionModel {
       'childId': childId ?? [],
       'isRelated': isRelated,
       'isSearchable': isSearchable,
-      'isActive': isActive
+      'isActive': isActive,
+      'isVeg': isVeg
     };
   }
 
@@ -104,7 +108,7 @@ class QuestionModel {
 
   @override
   String toString() {
-    return 'QuestionModel(id: $id, text: $text, type: $type, options: $options, calculationFactor: $calculationFactor, categoryRef: $categoryRef, timestamp: $timestamp, unit: $unit, parentId: $parentId, childId: $childId, isRelated: $isRelated, controller: ${controller.text})';
+    return 'QuestionModel(id: $id, text: $text, type: $type, options: $options, calculationFactor: $calculationFactor, categoryRef: $categoryRef, timestamp: $timestamp, unit: $unit, parentId: $parentId, childId: $childId, isRelated: $isRelated, isSearchable: $isSearchable, sliderValue: $sliderValue, selectedOption: $selectedOption, calculatedValue: $calculatedValue, isActive: $isActive, isVeg: $isVeg)';
   }
 }
 
