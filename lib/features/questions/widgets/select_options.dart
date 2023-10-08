@@ -80,6 +80,7 @@ class _SelectOptionsState extends ConsumerState<SelectOptions> {
               } else {
                 if (widget.categoryType == 'travel') {
                   notifier.setCarValues();
+                  notifier.setBikeValues();
                 } else if (widget.categoryType == "home") {
                   //TODO: set dependant values
                 } else if (widget.categoryType == "diet") {
@@ -89,7 +90,6 @@ class _SelectOptionsState extends ConsumerState<SelectOptions> {
                 }
 
                 // Process car details here
-                Logger().d("carDetails ${notifier.carDetails}");
               }
             } else {
               widget.onChanged(null);
@@ -99,11 +99,14 @@ class _SelectOptionsState extends ConsumerState<SelectOptions> {
             widget.questionsList[widget.index].selectedOption = newValue;
 
             Logger().d(
-                "OPTION ===> ${widget.questionsList[widget.index].selectedOption?.value.runtimeType}");
+                "OPTION ===> ${widget.questionsList[widget.index].selectedOption}");
             if (widget.questionsList[widget.index].selectedOption?.value
                     .runtimeType !=
                 String) {
-              notifier.calculationEmissionForMcq(widget.index);
+              if (!widget.questionsList[widget.index].text
+                  .contains("Which state do you live in?")) {
+                notifier.calculationEmissionForMcq(widget.index);
+              }
             }
           }
         },

@@ -1,4 +1,4 @@
-class CarModel {
+class BikeModel {
   final String id;
   final String category;
   final String engineCC;
@@ -6,7 +6,7 @@ class CarModel {
   final double value;
   final int? timeStamp;
 
-  CarModel(
+  BikeModel(
       {required this.id,
       required this.category,
       required this.engineCC,
@@ -14,13 +14,13 @@ class CarModel {
       required this.value,
       this.timeStamp});
 
-  factory CarModel.fromJson(Map<String, dynamic> json) {
-    return CarModel(
+  factory BikeModel.fromJson(Map<String, dynamic> json) {
+    return BikeModel(
       id: json['id'] ?? '',
       category: json['category'] ?? '',
       engineCC: json['engineCC'] ?? '',
       fuelType: json['fuelType'] ?? '',
-      timeStamp: json['createdtAt'] ?? 0,
+      timeStamp: json['createdtAt'] ?? DateTime.now().microsecondsSinceEpoch,
       value: (json['value'] ?? 0.0).toDouble(),
     );
   }

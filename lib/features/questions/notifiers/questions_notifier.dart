@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:prithvi/config/config.dart';
+import 'package:prithvi/models/cars_model.dart';
 
 import 'package:prithvi/models/model.dart';
 import 'package:prithvi/services/services.dart';
@@ -13,10 +14,14 @@ class QuestionsNotifier extends ChangeNotifier {
 
   // ignore: unused_field
   final CarService _carService;
+  final BikeService _bikeService;
   List<QuestionModel> questionsList = [];
   List<String> answersList = [];
 
   List<QuestionModel> filteredDietList = [];
+
+  CarModel? carModel;
+  BikeModel? bikeModel;
 
   List<num> homeEmission = [];
   List<num> travelEmission = [];
@@ -24,6 +29,8 @@ class QuestionsNotifier extends ChangeNotifier {
   num homeEmissionTotal = 0.0;
   num travelEmissionTotal = 0.0;
   num otherEmissionTotal = 0.0;
+
+  num carEmissionFactor = 0.0;
 
   // List<ChartData> chartList = [];
 
@@ -42,13 +49,26 @@ class QuestionsNotifier extends ChangeNotifier {
     "category": ""
   };
 
-  QuestionsNotifier({
-    required QuestionsService questionsService,
-    required CarService carService,
-    required SurveyService surveyService,
-  })  : _questionsService = questionsService,
+  Map<String, dynamic> bikeDetails = {
+    "engineCC": "",
+    "fuelType": "Petrol",
+    "category": ""
+  };
+
+  Map<String, dynamic> electricityState = {
+    "state": "",
+    "value": "",
+  };
+
+  QuestionsNotifier(
+      {required QuestionsService questionsService,
+      required CarService carService,
+      required SurveyService surveyService,
+      required BikeService bikeService})
+      : _questionsService = questionsService,
         _carService = carService,
-        _surveyService = surveyService;
+        _surveyService = surveyService,
+        _bikeService = bikeService;
 
   void getQuestionsList({required categoryType}) async {
     try {
@@ -68,7 +88,7 @@ class QuestionsNotifier extends ChangeNotifier {
     print("object ===> $answersList");
   }
 
-  setCarValues() {
+  setCarValues() async {
     final carCategory = questionsList
         .firstWhere((element) => element.text.contains("type of car"));
 
@@ -84,7 +104,44 @@ class QuestionsNotifier extends ChangeNotifier {
 
     // Process car details here
     Logger().d("carDetails ${carDetails}");
+
     //TODO: call car service
+    carModel = await _carService.getCarDetails(
+      engineCC: carDetails['engineCC'],
+      fuelType: carDetails['fuelType'],
+      category: carDetails['category'],
+    );
+  }
+
+  setBikeValues() async {
+    final bikeCategory = questionsList
+        .firstWhere((element) => element.text.contains("type of 2 wheeler"));
+
+    final engineCapacity = questionsList.firstWhere(
+        (element) => element.text.toLowerCase().contains("bike engine cc"));
+
+    bikeDetails['category'] = bikeCategory.selectedOption?.key;
+    bikeDetails['engineCC'] = engineCapacity.selectedOption?.key;
+
+    // Process car details here
+    Logger().d("bikeDetails ${bikeDetails}");
+
+    bikeModel = await _bikeService.getBikeDetails(
+      engineCC: bikeDetails['engineCC'],
+      fuelType: bikeDetails['fuelType'],
+      category: bikeDetails['category'],
+    );
+  }
+
+  setStateValues() {
+    final state = questionsList.firstWhere((element) => element.text
+        .toLowerCase()
+        .contains("Which state do you live in?".toLowerCase()));
+
+    electricityState['state'] = state.selectedOption?.key;
+    electricityState['value'] = state.selectedOption?.value;
+
+    Logger().d("electricity ${electricityState}");
   }
 
   bool isStringValid(String inputString) {
@@ -121,13 +178,17 @@ class QuestionsNotifier extends ChangeNotifier {
   }
 
   calculationEmissionForMcq(int index) {
-    questionsList[index].calculatedValue = num.parse(
-      ((questionsList[index].selectedOption?.value as num) *
-              questionsList[index].calculationFactor)
-          .toStringAsFixed(6),
-    );
+    final parentId = questionsList[index].parentId;
 
-    getCategory(index);
+    if (parentId!.isEmpty) {
+      questionsList[index].calculatedValue = num.parse(
+        ((questionsList[index].selectedOption?.value as num) *
+                questionsList[index].calculationFactor)
+            .toStringAsFixed(6),
+      );
+
+      getCategory(index);
+    }
   }
 
   getCategory(int index) {

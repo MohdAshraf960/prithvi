@@ -34,7 +34,7 @@ class Login extends ConsumerWidget {
     final email = _emailController.text;
 
     try {
-      print("ttttttttttttttttttttttttttttttttttttttttttttttt");
+      // print("ttttttttttttttttttttttttttttttttttttttttttttttt");
       // Perform your login logic here
 
       // If login is successful, log the "login" event
@@ -276,6 +276,18 @@ class Login extends ConsumerWidget {
             ),
             (route) => false,
           );
+          // if (result.isVerified) {
+          //   Navigator.of(context).pushAndRemoveUntil(
+          //     MaterialPageRoute(
+          //       builder: (_) => BottomBar(),
+          //     ),
+          //     (route) => false,
+          //   );
+          // } else {
+          //   AppException.onError(
+          //     AppException(message: "User Is not verified"),
+          //   );
+          // }
         },
         onError: (error) {
           AppException.onError(error);

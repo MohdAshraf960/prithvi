@@ -10,10 +10,12 @@ import 'package:prithvi/core/core.dart';
 
 import 'package:prithvi/features/splash/splash.dart';
 import 'package:prithvi/firebase_options.dart';
+import 'package:prithvi/models/model.dart';
 import 'package:prithvi/services/firebase_analytics.dart';
 import 'package:prithvi/services/locator.dart';
 
 import 'package:sizer/sizer.dart';
+import 'package:uuid/uuid.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

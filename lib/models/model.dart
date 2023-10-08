@@ -5,3 +5,4 @@ export 'user_model.dart';
 export 'categories_model.dart';
 export 'questions_model.dart';
 export 'survey_model.dart';
+export 'bike_model.dart';

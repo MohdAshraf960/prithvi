@@ -67,6 +67,13 @@ final Provider<CarService> carServiceProvider = Provider<CarService>(
   },
 );
 
+final Provider<BikeService> bikeServiceProvider = Provider<BikeService>(
+  (ref) {
+    final firestore = ref.read(fireStoreProvider);
+    return BikeService(firestore: firestore);
+  },
+);
+
 final Provider<SurveyService> surveyServiceProvider = Provider<SurveyService>(
   (ref) {
     final firestore = ref.read(fireStoreProvider);
@@ -104,12 +111,14 @@ final questionNotifierProvider =
         ref.watch(questionServiceProvider);
     final CarService carService = ref.watch(carServiceProvider);
     final SurveyService surveyService = ref.watch(surveyServiceProvider);
+    final BikeService bikeService = ref.watch(bikeServiceProvider);
 
     return QuestionsNotifier(
-      questionsService: questionsService,
-      carService: carService,
-      surveyService: surveyService,
-    )..getQuestionsList(categoryType: categoryType);
+        questionsService: questionsService,
+        carService: carService,
+        surveyService: surveyService,
+        bikeService: bikeService)
+      ..getQuestionsList(categoryType: categoryType);
   },
 );
 

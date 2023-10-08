@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
+import 'package:prithvi/config/config.dart';
 
 import 'package:prithvi/config/di/di.dart';
 import 'package:prithvi/core/core.dart';
@@ -92,7 +93,8 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                                       FilteringTextInputFormatter.digitsOnly
                                     ],
                                     onChanged: (value) {
-                                      calculateEmissionOnChanged(value, index);
+                                      calculateDependantValues(
+                                          questionsList, index, value);
                                     },
                                     onFieldSubmitted: (value) {},
                                   ),
@@ -190,29 +192,34 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                   ),
                 ElevatedButton(
                   onPressed: () async {
-                    if (widget.index < widget.tabController!.length - 1) {
-                      widget.tabController
-                          ?.animateTo(widget.index + 1); // Go to the next tab
-                    }
+                    // if (widget.index < widget.tabController!.length - 1) {
+                    //   widget.tabController
+                    //       ?.animateTo(widget.index + 1); // Go to the next tab
+                    // }
 
                     // QuestionsService(firestore: FirebaseFirestore.instance)
                     //     .createQuestion(
                     //   question: QuestionModel(
                     //     id: Uuid().v4(),
-                    //     text: "What is the monthly consumption of cooking oil?",
-                    //     type: QuestionType.Input,
-                    //     options: [],
-                    //     calculationFactor: 125 / 1000,
+                    //     text:
+                    //         "When traveling in a 3-wheeler, which type do you prefer the most?",
+                    //     type: QuestionType.MCQ,
+                    //     options: [
+                    //       Option(key: "Petrol", value: 0.1135),
+                    //       Option(key: "Diesel", value: 0.1322),
+                    //       Option(key: "CNG", value: 0.10768),
+                    //     ],
+                    //     calculationFactor: 0,
                     //     categoryRef: FirebaseFirestore.instance
-                    //         .doc("${FirebaseCollection.categories}/diet"),
-                    //     timestamp: 1696694696330853,
-                    //     unit: "kg",
+                    //         .doc("${FirebaseCollection.categories}/travel"),
+                    //     timestamp: 1696096862383193,
+                    //     unit: "",
                     //     isActive: true,
-                    //     isRelated: false,
-                    //     isVeg: true,
-                    //     isSearchable: false,
+                    //     isRelated: true,
+                    //     isVeg: false,
+                    //     isSearchable: true,
                     //     childId: [],
-                    //     parentId: "",
+                    //     parentId: "d450a741-7d1a-4c7d-9f5a-c6e79db3fcf2",
                     //   ),
                     // );
                   },
@@ -228,12 +235,67 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
     );
   }
 
-  void calculateEmissionOnChanged(String value, int index) {
-    //TODO: 1) check if parent exists or not
-    //TODO: 2) if parent exists then check values is selected or not and type of cateogry
-    //TODO: 3) if no parent is assigned then calculate directly by its calculaltionFactor
-    //TODO: 4) if parent exists then check what type of field is it then multiple the user input by retireved value
+  void calculateDependantValues(
+      List<QuestionModel> questionsList, int index, String value) {
+    final parentId = questionsList[index].parentId;
 
+    if (parentId!.isEmpty) {
+      calculateEmissionOnChanged(value, index);
+    } else {
+      if (widget.categoryType == "home") {
+        final parentQuestion =
+            questionsList.firstWhere((element) => element.id == parentId);
+
+        questionsList[index].calculationFactor =
+            parentQuestion.selectedOption?.value ??
+                questionsList[index].calculationFactor;
+
+        calculateEmissionOnChanged(value, index);
+      }
+      if (widget.categoryType == "travel") {
+        final parentQuestion =
+            questionsList.firstWhere((element) => element.id == parentId);
+
+        if (parentQuestion.selectedOption != null) {
+          final notifier =
+              ref.read(questionNotifierProvider(widget.categoryType));
+          if (questionsList[index]
+              .text
+              .contains("How many kms have you travelled by car?")) {
+            questionsList[index].calculationFactor = notifier.carModel?.value ??
+                questionsList[index].calculationFactor;
+
+            calculateEmissionOnChanged(value, index);
+          }
+
+          if (questionsList[index]
+              .text
+              .contains("How many kms have you travelled by 2 wheeler?")) {
+            questionsList[index].calculationFactor =
+                notifier.bikeModel?.value ??
+                    questionsList[index].calculationFactor;
+
+            calculateEmissionOnChanged(value, index);
+          }
+          if (questionsList[index]
+              .text
+              .contains("How many kms have you travelled by 3 wheeler?")) {
+            questionsList[index].calculationFactor =
+                parentQuestion.selectedOption?.value ??
+                    questionsList[index].calculationFactor;
+
+            calculateEmissionOnChanged(value, index);
+          }
+        } else {
+          questionsList[index].controller.text = '';
+          RoutePage.showErrorSnackbars(
+              "Please select above dropdown for calculation");
+        }
+      }
+    }
+  }
+
+  void calculateEmissionOnChanged(String value, int index) {
     final questionNotifier = ref.read(
       questionNotifierProvider(widget.categoryType),
     );
