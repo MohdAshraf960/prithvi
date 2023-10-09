@@ -279,7 +279,9 @@ class SignUp extends ConsumerWidget {
         log("message $result");
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => VerificationPage(),
+            builder: (_) => VerificationPage(
+              email: emailController.text,
+            ),
           ),
         );
       }),
