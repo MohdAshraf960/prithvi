@@ -185,43 +185,15 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                   ElevatedButton(
                     onPressed: () {
                       widget.tabController?.animateTo(widget.index - 1);
-                      // questionsList.map((e) =>
-                      //     print("text ${e.text}  timestamp ${e.timestamp}"));
                     },
                     child: Text("Prev"),
                   ),
                 ElevatedButton(
                   onPressed: () async {
-                    // if (widget.index < widget.tabController!.length - 1) {
-                    //   widget.tabController
-                    //       ?.animateTo(widget.index + 1); // Go to the next tab
-                    // }
-
-                    // QuestionsService(firestore: FirebaseFirestore.instance)
-                    //     .createQuestion(
-                    //   question: QuestionModel(
-                    //     id: Uuid().v4(),
-                    //     text:
-                    //         "When traveling in a 3-wheeler, which type do you prefer the most?",
-                    //     type: QuestionType.MCQ,
-                    //     options: [
-                    //       Option(key: "Petrol", value: 0.1135),
-                    //       Option(key: "Diesel", value: 0.1322),
-                    //       Option(key: "CNG", value: 0.10768),
-                    //     ],
-                    //     calculationFactor: 0,
-                    //     categoryRef: FirebaseFirestore.instance
-                    //         .doc("${FirebaseCollection.categories}/travel"),
-                    //     timestamp: 1696096862383193,
-                    //     unit: "",
-                    //     isActive: true,
-                    //     isRelated: true,
-                    //     isVeg: false,
-                    //     isSearchable: true,
-                    //     childId: [],
-                    //     parentId: "d450a741-7d1a-4c7d-9f5a-c6e79db3fcf2",
-                    //   ),
-                    // );
+                    if (widget.index < widget.tabController!.length - 1) {
+                      widget.tabController
+                          ?.animateTo(widget.index + 1); // Go to the next tab
+                    }
                   },
                   child: Text(widget.index == widget.tabController!.length - 2
                       ? "See Results"
