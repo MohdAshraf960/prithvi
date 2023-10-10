@@ -93,11 +93,15 @@ class _SelectOptionsState extends ConsumerState<SelectOptions> {
               }
             } else {
               widget.onChanged(null);
-              Logger().e("Exception ========= ${notifier.answersList}");
+              Logger().d(
+                  "QUESTION ===> ${question.id} PARENTID  ${question.parentId}");
+              //  Logger().e("Exception ========= ${notifier.answersList}");
             }
           } else {
             widget.questionsList[widget.index].selectedOption = newValue;
-
+            if (widget.categoryType == "travel") {
+              notifier.setBikeValues();
+            }
             Logger().d(
                 "OPTION ===> ${widget.questionsList[widget.index].selectedOption}");
             if (widget.questionsList[widget.index].selectedOption?.value

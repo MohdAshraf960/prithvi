@@ -120,8 +120,8 @@ class QuestionsNotifier extends ChangeNotifier {
     final engineCapacity = questionsList.firstWhere(
         (element) => element.text.toLowerCase().contains("bike engine cc"));
 
-    bikeDetails['category'] = bikeCategory.selectedOption?.key;
-    bikeDetails['engineCC'] = engineCapacity.selectedOption?.key;
+    bikeDetails['category'] = bikeCategory.selectedOption?.key ?? "";
+    bikeDetails['engineCC'] = engineCapacity.selectedOption?.key ?? "";
 
     // Process car details here
     Logger().d("bikeDetails ${bikeDetails}");
@@ -131,6 +131,7 @@ class QuestionsNotifier extends ChangeNotifier {
       fuelType: bikeDetails['fuelType'],
       category: bikeDetails['category'],
     );
+    Logger().d("bikeModel ${bikeModel}");
   }
 
   setStateValues() {
@@ -164,16 +165,10 @@ class QuestionsNotifier extends ChangeNotifier {
     if (isStringValid(value)) {
       questionsList[index].calculatedValue = num.parse(
         (double.tryParse(value)! * questionsList[index].calculationFactor)
-            .toStringAsFixed(6),
+            .toStringAsFixed(9),
       );
     }
 
-    // Logger().e(
-    //     "${questionsList[index].categoryRef.path.split("/").last}
-    //  TEXT ${questionsList[index].text} =======
-    //VALUE ${questionsList[index].calculatedValue}
-    // === ${questionsList[index].calculationFactor}"
-    // );
     getCategory(index);
   }
 
@@ -184,7 +179,7 @@ class QuestionsNotifier extends ChangeNotifier {
       questionsList[index].calculatedValue = num.parse(
         ((questionsList[index].selectedOption?.value as num) *
                 questionsList[index].calculationFactor)
-            .toStringAsFixed(6),
+            .toStringAsFixed(9),
       );
 
       getCategory(index);
@@ -196,8 +191,11 @@ class QuestionsNotifier extends ChangeNotifier {
     final emission = questionsList.map((e) => e.calculatedValue).toList();
     final emissionTotal = num.parse(
       (emission.reduce((value, element) => value + element) / 1000)
-          .toStringAsFixed(6),
+          .toStringAsFixed(9),
     );
+
+    questionsList
+        .forEach((e) => Logger().e("${e.text} === ${e.calculatedValue}"));
 
     createUpdateSurvey(categoryName: category, total: emissionTotal);
 
@@ -222,3 +220,10 @@ class QuestionsNotifier extends ChangeNotifier {
     Logger().i("filteredDietList ===$filteredDietList");
   }
 }
+
+
+/**
+ * 
+ * 0.0111
+ * 0.00368
+ */

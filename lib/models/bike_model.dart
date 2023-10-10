@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class BikeModel {
   final String id;
   final String category;
@@ -34,5 +35,10 @@ class BikeModel {
       'fuelType': fuelType,
       'value': value,
     };
+  }
+
+  @override
+  String toString() {
+    return 'BikeModel(id: $id, category: $category, engineCC: $engineCC, fuelType: $fuelType, value: $value, timeStamp: $timeStamp)';
   }
 }

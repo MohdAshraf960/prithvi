@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prithvi/config/config.dart';
 
 import 'package:prithvi/core/core.dart';
+import 'package:prithvi/features/suggestions/suggestions.dart';
 import 'package:prithvi/services/survey_service.dart';
 import 'package:sizer/sizer.dart';
 
@@ -72,7 +73,7 @@ class SurveyView extends ConsumerWidget {
                       ),
                     ),
                     child: Text(
-                      "${totalEmission(surveyData).toStringAsFixed(6)}",
+                      "${totalEmission(surveyData).toStringAsFixed(9)}",
                       style: TextStyle(
                         fontSize: 32,
                         color: primaryGreen,
@@ -112,6 +113,28 @@ class SurveyView extends ConsumerWidget {
                       );
                     }).toList(),
                   ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  if (surveyData.isNotEmpty)
+                    CustomButton(
+                      height: 50,
+                      text: "SUGGESTIONS FOR IMPROVEMENT",
+                      textColor: white,
+                      color: primaryGreen,
+                      width: double.infinity,
+                      onTap: () {
+                        Navigator.of(context).push(
+                          new MaterialPageRoute<Null>(
+                            builder: (BuildContext context) {
+                              return new SuggestionView();
+                            },
+                            fullscreenDialog: true,
+                          ),
+                        );
+                      },
+                      textfontsize: 14,
+                    ),
                 ],
               ),
             ),
