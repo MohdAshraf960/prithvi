@@ -57,11 +57,6 @@ class _SelectOptionsState extends ConsumerState<SelectOptions> {
         ),
         value: widget.questionsList[widget.index].selectedOption,
         onChanged: (Option? newValue) {
-          //1) find by string contains enigne,fuel,cateogry and add selected value to the map accordingly
-          //2) table responses store map of dependant values
-          //3) answers table actual containing calculated value from responses table calfactr,final answer
-          //4) TODO: call car service
-
           if (widget.questionsList[widget.index].isRelated) {
             final question = widget.questionsList[widget.index];
             final parentId = question.parentId;
@@ -82,12 +77,8 @@ class _SelectOptionsState extends ConsumerState<SelectOptions> {
                   notifier.setCarValues();
                   notifier.setBikeValues();
                 } else if (widget.categoryType == "home") {
-                  //TODO: set dependant values
                 } else if (widget.categoryType == "diet") {
-                  //TODO: set dependant values
-                } else if (widget.categoryType == "other") {
-                  //TODO: set dependant values
-                }
+                } else if (widget.categoryType == "other") {}
 
                 // Process car details here
               }

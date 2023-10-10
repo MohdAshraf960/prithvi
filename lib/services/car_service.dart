@@ -44,7 +44,6 @@ class CarService {
       }
       return carModel;
     } catch (e) {
-      // TODO
       rethrow;
     }
   }

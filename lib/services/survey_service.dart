@@ -67,7 +67,6 @@ class SurveyService {
       // Set the updated survey data in the document
       await docRef.set(surveyData);
     } catch (e) {
-      // TODO
       Logger().e(e);
     }
   }

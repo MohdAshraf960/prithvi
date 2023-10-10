@@ -40,7 +40,6 @@ class BikeService {
       }
       return bikeModel;
     } catch (e) {
-      // TODO
       rethrow;
     }
   }

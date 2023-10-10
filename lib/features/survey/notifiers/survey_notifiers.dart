@@ -3,7 +3,6 @@ import 'package:prithvi/config/config.dart';
 import 'package:prithvi/services/services.dart';
 
 class SurveyNotifier extends ChangeNotifier {
-  final SurveyService _surveyService;
   final SharedPreferencesService _sharedPreferencesService;
 
   num totalEmission = 0.0;
@@ -11,8 +10,7 @@ class SurveyNotifier extends ChangeNotifier {
   SurveyNotifier(
       {required SurveyService surveyService,
       required SharedPreferencesService sharedPreferencesService})
-      : _surveyService = surveyService,
-        _sharedPreferencesService = sharedPreferencesService;
+      : _sharedPreferencesService = sharedPreferencesService;
 
   getSurveyTotal() async {
     final home = await _sharedPreferencesService.homeEmission;

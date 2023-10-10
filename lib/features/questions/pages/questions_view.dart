@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logger/logger.dart';
+
 import 'package:prithvi/config/config.dart';
 
 import 'package:prithvi/config/di/di.dart';
@@ -12,10 +10,8 @@ import 'package:prithvi/features/auth/widgets/textformfield.dart';
 import 'package:prithvi/features/questions/questions.dart';
 
 import 'package:prithvi/models/questions_model.dart';
-import 'package:prithvi/services/services.dart';
 
 import 'package:syncfusion_flutter_sliders/sliders.dart';
-import 'package:uuid/uuid.dart';
 
 class QuestionView extends ConsumerStatefulWidget {
   final String categoryType;

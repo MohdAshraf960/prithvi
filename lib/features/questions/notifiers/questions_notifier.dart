@@ -42,7 +42,6 @@ class QuestionsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  //TODO: create maps for multilevel dropdown and try to calculate data
   Map<String, dynamic> carDetails = {
     "engineCC": "",
     "fuelType": "",
@@ -105,7 +104,6 @@ class QuestionsNotifier extends ChangeNotifier {
     // Process car details here
     Logger().d("carDetails ${carDetails}");
 
-    //TODO: call car service
     carModel = await _carService.getCarDetails(
       engineCC: carDetails['engineCC'],
       fuelType: carDetails['fuelType'],
