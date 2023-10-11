@@ -164,7 +164,7 @@ class ForgotPassword extends ConsumerWidget {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _forgotemailController.text.trim());
       RoutePage.showSucessSnackbar("Please check you email for reset password");
-      Navigator.pushNamed(context, Login.id);
+      Navigator.pushNamed(context, LoginView.id);
     } on FirebaseAuthException catch (e) {
       print(e);
       AppException.onError(e);

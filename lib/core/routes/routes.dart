@@ -22,8 +22,8 @@ class RoutePage {
         switch (routePage.name) {
           case SplashScreen.id:
             return SplashScreen();
-          case Login.id:
-            return Login();
+          case LoginView.id:
+            return LoginView();
           case ForgotPassword.id:
             return ForgotPassword();
 
@@ -42,7 +42,7 @@ class RoutePage {
           case BottomBar.id:
             return BottomBar();
           default:
-            return Login();
+            return LoginView();
         }
       },
     );

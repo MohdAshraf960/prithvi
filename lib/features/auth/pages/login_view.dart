@@ -20,14 +20,22 @@ import 'package:sizer/sizer.dart';
 
 import '../../../services/firebase_analytics.dart';
 
-class Login extends ConsumerWidget {
+class LoginView extends ConsumerStatefulWidget {
+  const LoginView({super.key});
   static const id = "/login";
-  Login({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends ConsumerState<LoginView> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final TextEditingController _emailController = TextEditingController();
 
   final TextEditingController _passwordController = TextEditingController();
+
+  bool isObscure = true;
   // final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
   Future<void> handleLogin() async {
@@ -49,7 +57,7 @@ class Login extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final media = MediaQuery.of(context);
     final signInNotifier = ref.watch(signInStateNotifierProvider);
@@ -155,16 +163,25 @@ class Login extends ConsumerWidget {
                                         validator: (value) =>
                                             Validator.requiredValidator(value),
                                         inputType: TextInputType.text,
-                                        obscureText: true,
+                                        obscureText: isObscure,
                                         height: size.height * 0.065,
                                         width: size.width,
                                         labelText: "Enter Password",
                                         fontSize: 12.sp,
-                                        suffixIcon: const Padding(
+                                        suffixIcon: Padding(
                                           padding: EdgeInsets.only(right: 16),
-                                          child: Icon(
-                                            Icons.remove_red_eye,
-                                            color: grey3Color,
+                                          child: InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                isObscure = !isObscure;
+                                              });
+                                            },
+                                            child: Icon(
+                                              isObscure
+                                                  ? Icons.visibility_off
+                                                  : Icons.visibility,
+                                              color: grey3Color,
+                                            ),
                                           ),
                                         ),
                                         // controller: viewModel.password,

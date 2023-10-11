@@ -28,7 +28,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     if (sharedPreferencesService.isLoggedIn) {
       goToPage(BottomBar.id);
     } else {
-      goToPage(Login.id);
+      goToPage(LoginView.id);
     }
   }
 

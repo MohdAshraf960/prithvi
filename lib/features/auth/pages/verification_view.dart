@@ -46,7 +46,7 @@ class _VerificationPageState extends ConsumerState<VerificationPage> {
 
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (_) => Login(),
+          builder: (_) => LoginView(),
         ),
       );
     }
