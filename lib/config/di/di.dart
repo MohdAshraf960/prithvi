@@ -5,7 +5,7 @@ import 'package:prithvi/config/config.dart';
 import 'package:prithvi/features/category/category.dart';
 import 'package:prithvi/features/features.dart';
 import 'package:prithvi/features/questions/questions.dart';
-import 'package:prithvi/features/survey/notifiers/survey_notifiers.dart';
+import 'package:prithvi/models/model.dart';
 
 import 'package:prithvi/services/services.dart';
 
@@ -13,18 +13,27 @@ import 'package:prithvi/services/services.dart';
 // SERVICES
 // ***************************************************************************
 
-final sharedPreferencesServiceInitializerProvider = Provider((ref) {
-  SharedPreferencesService.init(); // Initialize SharedPreferencesService here
-  return SharedPreferencesService();
+final secureStorageServiceProvider = Provider<SecureStorageService>((ref) {
+  return SecureStorageService();
 });
 
-// Provider for SharedPreferencesService
-final sharedPreferencesServiceProvider =
-    Provider<SharedPreferencesService>((ref) {
-  final sharedPreferencesService =
-      ref.read(sharedPreferencesServiceInitializerProvider);
-  return sharedPreferencesService;
+final userProvider = FutureProvider<UserModel>((ref) async {
+  final secureStorage = ref.read(secureStorageServiceProvider);
+  return await secureStorage.getUser();
 });
+
+// final sharedPreferencesServiceInitializerProvider = Provider((ref) {
+//   SharedPreferencesService.init(); // Initialize SharedPreferencesService here
+//   return SharedPreferencesService();
+// });
+
+// // Provider for SharedPreferencesService
+// final sharedPreferencesServiceProvider =
+//     Provider<SharedPreferencesService>((ref) {
+//   final sharedPreferencesService =
+//       ref.read(sharedPreferencesServiceInitializerProvider);
+//   return sharedPreferencesService;
+// });
 
 final Provider<FirebaseFirestore> fireStoreProvider =
     Provider<FirebaseFirestore>(
@@ -77,11 +86,11 @@ final Provider<BikeService> bikeServiceProvider = Provider<BikeService>(
 final Provider<SurveyService> surveyServiceProvider = Provider<SurveyService>(
   (ref) {
     final firestore = ref.read(fireStoreProvider);
-    final sharedPreference = ref.read(sharedPreferencesServiceProvider);
+    final secureStorageService = ref.read(secureStorageServiceProvider);
 
     return SurveyService(
       firestore: firestore,
-      sharedPreferencesService: sharedPreference,
+      secureStorageService: secureStorageService,
     );
   },
 );
@@ -89,20 +98,6 @@ final Provider<SurveyService> surveyServiceProvider = Provider<SurveyService>(
 // ***************************************************************************
 // NOTIFIERS
 // ***************************************************************************
-
-final ChangeNotifierProvider<SurveyNotifier> SurveyNotifierProvider =
-    ChangeNotifierProvider<SurveyNotifier>(
-  (ref) {
-    final SurveyService surveyService = ref.watch(surveyServiceProvider);
-    final SharedPreferencesService sharedPreferencesService =
-        ref.watch(sharedPreferencesServiceProvider);
-
-    return SurveyNotifier(
-        surveyService: surveyService,
-        sharedPreferencesService: sharedPreferencesService)
-      ..getSurveyTotal();
-  },
-);
 
 final questionNotifierProvider =
     ChangeNotifierProvider.family<QuestionsNotifier, String>(
@@ -149,12 +144,13 @@ final ChangeNotifierProvider<SignInNotifier> signInStateNotifierProvider =
     ChangeNotifierProvider<SignInNotifier>(
   (ref) {
     final AuthService authService = ref.read(authServiceProvider);
-    final SharedPreferencesService sharedPreferencesService =
-        ref.read(sharedPreferencesServiceProvider);
+
+    final SecureStorageService secureStorageService =
+        ref.read(secureStorageServiceProvider);
 
     return SignInNotifier(
       authService: authService,
-      sharedPreferencesService: sharedPreferencesService,
+      secureStorageService: secureStorageService,
     );
   },
 );

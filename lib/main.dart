@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:prithvi/config/utils/shared_prefernces.dart';
 import 'package:prithvi/core/core.dart';
 
 import 'package:prithvi/features/splash/splash.dart';
@@ -18,7 +17,8 @@ import 'package:sizer/sizer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SharedPreferencesService.init();
+  //await SharedPreferencesService.init();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

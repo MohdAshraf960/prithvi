@@ -3,22 +3,20 @@ import 'package:logger/logger.dart';
 import 'package:prithvi/config/config.dart';
 import 'package:prithvi/core/core.dart';
 
-import 'package:prithvi/models/model.dart';
-
 class SurveyService {
   final FirebaseFirestore _firestore;
-  SharedPreferencesService _sharedPreferencesService;
 
-  SurveyService({
-    required FirebaseFirestore firestore,
-    required SharedPreferencesService sharedPreferencesService,
-  })  : _firestore = firestore,
-        _sharedPreferencesService = sharedPreferencesService;
+  SecureStorageService _secureStorageService;
+
+  SurveyService(
+      {required FirebaseFirestore firestore,
+      required SecureStorageService secureStorageService})
+      : _firestore = firestore,
+        _secureStorageService = secureStorageService;
 
   Future<void> addSurveyDocument(Map<String, double> surveyData) async {
     try {
-      final user = UserModel.fromJson(_sharedPreferencesService.user);
-
+      final user = await _secureStorageService.getUser();
       final userEmail = user.email;
 
       // Check if a document with the user's email already exists
@@ -48,7 +46,8 @@ class SurveyService {
 
   Future<void> addOrUpdateSurveyKey(String key, num value) async {
     try {
-      final user = UserModel.fromJson(_sharedPreferencesService.user);
+      final user = await _secureStorageService.getUser();
+      //  final user = UserModel.fromJson(_sharedPreferencesService.user);
 
       final userEmail = user.email;
 
@@ -71,21 +70,37 @@ class SurveyService {
     }
   }
 
-  Stream<Map<String, dynamic>> getSurveyData() {
-    final user = UserModel.fromJson(_sharedPreferencesService.user);
+  // Stream<Map<String, dynamic>> getSurveyData() async {
+  //   final user = await _secureStorageService.getUser();
+  //   //final user = UserModel.fromJson(_sharedPreferencesService.user);
 
+  //   final userEmail = user.email;
+
+  //   // Get the reference to the user's survey document
+  //   final docRef =
+  //       _firestore.collection(FirebaseCollection.survey).doc(userEmail);
+
+  //   // Return a stream of the survey data
+  //   return docRef.snapshots().map((snapshot) {
+  //     if (snapshot.exists) {
+  //       return snapshot.data() as Map<String, dynamic>;
+  //     } else {
+  //       // Return an empty map if the document doesn't exist
+  //       return {};
+  //     }
+  //   });
+  // }
+  Stream<Map<String, dynamic>> getSurveyData() async* {
+    final user = await _secureStorageService.getUser();
     final userEmail = user.email;
 
-    // Get the reference to the user's survey document
     final docRef =
         _firestore.collection(FirebaseCollection.survey).doc(userEmail);
 
-    // Return a stream of the survey data
-    return docRef.snapshots().map((snapshot) {
+    yield* docRef.snapshots().map((snapshot) {
       if (snapshot.exists) {
         return snapshot.data() as Map<String, dynamic>;
       } else {
-        // Return an empty map if the document doesn't exist
         return {};
       }
     });

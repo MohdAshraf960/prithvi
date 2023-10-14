@@ -20,7 +20,7 @@ class SurveyView extends ConsumerWidget {
     return StreamBuilder<Map<String, dynamic>>(
       stream: SurveyService(
         firestore: FirebaseFirestore.instance,
-        sharedPreferencesService: SharedPreferencesService(),
+        secureStorageService: SecureStorageService(),
       ).getSurveyData(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

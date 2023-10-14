@@ -6,8 +6,6 @@ import 'package:logger/logger.dart';
 import 'package:prithvi/config/config.dart';
 import 'package:prithvi/core/core.dart';
 import 'package:prithvi/features/auth/pages/login_view.dart';
-import 'package:prithvi/models/user_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:sizer/sizer.dart';
 
@@ -21,9 +19,6 @@ class UserProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
-  // UserProfileScreen();
-  SharedPreferencesService service = SharedPreferencesService();
-
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -37,17 +32,21 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
 
   // Method to fetch user data from SharedPreferences
   void getUser() async {
-    final getuser = await SharedPreferences.getInstance().then((prefs) {
-      return prefs.getString(SharedPreferencesService.userKey);
-    });
+    final securedStorageService = ref.read(secureStorageServiceProvider);
 
-    if (getuser != null) {
-      final userModel = UserModel.fromJson(getuser);
+    final user = await securedStorageService.getUser();
+
+    if (user.isVerified) {
       setState(() {
-        nameController.text = userModel.name
-            .toString(); // Update the user variable with the user data
-        emailController.text = userModel.email.toString();
+        nameController.text = user.name;
+        emailController.text = user.email;
       });
+    } else {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        LoginView.id,
+        (route) => false,
+      );
     }
   }
 
@@ -139,7 +138,9 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                     color: primaryGreen,
                     text: "LOG OUT",
                     onTap: () async {
-                      service.setLogout();
+                      final securedStorageService =
+                          ref.read(secureStorageServiceProvider);
+                      await securedStorageService.clearStorage();
                       Navigator.pushNamedAndRemoveUntil(
                           context, LoginView.id, (route) => false);
                     },
@@ -155,7 +156,6 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
                       setState(() {
                         isDisable = false;
                       });
-                      service.getUser();
                     },
                     width: double.infinity,
                   )
@@ -266,8 +266,11 @@ Since this is a security-sensitive operation, you eventually are asked to login 
                     Navigator.pop(context);
                     RoutePage.showErrorSnackbars("All fields required");
                   } else {
-                    await _reauthenticateAndDelete().then((value) {
-                      service.setLogout();
+                    await _reauthenticateAndDelete().then((value) async {
+                      final securedStorageService =
+                          ref.read(secureStorageServiceProvider);
+                      await securedStorageService.clearStorage();
+
                       Navigator.pushNamedAndRemoveUntil(
                         context,
                         LoginView.id,
@@ -326,10 +329,12 @@ Since this is a security-sensitive operation, you eventually are asked to login 
     firestore.runTransaction((Transaction transaction) async {
       await transaction.delete(userDocumentReference);
       await transaction.delete(surveyDocumentReference);
-    }).then((value) {
+    }).then((value) async {
       print(
           'Documents with email ${emailController.text} deleted successfully from both collections.');
-      service.setLogout();
+      //service.setLogout();
+      final securedStorageService = ref.read(secureStorageServiceProvider);
+      await securedStorageService.clearStorage();
       Navigator.pushNamedAndRemoveUntil(
           context, LoginView.id, (route) => false);
     }).catchError((error) {

@@ -6,3 +6,4 @@ export 'categories_model.dart';
 export 'questions_model.dart';
 export 'survey_model.dart';
 export 'bike_model.dart';
+export 'suggestion_model.dart';
