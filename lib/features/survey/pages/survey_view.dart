@@ -9,10 +9,8 @@ import 'package:prithvi/services/survey_service.dart';
 import 'package:sizer/sizer.dart';
 
 class SurveyView extends ConsumerWidget {
-  final TabController tabController;
   const SurveyView({
     super.key,
-    required this.tabController,
   });
 
   @override
@@ -40,7 +38,7 @@ class SurveyView extends ConsumerWidget {
               color: primaryGreen,
               text: "Calculate Carbon Footprint".toUpperCase(),
               onTap: () async {
-                tabController.animateTo(0);
+                // tabController.animateTo(0);
               },
               width: double.infinity,
             ),

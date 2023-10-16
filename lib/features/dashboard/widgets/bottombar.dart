@@ -6,6 +6,8 @@ import 'package:prithvi/core/colors/colors.dart';
 import 'package:prithvi/features/category/pages/category_view.dart';
 import 'package:prithvi/features/home/pages/home_view.dart';
 import 'package:prithvi/features/profile/pages/userprofile_view.dart';
+import 'package:prithvi/features/survey/survey.dart';
+import 'package:prithvi/models/model.dart';
 import 'package:sizer/sizer.dart';
 
 class BottomBar extends ConsumerStatefulWidget {
@@ -17,11 +19,12 @@ class BottomBar extends ConsumerStatefulWidget {
 }
 
 class _BottomBarState extends ConsumerState<BottomBar> {
-  final List<String> image =
-      List.generate(3, (index) => "assets/images/bottom${index + 1}.png");
-  List<String> label = ["Home", "Category", "Profile"];
-  List<IconData> icon = [Icons.home, Icons.category, Icons.person];
-
+  List<NavigationItem> navigationItems = [
+    NavigationItem(label: "Home", icon: Icons.home),
+    NavigationItem(label: "Category", icon: Icons.category),
+    NavigationItem(label: "Profile", icon: Icons.person),
+    NavigationItem(label: "Summary", icon: Icons.summarize),
+  ];
   int selectedIndex = 0;
 
   getBody() {
@@ -32,6 +35,8 @@ class _BottomBarState extends ConsumerState<BottomBar> {
         return CategoryView();
       case 2:
         return UserProfileScreen();
+      case 3:
+        return SurveyView();
     }
   }
 
@@ -46,7 +51,7 @@ class _BottomBarState extends ConsumerState<BottomBar> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              for (int i = 0; i < image.length; i++)
+              for (int i = 0; i < navigationItems.length; i++)
                 InkWell(
                   onTap: () {
                     setState(() {
@@ -59,17 +64,18 @@ class _BottomBarState extends ConsumerState<BottomBar> {
                         height: 2.h,
                       ),
                       Container(
-                          height: 35,
-                          width: 18.w,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Icon(
-                            icon[i],
-                            color:
-                                selectedIndex == i ? primaryGreen : grey3Color,
-                          )),
+                        height: 35,
+                        width: 18.w,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Icon(
+                          navigationItems[i].icon,
+                          color: selectedIndex == i ? primaryGreen : grey3Color,
+                        ),
+                      ),
                       Text(
-                        label[i],
+                        navigationItems[i].label,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,
