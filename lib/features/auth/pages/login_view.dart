@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:prithvi/config/config.dart';
 
@@ -38,27 +39,12 @@ class _LoginViewState extends ConsumerState<LoginView> {
   bool isObscure = true;
   // final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
 
-  Future<void> handleLogin() async {
-    final email = _emailController.text;
-
-    try {
-      // print("ttttttttttttttttttttttttttttttttttttttttttttttt");
-      // Perform your login logic here
-
-      // If login is successful, log the "login" event
-      await locator<AnalyticsServices>().logLoginEvent(email);
-
-      // Navigate to the home screen or perform other actions
-    } catch (error) {
-      print("catch");
-
-      // Handle login error
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    print(size.width);
+    print("size.height * 100 ${size.height * 100}");
+
     final media = MediaQuery.of(context);
     final signInNotifier = ref.watch(signInStateNotifierProvider);
 
@@ -67,7 +53,13 @@ class _LoginViewState extends ConsumerState<LoginView> {
       body: Stack(
         children: [
           Container(
+            height: size.height * 1,
+            alignment: Alignment.topCenter,
             decoration: const BoxDecoration(gradient: primaryGreenGradient),
+            child: Lottie.network(
+              "https://firebasestorage.googleapis.com/v0/b/prithvi-70646.appspot.com/o/lottie%2Frotate_earth.json?alt=media&token=d6c82e03-35b9-4c92-8e18-aa49bcd89eb3&_gl=1*1h7zjfk*_ga*MTcyMDYzOTI3Mi4xNjgzNzg3Nzc0*_ga_CW55HF8NVT*MTY5NzQ2Mzg1NS4xMTIuMC4xNjk3NDYzODU1LjYwLjAuMA..",
+              width: size.width * 0.9,
+            ),
           ),
           Form(
             key: formKey,
@@ -222,7 +214,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
                                                   .validate()) {
                                                 _userSignIn(
                                                     signInNotifier, context);
-                                                handleLogin();
+                                                //   handleLogin();
                                               }
                                             },
                                             width: double.infinity,

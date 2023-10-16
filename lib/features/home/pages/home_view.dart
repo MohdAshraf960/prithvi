@@ -56,21 +56,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: white,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   // title: Text('Home'),
-
-      //   elevation: 0,
-      //   actions: [
-      //     TextButton(
-      //       onPressed: () {},
-      //       child: Text(
-      //         "SKIP",
-      //         style: TextStyle(fontSize: 16, color: grey),
-      //       ),
-      //     ),
-      //   ],
-      // ),
       body: Column(
         children: [
           Expanded(
@@ -84,20 +69,6 @@ class _HomeState extends State<Home> {
               },
             ),
           ),
-          // if (_currentPage == 2)
-          //   Padding(
-          //     padding: const EdgeInsets.all(16.0),
-          //     child: CustomButton(
-          //         height: 50,
-          //         text: "Calculate your carbon footprint".toUpperCase(),
-          //         textColor: white,
-          //         color: primaryGreen,
-          //         width: double.infinity,
-          //         onTap: () {
-
-          //         },
-          //         textfontsize: 16),
-          //   ),
           DotsIndicator(
             dotsCount: data.length,
             position: _currentPage,

@@ -81,22 +81,22 @@ class MyApp extends ConsumerWidget {
 //  mcq calculation store value in calculatedValue then add all values
 // */
 
-Future<void> createSurvey(
-    String userEmail, String subcollectionName, int total) async {
-  try {
-    final firestore = FirebaseFirestore.instance;
+// Future<void> createSurvey(
+//     String userEmail, String subcollectionName, int total) async {
+//   try {
+//     final firestore = FirebaseFirestore.instance;
 
-    // Create a document with the user's email as the ID
-    final userDoc = firestore.collection('survey').doc(userEmail);
+//     // Create a document with the user's email as the ID
+//     final userDoc = firestore.collection('survey').doc(userEmail);
 
-    // Create a subcollection with the passed name
-    final subcollection = userDoc.collection(subcollectionName);
+//     // Create a subcollection with the passed name
+//     final subcollection = userDoc.collection(subcollectionName);
 
-    // Create a document in the subcollection with the "total" field
-    final documentRef = await subcollection.add({'total': total});
+//     // Create a document in the subcollection with the "total" field
+//     final documentRef = await subcollection.add({'total': total});
 
-    print('Survey created successfully with ID: ${documentRef.id}');
-  } catch (e) {
-    print('Error creating survey: $e');
-  }
-}
+//     print('Survey created successfully with ID: ${documentRef.id}');
+//   } catch (e) {
+//     print('Error creating survey: $e');
+//   }
+// }
