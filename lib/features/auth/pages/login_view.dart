@@ -15,11 +15,8 @@ import 'package:prithvi/features/dashboard/widgets/bottombar.dart';
 import 'package:prithvi/features/features.dart';
 
 import 'package:prithvi/models/model.dart';
-import 'package:prithvi/services/locator.dart';
 
 import 'package:sizer/sizer.dart';
-
-import '../../../services/firebase_analytics.dart';
 
 class LoginView extends ConsumerStatefulWidget {
   const LoginView({super.key});
