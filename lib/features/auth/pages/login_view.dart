@@ -42,8 +42,6 @@ class _LoginViewState extends ConsumerState<LoginView> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    print(size.width);
-    print("size.height * 100 ${size.height * 100}");
 
     final media = MediaQuery.of(context);
     final signInNotifier = ref.watch(signInStateNotifierProvider);
