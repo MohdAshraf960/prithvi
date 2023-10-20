@@ -2,10 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 
 import 'package:prithvi/config/config.dart';
 
 import 'package:prithvi/core/core.dart';
+import 'package:prithvi/features/auth/pages/forgot_password_view.dart';
+import 'package:prithvi/features/auth/pages/pages.dart';
 
 import 'package:prithvi/features/auth/widgets/textformfield.dart';
 import 'package:prithvi/features/dashboard/widgets/bottombar.dart';
@@ -15,18 +18,28 @@ import 'package:prithvi/models/model.dart';
 
 import 'package:sizer/sizer.dart';
 
-class Login extends ConsumerWidget {
+class LoginView extends ConsumerStatefulWidget {
+  const LoginView({super.key});
   static const id = "/login";
-  Login({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends ConsumerState<LoginView> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   final TextEditingController _emailController = TextEditingController();
 
   final TextEditingController _passwordController = TextEditingController();
 
+  bool isObscure = true;
+  // final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     final media = MediaQuery.of(context);
     final signInNotifier = ref.watch(signInStateNotifierProvider);
 
@@ -35,7 +48,13 @@ class Login extends ConsumerWidget {
       body: Stack(
         children: [
           Container(
+            height: size.height * 1,
+            alignment: Alignment.topCenter,
             decoration: const BoxDecoration(gradient: primaryGreenGradient),
+            child: Lottie.network(
+              "https://firebasestorage.googleapis.com/v0/b/prithvi-70646.appspot.com/o/lottie%2Frotate_earth.json?alt=media&token=d6c82e03-35b9-4c92-8e18-aa49bcd89eb3&_gl=1*1h7zjfk*_ga*MTcyMDYzOTI3Mi4xNjgzNzg3Nzc0*_ga_CW55HF8NVT*MTY5NzQ2Mzg1NS4xMTIuMC4xNjk3NDYzODU1LjYwLjAuMA..",
+              width: size.width * 0.9,
+            ),
           ),
           Form(
             key: formKey,
@@ -50,7 +69,7 @@ class Login extends ConsumerWidget {
                 ),
                 Container(
                   // Wrap the BackdropFilter with a Container
-                  height: size.height * 0.54, // Set to 50% of screen height
+                  height: size.height * 0.52, // Set to 50% of screen height
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 1.0, sigmaY: 1.0),
                     child: AnimatedContainer(
@@ -131,16 +150,25 @@ class Login extends ConsumerWidget {
                                         validator: (value) =>
                                             Validator.requiredValidator(value),
                                         inputType: TextInputType.text,
-                                        obscureText: true,
+                                        obscureText: isObscure,
                                         height: size.height * 0.065,
                                         width: size.width,
                                         labelText: "Enter Password",
                                         fontSize: 12.sp,
-                                        suffixIcon: const Padding(
+                                        suffixIcon: Padding(
                                           padding: EdgeInsets.only(right: 16),
-                                          child: Icon(
-                                            Icons.remove_red_eye,
-                                            color: grey3Color,
+                                          child: InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                isObscure = !isObscure;
+                                              });
+                                            },
+                                            child: Icon(
+                                              isObscure
+                                                  ? Icons.visibility_off
+                                                  : Icons.visibility,
+                                              color: grey3Color,
+                                            ),
                                           ),
                                         ),
                                         // controller: viewModel.password,
@@ -151,12 +179,17 @@ class Login extends ConsumerWidget {
                                     Align(
                                       alignment: Alignment.bottomRight,
                                       child: TextButton(
-                                          onPressed: () {},
-                                          child: Text(
-                                            "Forgot Password",
-                                            style:
-                                                TextStyle(color: primaryGreen),
-                                          )),
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            ForgotPassword.id,
+                                          );
+                                        },
+                                        child: Text(
+                                          "Forgot Password",
+                                          style: TextStyle(color: primaryGreen),
+                                        ),
+                                      ),
                                     ),
                                     const SizedBox(
                                       height: kToolbarHeight * 0.1,
@@ -176,6 +209,7 @@ class Login extends ConsumerWidget {
                                                   .validate()) {
                                                 _userSignIn(
                                                     signInNotifier, context);
+                                                //   handleLogin();
                                               }
                                             },
                                             width: double.infinity,
@@ -187,7 +221,9 @@ class Login extends ConsumerWidget {
                                       child: OutlinedButton(
                                         onPressed: () {
                                           Navigator.pushNamed(
-                                              context, "/signup");
+                                            context,
+                                            SignUp.id,
+                                          );
                                         },
                                         child: Text(
                                           'Signup'.toUpperCase(),
@@ -209,16 +245,7 @@ class Login extends ConsumerWidget {
                                         ),
                                       ),
                                     ),
-                                    // TextButton(
-                                    //   onPressed: () {
-                                    //     Navigator.pushNamed(context, SignUp.id);
-                                    //   },
-                                    //   child: Text(
-                                    //     "Do you want to Sign Up?",
-                                    //     style: TextStyle(
-                                    //         color: grey2Color, fontSize: 12),
-                                    //   ),
-                                    // ),
+
                                     const SizedBox(
                                       height: kToolbarHeight * 0.9,
                                     ),
@@ -247,13 +274,24 @@ class Login extends ConsumerWidget {
           password: _passwordController.text,
         ),
         onSuccess: (result) {
-          Navigator.of(context).push(
+          Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
               builder: (_) => BottomBar(),
             ),
+            (route) => false,
           );
-          // RoutePage.navigatorKey.currentState!
-          //     .pushNamedAndRemoveUntil(Home.id, (route) => false);
+          // if (result.isVerified) {
+          //   Navigator.of(context).pushAndRemoveUntil(
+          //     MaterialPageRoute(
+          //       builder: (_) => BottomBar(),
+          //     ),
+          //     (route) => false,
+          //   );
+          // } else {
+          //   AppException.onError(
+          //     AppException(message: "User Is not verified"),
+          //   );
+          // }
         },
         onError: (error) {
           AppException.onError(error);

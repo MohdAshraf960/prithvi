@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:prithvi/core/colors/colors.dart';
 import 'package:sizer/sizer.dart';
@@ -14,6 +15,7 @@ class AppFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final void Function(String)? onChanged;
   final void Function()? onTap;
+  final void Function(String)? onFieldSubmitted;
   final TextInputType inputType;
   final TextInputAction? inputAction;
   final TextEditingController? controller;
@@ -23,30 +25,33 @@ class AppFormField extends StatelessWidget {
   final FocusNode? focus;
   final bool readonly;
   final bool obscureText;
+  final List<TextInputFormatter>? inputFormatter;
 
   final FontWeight fontWeight;
-  const AppFormField({
-    Key? key,
-    //required this.hintText,
-    this.onTap,
-    this.onChanged,
-    this.validator,
-    this.inputType = TextInputType.text,
-    this.inputAction,
-    // required this.hintfontSize,
-    this.fontStyles,
-    this.obscureText = false,
-    required this.labelText,
-    required this.fontSize,
-    this.suffixIcon,
-    this.controller,
-    required this.width,
-    required this.height,
-    this.focus,
-    this.readonly = false,
-    required this.fontWeight,
-    this.hint,
-  }) : super(key: key);
+  const AppFormField(
+      {Key? key,
+      //required this.hintText,
+      this.onTap,
+      this.onChanged,
+      this.validator,
+      this.inputType = TextInputType.text,
+      this.inputAction,
+      // required this.hintfontSize,
+      this.fontStyles,
+      this.obscureText = false,
+      required this.labelText,
+      required this.fontSize,
+      this.suffixIcon,
+      this.controller,
+      required this.width,
+      required this.height,
+      this.focus,
+      this.readonly = false,
+      required this.fontWeight,
+      this.hint,
+      this.onFieldSubmitted,
+      this.inputFormatter})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +110,8 @@ class AppFormField extends StatelessWidget {
               fontStyle: FontStyle.normal,
               fontWeight: FontWeight.w400),
         ),
+        onFieldSubmitted: onFieldSubmitted,
+        inputFormatters: inputFormatter,
       ),
     );
   }

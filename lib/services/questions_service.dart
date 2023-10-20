@@ -46,17 +46,15 @@ class QuestionsService {
               '${FirebaseCollection.categories}/$categoryType',
             ),
           )
+          .where('isActive', isEqualTo: true)
           .get();
 
       // Map Firestore documents to QuestionModel objects
-      List<QuestionModel> questions = querySnapshot.docs.map((doc) {
-        final questionData = doc.data() as Map<String, dynamic>;
-        final questionId = doc.id; // Get the document ID
-
-        return QuestionModel.fromJson(questionData)
-          ..documentId = questionId; // Set the document ID in the QuestionModel
-      }).toList();
-
+      List<QuestionModel> questions = querySnapshot.docs
+          .map((doc) =>
+              QuestionModel.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+      Logger().i("questions ======$questions");
       return questions;
     } catch (e) {
       Logger().e("error ======$e");
@@ -71,24 +69,60 @@ class QuestionsService {
           _firestore.collection(FirebaseCollection.quesitons);
 
       // Add the question data to the collection
-      await questionsCollection.add(question.toMap());
+      await questionsCollection
+          .doc('${question.categoryRef.path.split('/').last}-${question.id}')
+          .set(question.toMap());
+      Logger().i("Question created sucessfuly");
     } catch (e) {
       Logger().e("error creating question: $e");
       rethrow;
     }
   }
 
-  Future<void> deleteQuestion(String documentId) async {
+// Function to add the "isActive" field to all documents
+  Future<void> addIsActiveFieldToAllQuestions() async {
     try {
-      // Reference to the collection where the question is stored
+      // Reference to the Firestore collection
       CollectionReference questionsCollection =
-          _firestore.collection(FirebaseCollection.quesitons);
+          FirebaseFirestore.instance.collection(FirebaseCollection.quesitons);
 
-      // Delete the document with the specified documentId
-      await questionsCollection.doc(documentId).delete();
+      // Fetch all documents in the collection
+      QuerySnapshot questionsSnapshot = await questionsCollection.get();
+
+      // Loop through each document and add the "isActive" field
+      questionsSnapshot.docs.forEach((doc) async {
+        // Check if the "isActive" field doesn't already exist in the document
+
+        await doc.reference.update({'isActive': true});
+        print('Added "isActive" field to document ${doc.id}');
+      });
+
+      print('Added "isActive" field to all documents');
     } catch (e) {
-      Logger().e("error deleting question: $e");
-      rethrow;
+      print('Error adding "isActive" field: $e');
+    }
+  }
+
+  // Function to set "isActive" to false for documents with "isRelated" as true
+  Future<void> setActiveForRelatedQuestions() async {
+    try {
+      // Reference to the Firestore collection
+      CollectionReference questionsCollection =
+          FirebaseFirestore.instance.collection('questions');
+
+      // Query for documents where "isRelated" is true
+      QuerySnapshot relatedQuestionsSnapshot =
+          await questionsCollection.where('isRelated', isEqualTo: true).get();
+
+      // Loop through each related document and set "isActive" to true
+      relatedQuestionsSnapshot.docs.forEach((doc) async {
+        await doc.reference.update({'isActive': false});
+        print('Set "isActive" to true for document ${doc.id}');
+      });
+
+      print('Set "isActive" to true for related questions');
+    } catch (e) {
+      print('Error setting "isActive" for related questions: $e');
     }
   }
 }

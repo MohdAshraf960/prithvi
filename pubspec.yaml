@@ -4,7 +4,7 @@ description: A new Flutter project.
 publish_to: 'none'
 
 
-version: 1.0.0+1
+version: 1.0.0+3
 
 environment:
   sdk: '>=3.1.0 <4.0.0'
@@ -12,13 +12,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
  
   cupertino_icons: ^1.0.2
   sizer: ^2.0.15
   flutter_riverpod: ^2.4.0
-  shared_preferences: ^2.2.1
+ 
   google_fonts: ^6.0.0
   syncfusion_flutter_charts: ^23.1.36
   syncfusion_flutter_sliders: ^23.1.36
@@ -26,10 +24,24 @@ dependencies:
   firebase_auth: ^4.9.0
   cloud_firestore: ^4.9.1
   logger: ^2.0.2
+  uuid: ^4.1.0
+  firebase_analytics: ^10.5.0
+  get_it: ^7.6.4
+  dots_indicator: ^3.0.0
+  flutter_secure_storage: ^9.0.0
+  lottie: ^2.6.0
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.13.1"
   flutter_test:
     sdk: flutter
+ 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/logo/logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 
 flutter:
@@ -40,6 +52,8 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/logo/
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

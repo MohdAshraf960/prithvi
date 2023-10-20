@@ -12,7 +12,7 @@ class CustomLoader extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        color: backgroundColor,
+        color: primaryGreen,
       ),
       child: const SizedBox(
         width: 25,

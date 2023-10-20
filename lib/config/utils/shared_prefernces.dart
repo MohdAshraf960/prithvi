@@ -1,47 +1,49 @@
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:prithvi/models/model.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPreferencesService {
-  static SharedPreferences? _sharedPrefs;
+// class SharedPreferencesService {
+//   static SharedPreferences? _sharedPrefs;
 
-  // Private constructor to create an instance of SharedPreferencesService
-  SharedPreferencesService._();
+//   // Private constructor to create an instance of SharedPreferencesService
+//   SharedPreferencesService._();
 
-  // Factory constructor to ensure a single instance of SharedPreferencesService
-  factory SharedPreferencesService() {
-    if (_sharedPrefs == null) {
-      throw Exception("SharedPreferences not initialized");
-    }
-    return SharedPreferencesService._();
-  }
+//   // Factory constructor to ensure a single instance of SharedPreferencesService
+//   factory SharedPreferencesService() {
+//     if (_sharedPrefs == null) {
+//       throw Exception("SharedPreferences not initialized");
+//     }
+//     return SharedPreferencesService._();
+//   }
 
-  static Future<void> init() async {
-    _sharedPrefs ??= await SharedPreferences.getInstance();
-  }
+//   static Future<void> init() async {
+//     _sharedPrefs ??= await SharedPreferences.getInstance();
+//   }
 
-  // KEYS
-  static const String userKey = "userKey";
-  static const String isLoggedInKey = "isLoggedIn";
+//   // KEYS
+//   static const String userKey = "userKey";
+//   static const String isLoggedInKey = "isLoggedIn";
 
-  // GETTERS
-  String get user => _sharedPrefs!.getString(userKey) ?? "";
-  bool get isLoggedIn => _sharedPrefs!.getBool(isLoggedInKey) ?? false;
+//   // GETTERS
+//   String get user => _sharedPrefs!.getString(userKey) ?? "";
+//   bool get isLoggedIn => _sharedPrefs!.getBool(isLoggedInKey) ?? false;
 
-  // SETTERS
-  void setUser(String user) {
-    _sharedPrefs!.setString(userKey, user);
-  }
+//   // SETTERS
+//   void setUser(String user) {
+//     _sharedPrefs!.setString(userKey, user);
+//   }
 
-  void setLoggedIn(bool isLoggedIn) {
-    _sharedPrefs!.setBool(isLoggedInKey, isLoggedIn);
-  }
+//   void getUser() async {
+//     final getuser = _sharedPrefs!.getString(userKey);
+//     final sdd = UserModel.fromJson(getuser!);
+//     print("getUser----------------->$sdd");
+//   }
 
-  // SETTER TO CLEAR PREFS FOR LOGOUT
-  void setLogout() {
-    _sharedPrefs?.clear();
-  }
-}
+//   void setLoggedIn(bool isLoggedIn) {
+//     _sharedPrefs!.setBool(isLoggedInKey, isLoggedIn);
+//   }
 
-// Initialize SharedPreferencesService elsewhere in your code
-// Example:
-// await SharedPreferencesService.init();
-// final sharedPrefs = SharedPreferencesService();
+//   // SETTER TO CLEAR PREFS FOR LOGOUT
+//   void setLogout() {
+//     _sharedPrefs?.clear();
+//   }
+// }

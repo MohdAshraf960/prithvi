@@ -22,13 +22,14 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   _decideRoute() async {
-    final sharedPreferencesService =
-        ref.watch(sharedPreferencesServiceProvider);
+    final securedStorageService = ref.watch(secureStorageServiceProvider);
 
-    if (sharedPreferencesService.isLoggedIn) {
+    final isLoggedIn = await securedStorageService.getIsLoggedIn();
+
+    if (isLoggedIn) {
       goToPage(BottomBar.id);
     } else {
-      goToPage(Login.id);
+      goToPage(LoginView.id);
     }
   }
 

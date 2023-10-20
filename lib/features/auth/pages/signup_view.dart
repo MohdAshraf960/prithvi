@@ -46,6 +46,7 @@ class SignUp extends ConsumerWidget {
           Container(
             decoration: const BoxDecoration(gradient: primaryGreenGradient),
           ),
+
           // Container(
           //   decoration: const BoxDecoration(
           //     color: Colors.white,
@@ -209,6 +210,7 @@ class SignUp extends ConsumerWidget {
                                         //     color: backgroundColor,
                                         //   ),
                                         // ),
+
                                         controller: confirmPasswordController,
                                         fontWeight: FontWeight.w400),
 
@@ -277,7 +279,9 @@ class SignUp extends ConsumerWidget {
         log("message $result");
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => VerificationPage(),
+            builder: (_) => VerificationPage(
+              email: emailController.text,
+            ),
           ),
         );
       }),

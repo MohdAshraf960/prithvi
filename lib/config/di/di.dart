@@ -1,30 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:prithvi/admin_panel/services/category_service.dart';
 import 'package:prithvi/config/config.dart';
-import 'package:prithvi/admin_panel/admin_panel.dart';
 import 'package:prithvi/features/category/category.dart';
 import 'package:prithvi/features/features.dart';
 import 'package:prithvi/features/questions/questions.dart';
+import 'package:prithvi/models/model.dart';
+
 import 'package:prithvi/services/services.dart';
 
 // ***************************************************************************
 // SERVICES
 // ***************************************************************************
 
-final sharedPreferencesServiceInitializerProvider = Provider((ref) {
-  SharedPreferencesService.init(); // Initialize SharedPreferencesService here
-  return SharedPreferencesService();
+final secureStorageServiceProvider = Provider<SecureStorageService>((ref) {
+  return SecureStorageService();
 });
 
-// Provider for SharedPreferencesService
-final sharedPreferencesServiceProvider =
-    Provider<SharedPreferencesService>((ref) {
-  final sharedPreferencesService =
-      ref.read(sharedPreferencesServiceInitializerProvider);
-  return sharedPreferencesService;
+final userProvider = FutureProvider<UserModel>((ref) async {
+  final secureStorage = ref.read(secureStorageServiceProvider);
+  return await secureStorage.getUser();
 });
+
+// final sharedPreferencesServiceInitializerProvider = Provider((ref) {
+//   SharedPreferencesService.init(); // Initialize SharedPreferencesService here
+//   return SharedPreferencesService();
+// });
+
+// // Provider for SharedPreferencesService
+// final sharedPreferencesServiceProvider =
+//     Provider<SharedPreferencesService>((ref) {
+//   final sharedPreferencesService =
+//       ref.read(sharedPreferencesServiceInitializerProvider);
+//   return sharedPreferencesService;
+// });
 
 final Provider<FirebaseFirestore> fireStoreProvider =
     Provider<FirebaseFirestore>(
@@ -60,11 +69,29 @@ final Provider<QuestionsService> questionServiceProvider =
   },
 );
 
-final Provider<AdminQuestionsService> adminQuestionServiceProvider =
-    Provider<AdminQuestionsService>(
+final Provider<CarService> carServiceProvider = Provider<CarService>(
   (ref) {
     final firestore = ref.read(fireStoreProvider);
-    return AdminQuestionsService(firestore: firestore);
+    return CarService(firestore: firestore);
+  },
+);
+
+final Provider<BikeService> bikeServiceProvider = Provider<BikeService>(
+  (ref) {
+    final firestore = ref.read(fireStoreProvider);
+    return BikeService(firestore: firestore);
+  },
+);
+
+final Provider<SurveyService> surveyServiceProvider = Provider<SurveyService>(
+  (ref) {
+    final firestore = ref.read(fireStoreProvider);
+    final secureStorageService = ref.read(secureStorageServiceProvider);
+
+    return SurveyService(
+      firestore: firestore,
+      secureStorageService: secureStorageService,
+    );
   },
 );
 
@@ -72,25 +99,21 @@ final Provider<AdminQuestionsService> adminQuestionServiceProvider =
 // NOTIFIERS
 // ***************************************************************************
 
-final adminNotifierProvider = ChangeNotifierProvider<AdminQuestionsNotifier>(
-  (ref) {
-    final AdminQuestionsService adminQuestionsService =
-        ref.watch(adminQuestionServiceProvider);
-
-    return AdminQuestionsNotifier(
-      questionsService: adminQuestionsService,
-    );
-  },
-);
-
 final questionNotifierProvider =
     ChangeNotifierProvider.family<QuestionsNotifier, String>(
   (ref, categoryType) {
-    final QuestionsService questionsService = ref.read(questionServiceProvider);
+    final QuestionsService questionsService =
+        ref.watch(questionServiceProvider);
+    final CarService carService = ref.watch(carServiceProvider);
+    final SurveyService surveyService = ref.watch(surveyServiceProvider);
+    final BikeService bikeService = ref.watch(bikeServiceProvider);
 
     return QuestionsNotifier(
-      questionsService: questionsService,
-    )..getQuestionsList(categoryType: categoryType);
+        questionsService: questionsService,
+        carService: carService,
+        surveyService: surveyService,
+        bikeService: bikeService)
+      ..getQuestionsList(categoryType: categoryType);
   },
 );
 
@@ -121,12 +144,13 @@ final ChangeNotifierProvider<SignInNotifier> signInStateNotifierProvider =
     ChangeNotifierProvider<SignInNotifier>(
   (ref) {
     final AuthService authService = ref.read(authServiceProvider);
-    final SharedPreferencesService sharedPreferencesService =
-        ref.read(sharedPreferencesServiceProvider);
+
+    final SecureStorageService secureStorageService =
+        ref.read(secureStorageServiceProvider);
 
     return SignInNotifier(
       authService: authService,
-      sharedPreferencesService: sharedPreferencesService,
+      secureStorageService: secureStorageService,
     );
   },
 );

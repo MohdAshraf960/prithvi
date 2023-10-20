@@ -8,7 +8,8 @@ import 'package:prithvi/features/auth/pages/login_view.dart';
 import 'package:prithvi/services/services.dart';
 
 class VerificationPage extends ConsumerStatefulWidget {
-  const VerificationPage({super.key});
+  const VerificationPage({super.key, required this.email});
+  final String email;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -45,7 +46,7 @@ class _VerificationPageState extends ConsumerState<VerificationPage> {
 
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (_) => Login(),
+          builder: (_) => LoginView(),
         ),
       );
     }
@@ -91,7 +92,7 @@ class _VerificationPageState extends ConsumerState<VerificationPage> {
               height: 10,
             ),
             Text(
-              "email@gmail.com",
+              "${widget.email}",
               style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(

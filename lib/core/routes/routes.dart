@@ -1,6 +1,7 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:flutter/material.dart';
+import 'package:prithvi/features/auth/pages/forgot_password_view.dart';
 
 import 'package:prithvi/features/auth/pages/login_view.dart';
 import 'package:prithvi/features/auth/pages/signup_view.dart';
@@ -21,8 +22,10 @@ class RoutePage {
         switch (routePage.name) {
           case SplashScreen.id:
             return SplashScreen();
-          case Login.id:
-            return Login();
+          case LoginView.id:
+            return LoginView();
+          case ForgotPassword.id:
+            return ForgotPassword();
 
           case SignUp.id:
             return SignUp();
@@ -39,7 +42,7 @@ class RoutePage {
           case BottomBar.id:
             return BottomBar();
           default:
-            return Login();
+            return LoginView();
         }
       },
     );
