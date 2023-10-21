@@ -53,6 +53,7 @@ flutter:
   assets:
     - assets/images/
     - assets/logo/
+    - assets/lotties/
 
   #   - images/a_dot_ham.jpeg
 

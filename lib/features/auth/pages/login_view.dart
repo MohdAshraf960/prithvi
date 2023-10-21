@@ -51,8 +51,8 @@ class _LoginViewState extends ConsumerState<LoginView> {
             height: size.height * 1,
             alignment: Alignment.topCenter,
             decoration: const BoxDecoration(gradient: primaryGreenGradient),
-            child: Lottie.network(
-              "https://firebasestorage.googleapis.com/v0/b/prithvi-70646.appspot.com/o/lottie%2Frotate_earth.json?alt=media&token=d6c82e03-35b9-4c92-8e18-aa49bcd89eb3&_gl=1*1h7zjfk*_ga*MTcyMDYzOTI3Mi4xNjgzNzg3Nzc0*_ga_CW55HF8NVT*MTY5NzQ2Mzg1NS4xMTIuMC4xNjk3NDYzODU1LjYwLjAuMA..",
+            child: Lottie.asset(
+              Assets.roundEarthLottie,
               width: size.width * 0.9,
             ),
           ),
@@ -135,12 +135,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
                                         inputType: TextInputType.emailAddress,
                                         height: size.height * 0.065,
                                         width: size.width,
-                                        // hintText: "Enter Email",
-                                        // hintfontSize: 12.sp,
                                         labelText: "Enter Email",
                                         controller: _emailController,
                                         fontSize: 12.sp,
-                                        // controller: viewModel.email,
                                         fontWeight: FontWeight.w400),
                                     const SizedBox(
                                       height: kToolbarHeight * 0.6,
