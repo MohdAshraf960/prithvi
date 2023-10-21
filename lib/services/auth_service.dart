@@ -36,7 +36,7 @@ class AuthService {
           success: false, errorMessage: "User registration failed");
     } catch (e) {
       // Log the error or handle it as needed
-      log("Error in signUpUser: $e");
+
       rethrow;
     }
   }
@@ -52,7 +52,7 @@ class AuthService {
       return emailQuery.docs.isNotEmpty;
     } catch (e) {
       // Log the error or handle it as needed
-      log("Error in doesUserExist: $e");
+
       rethrow;
     }
   }
@@ -154,13 +154,12 @@ class AuthService {
 
       return userModel;
     } catch (e) {
-      Logger().i("Errror ==========> $e");
       rethrow;
     }
   }
 
   Future<UserModel?> getUserModelByEmail(String? email) async {
-    Logger().i("email ==========> $email");
+    // Logger().i("email ==========> $email");
     if (email == null) return null;
 
     final querySnapshot = await _firestore
