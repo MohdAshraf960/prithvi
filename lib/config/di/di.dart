@@ -22,19 +22,6 @@ final userProvider = FutureProvider<UserModel>((ref) async {
   return await secureStorage.getUser();
 });
 
-// final sharedPreferencesServiceInitializerProvider = Provider((ref) {
-//   SharedPreferencesService.init(); // Initialize SharedPreferencesService here
-//   return SharedPreferencesService();
-// });
-
-// // Provider for SharedPreferencesService
-// final sharedPreferencesServiceProvider =
-//     Provider<SharedPreferencesService>((ref) {
-//   final sharedPreferencesService =
-//       ref.read(sharedPreferencesServiceInitializerProvider);
-//   return sharedPreferencesService;
-// });
-
 final Provider<FirebaseFirestore> fireStoreProvider =
     Provider<FirebaseFirestore>(
   (ref) {
