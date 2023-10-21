@@ -22,8 +22,8 @@ class _BottomBarState extends ConsumerState<BottomBar> {
   List<NavigationItem> navigationItems = [
     NavigationItem(label: "Home", icon: Icons.home),
     NavigationItem(label: "Category", icon: Icons.category),
-    NavigationItem(label: "Profile", icon: Icons.person),
     NavigationItem(label: "Summary", icon: Icons.summarize),
+    NavigationItem(label: "Profile", icon: Icons.person),
   ];
   int selectedIndex = 0;
 
@@ -32,11 +32,23 @@ class _BottomBarState extends ConsumerState<BottomBar> {
       case 0:
         return Home();
       case 1:
-        return CategoryView();
+        return CategoryView(
+          onSelected: (index) {
+            setState(() {
+              selectedIndex = index;
+            });
+          },
+        );
       case 2:
-        return UserProfileScreen();
+        return SurveyView(
+          onSelected: (index) {
+            setState(() {
+              selectedIndex = index;
+            });
+          },
+        );
       case 3:
-        return SurveyView();
+        return UserProfileScreen();
     }
   }
 

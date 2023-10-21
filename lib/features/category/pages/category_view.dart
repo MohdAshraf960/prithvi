@@ -4,11 +4,15 @@ import 'package:prithvi/config/di/di.dart';
 import 'package:prithvi/core/core.dart';
 import 'package:prithvi/features/questions/pages/diet_questions.dart';
 import 'package:prithvi/features/questions/questions.dart';
-import 'package:prithvi/features/survey/survey.dart';
 
 class CategoryView extends ConsumerStatefulWidget {
   static const id = '/category-view';
-  const CategoryView({super.key});
+  const CategoryView({
+    super.key,
+    this.onSelected,
+  });
+
+  final Function(int)? onSelected;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _CategoryViewState();
@@ -118,6 +122,9 @@ class _CategoryViewState extends ConsumerState<CategoryView>
                           tabController: _tabController,
                           categoryType: category.type,
                           index: index,
+                          onSelected: (index) {
+                            widget.onSelected!(index);
+                          },
                         ),
                       );
                   },

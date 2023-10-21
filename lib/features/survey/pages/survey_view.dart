@@ -9,9 +9,9 @@ import 'package:prithvi/services/survey_service.dart';
 import 'package:sizer/sizer.dart';
 
 class SurveyView extends ConsumerWidget {
-  const SurveyView({
-    super.key,
-  });
+  const SurveyView({super.key, required this.onSelected});
+
+  final Function(int) onSelected;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,6 +39,7 @@ class SurveyView extends ConsumerWidget {
               text: "Calculate Carbon Footprint".toUpperCase(),
               onTap: () async {
                 // tabController.animateTo(0);
+                this.onSelected(1);
               },
               width: double.infinity,
             ),
