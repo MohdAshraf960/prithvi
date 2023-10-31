@@ -10,4 +10,8 @@ class Assets {
   static const String first = "${baseUri}hi_five.jpg";
   static const String second = "${baseUri}estimation.jpg";
   static const String third = "${baseUri}task_list.jpg";
+
+  static const String lottiesPath = "assets/lotties/";
+  static const String roundEarthLottie = "${lottiesPath}rotate_earth.json";
+  static const String onBoardLottie = "${lottiesPath}onboard.json";
 }

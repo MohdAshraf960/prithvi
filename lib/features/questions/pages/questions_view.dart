@@ -17,12 +17,13 @@ class QuestionView extends ConsumerStatefulWidget {
   final String categoryType;
   final int index;
   final TabController? tabController;
-  const QuestionView({
-    super.key,
-    required this.categoryType,
-    required this.index,
-    this.tabController,
-  });
+  final Function(int) onSelected;
+  const QuestionView(
+      {super.key,
+      required this.categoryType,
+      required this.index,
+      this.tabController,
+      required this.onSelected});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _QuestionViewState();
@@ -189,9 +190,11 @@ class _QuestionViewState extends ConsumerState<QuestionView> {
                     if (widget.index < widget.tabController!.length - 1) {
                       widget.tabController
                           ?.animateTo(widget.index + 1); // Go to the next tab
+                    } else {
+                      widget.onSelected(2);
                     }
                   },
-                  child: Text(widget.index == widget.tabController!.length - 2
+                  child: Text(widget.index == widget.tabController!.length - 1
                       ? "See Results"
                       : "Next"),
                 ),

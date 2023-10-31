@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:logger/logger.dart';
+
 import 'package:prithvi/config/utils/secure_storage.dart';
 
 import 'package:prithvi/models/model.dart';
@@ -49,15 +49,13 @@ class SignInNotifier extends ChangeNotifier {
       // If an exception occurred, call the onError callback with the exception
       onError(e);
       // Optionally, log the error for debugging purposes
-      Logger().e('Error during sign-in: $e');
+      //Logger().e('Error during sign-in: $e');
     }
   }
 
   Future<void> _storeUserInSharedPreferences(UserModel user) async {
     final userJson = user.toJson(); // Assuming UserModel has a `toJson` method
     // Store the user object as a JSON string in SharedPreferences
-    // _sharedPreferencesService.setUser(userJson);
-    // _sharedPreferencesService.setLoggedIn(true);
 
     _secureStorageService.setUser(userJson);
     _secureStorageService.setIsLoggedIn(true);

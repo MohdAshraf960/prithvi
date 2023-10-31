@@ -22,8 +22,7 @@ class _HomeState extends State<Home> {
 
   final List<Map<String, String>> data = [
     {
-      'image':
-          "https://firebasestorage.googleapis.com/v0/b/prithvi-70646.appspot.com/o/lottie%2Fonboard.json?alt=media&token=5499932c-ed88-4f90-99b3-654099955db7&_gl=1*7y6vun*_ga*MTcyMDYzOTI3Mi4xNjgzNzg3Nzc0*_ga_CW55HF8NVT*MTY5NzQ2Nzg0Mi4xMTMuMS4xNjk3NDY4NzE2LjYwLjAuMA..",
+      'image': Assets.onBoardLottie,
       'text': 'We are thrilled to welcome \nyou to the Prithivi community',
     },
     {

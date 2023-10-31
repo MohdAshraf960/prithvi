@@ -192,18 +192,17 @@ class QuestionsNotifier extends ChangeNotifier {
           .toStringAsFixed(9),
     );
 
-    questionsList
-        .forEach((e) => Logger().e("${e.text} === ${e.calculatedValue}"));
-
     createUpdateSurvey(categoryName: category, total: emissionTotal);
 
-    // Logger().f('$category ===> $emissionTotal');
+    Logger().f('$emission $category ===> $emissionTotal');
   }
 
   void createUpdateSurvey(
       {required String categoryName, required num total}) async {
     try {
       await _surveyService.addSurveyDocument({categoryName: total.toDouble()});
+      await _surveyService
+          .addOrUpdateSurveyDocument({categoryName: total.toDouble()});
     } catch (e) {
       AppException.onError(e);
     }
@@ -218,10 +217,3 @@ class QuestionsNotifier extends ChangeNotifier {
     Logger().i("filteredDietList ===$filteredDietList");
   }
 }
-
-
-/**
- * 
- * 0.0111
- * 0.00368
- */

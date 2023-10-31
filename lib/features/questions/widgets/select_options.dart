@@ -103,6 +103,9 @@ class _SelectOptionsState extends ConsumerState<SelectOptions> {
                 notifier.calculationEmissionForMcq(widget.index);
               }
             }
+            if (widget.categoryType == "other") {
+              notifier.calculationEmissionForMcq(widget.index);
+            }
           }
         },
         items: widget.questionsList[widget.index].options.map((Option option) {

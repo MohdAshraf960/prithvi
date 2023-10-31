@@ -171,24 +171,4 @@ class ForgotPassword extends ConsumerWidget {
       Navigator.pop(context);
     }
   }
-
-  // _userSignIn(SignInNotifier signInNotifier, context) {
-  //   signInNotifier.userSignIn(
-  //       userSignInModel: SignInModel(
-  //         email: _emailController.text,
-  //         password: _passwordController.text,
-  //       ),
-  //       onSuccess: (result) {
-  //         Navigator.of(context).push(
-  //           MaterialPageRoute(
-  //             builder: (_) => BottomBar(),
-  //           ),
-  //         );
-  //         // RoutePage.navigatorKey.currentState!
-  //         //     .pushNamedAndRemoveUntil(Home.id, (route) => false);
-  //       },
-  //       onError: (error) {
-  //         AppException.onError(error);
-  //       });
-  // }
 }
